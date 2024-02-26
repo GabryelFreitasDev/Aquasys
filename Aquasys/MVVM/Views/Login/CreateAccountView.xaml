@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Aquasys.MVVM.Views.Login.CreateAccountView"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="10" VerticalOptions="Center">
+        <Label 
+            x:Name="LblCreateAccount" 
+            Text="Create your account"
+            FontSize="30"
+            FontAttributes="Bold"
+            TextColor="{StaticResource Primary}"/>
+        <Entry 
+            x:Name="EtrUser" 
+            Text="{Binding Login.UserName, Mode=TwoWay}" 
+            Placeholder="User name"/>
+
+        <Entry 
+            x:Name="EtrEmail" 
+            Placeholder="Email"
+            Text="{Binding Login.Email, Mode=TwoWay}"/>
+
+        <Entry 
+            x:Name="EtrPassword" 
+            Placeholder="Password"
+            Text="{Binding Login.Password, Mode=TwoWay}"
+            IsPassword="True"/>
+
+        <Button 
+            x:Name="BtnCreateAccount"
+            BackgroundColor="{StaticResource Primary}"
+            Text="Create Account"
+            FontSize="15"
+            BorderWidth="12"
+            WidthRequest="300"
+            Command="{Binding BtnCreateAccountClickCommand}"/>
+    </VerticalStackLayout>
+</ContentPage>

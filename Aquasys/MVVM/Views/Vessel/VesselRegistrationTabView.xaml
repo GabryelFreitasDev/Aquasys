@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Aquasys.MVVM.Views.Vessel.VesselRegistrationTabView">
+    <ContentView.Content>
+        <Grid 
+            ColumnDefinitions="*,*,*,*" 
+            ColumnSpacing="2" 
+            RowSpacing="10" 
+            Padding="10">
+            <VerticalStackLayout 
+                Grid.ColumnSpan="4">
+                <Label 
+                    Text="Vessel Resistration" 
+                    FontAttributes="Bold" 
+                    FontSize="20"/>
+                <Entry 
+                    x:Name="OS"
+                    Text="{Binding VesselModel.OS, Mode=TwoWay}"
+                    Placeholder="O.S"/>
+                <Entry 
+                    x:Name="VesselName"
+                    Text="{Binding VesselModel.VesselName, Mode=TwoWay}"
+                    Placeholder="Vessel name"/>
+                <Entry 
+                    x:Name="Place"
+                    Text="{Binding VesselModel.Place, Mode=TwoWay}"
+                    Placeholder="Place"/>
+                <Picker 
+                    x:Name="Flag"
+                    ItemsSource="{Binding Flags}"
+                    SelectedItem="{Binding VesselModel.Flag}"
+                    Title="Flag"/>
+                <Entry 
+                    x:Name="IMO"
+                    Text="{Binding VesselModel.IMO, Mode=TwoWay}"
+                    Placeholder="I.M.O"/>
+                <Entry 
+                    x:Name="PortRegistry"
+                    Text="{Binding VesselModel.Place, Mode=TwoWay}"
+                    Placeholder="Port Registry"/>
+                <DatePicker 
+                    x:Name="ManufacturingDate"
+                    Date="{Binding VesselModel.ManufacturingDate, Mode=TwoWay}"/>
+                <Picker 
+                    x:Name="TypeOfShip"
+                    ItemsSource="{Binding VesselModel.OS, Mode=TwoWay}"
+                    Title="Type of Ship"/>
+                <Entry 
+                    x:Name="Owner"
+                    Text="{Binding VesselModel.Operator, Mode=TwoWay}"
+                    Placeholder="Owner"/>
+                <Entry 
+                    x:Name="Operator"
+                   Text="{Binding VesselModel.Owner, Mode=TwoWay}"
+                   Placeholder="Operator"/>
+                <Button 
+                    Text="Salvar" 
+                    Command="{Binding BtnSalvarClickCommand}"/>
+            </VerticalStackLayout>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
