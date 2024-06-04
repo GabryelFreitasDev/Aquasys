@@ -59,6 +59,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\aquasyslogo.svg" />
 	  <None Remove="Resources\images\cargotablist.svg" />
+	  <None Remove="Resources\images\img_logo_loading.gif" />
 	  <None Remove="Resources\images\inspectiontablist.svg" />
 	  <None Remove="Resources\images\logogif.gif" />
 	  <None Remove="Resources\images\reportmain.svg" />
@@ -68,7 +69,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="DevExpress.Maui.Charts" Version="23.2.4" />
 		<PackageReference Include="DevExpress.Maui.CollectionView" Version="23.2.4" />
@@ -76,10 +77,11 @@
 		<PackageReference Include="DevExpress.Maui.DataGrid" Version="23.2.4" />
 		<PackageReference Include="DevExpress.Maui.Editors" Version="23.2.4" />
 		<PackageReference Include="DevExpress.Maui.Scheduler" Version="23.2.4" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+		<PackageReference Include="InputKit.Maui" Version="4.4.3" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
 		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
@@ -87,17 +89,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="MVVM\Views\Login\CreateAccountView.xaml.cs">
-	    <DependentUpon>CreateAccountView.xaml</DependentUpon>
+	  <Compile Update="MVVM\Views\Login\CreateAccountPage.xaml.cs">
+	    <DependentUpon>CreateAccountPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="MVVM\Views\MainPage\MainPageView.xaml.cs">
-	    <DependentUpon>MainPageView.xaml</DependentUpon>
+	  <Compile Update="MVVM\Views\Login\LoginPage.xaml.cs">
+	    <DependentUpon>LoginPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="MVVM\Views\Vessel\VesselCargoHoldInspectionView.xaml.cs">
-	    <DependentUpon>VesselCargoHoldInspectionView.xaml</DependentUpon>
+	  <Compile Update="MVVM\Views\MainPage\MainPage.xaml.cs">
+	    <DependentUpon>MainPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="MVVM\Views\Vessel\VesselMainView.xaml.cs">
-	    <DependentUpon>VesselMainView.xaml</DependentUpon>
+	  <Compile Update="MVVM\Views\Vessel\VesselCargoHoldInspectionPage.xaml.cs">
+	    <DependentUpon>VesselCargoHoldInspectionPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MVVM\Views\Vessel\VesselListPage.xaml.cs">
+	    <DependentUpon>VesselListPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MVVM\Views\Vessel\VesselMainPage.xaml.cs">
+	    <DependentUpon>VesselMainPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MVVM\Views\Vessel\VesselRegistrationTabPage.xaml.cs">
+	    <DependentUpon>VesselRegistrationTabPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -105,25 +116,25 @@
 	  <MauiXaml Update="MVVM\Views\Login\LoadingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\Vessel\VesselCargoHoldInspectionView.xaml">
+	  <MauiXaml Update="MVVM\Views\Vessel\VesselCargoHoldInspectionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\Vessel\VesselRegistrationTabView.xaml">
+	  <MauiXaml Update="MVVM\Views\Vessel\VesselRegistrationTabPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Shells\AppShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\Login\LoginView.xaml">
+	  <MauiXaml Update="MVVM\Views\Login\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\Login\CreateAccountView.xaml">
+	  <MauiXaml Update="MVVM\Views\Login\CreateAccountPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\Vessel\VesselListView.xaml">
+	  <MauiXaml Update="MVVM\Views\Vessel\VesselListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\Vessel\VesselMainView.xaml">
+	  <MauiXaml Update="MVVM\Views\Vessel\VesselMainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

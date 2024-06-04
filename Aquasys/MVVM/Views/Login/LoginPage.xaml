@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePages xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:s="clr-namespace:Aquasys.MVVM.ViewModels.Login"
+             xmlns:local="clr-namespace:Aquasys.MVVM.Views"
+             x:Class="Aquasys.MVVM.Views.Login.LoginPage"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+
+    <local:BasePages.BindingContext>
+        <s:LoginViewModel />
+    </local:BasePages.BindingContext>
+
+    <VerticalStackLayout Padding="5" Spacing="5" VerticalOptions="Center">
+
+        <Grid Grid.Row="0"
+            IsVisible="{Binding LoadingInitInstanceDB, Converter={StaticResource ReverseBoolValueConverter}}">
+            <Image VerticalOptions="Fill"
+                   Aspect="AspectFit"
+                   Source="aquasyslogo.svg"
+                   IsAnimationPlaying="True"
+                   WidthRequest="256" />
+        </Grid>
+
+        <Image 
+            Aspect="Fill" 
+            Source="aquasyslogo.png"/>
+
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <de:TextEdit
+                x:Name="User" 
+                Text="{Binding LoginModel.UserName, Mode=TwoWay}" 
+                PlaceholderText="User"/>
+
+            <de:PasswordEdit 
+                x:Name="Password" 
+                PlaceholderText="Password"
+                Text="{Binding LoginModel.Password, Mode=TwoWay}"/>
+
+            <dc:SimpleButton
+                x:Name="BtnLogin"
+                Text="LOGIN"
+                FontSize="15"
+                CornerRadius="20"
+                WidthRequest="300"
+                Command="{Binding BtnLoginClickCommand}"/>
+
+            <input:CheckBox
+                x:Name="ChkRememberMe"
+                HorizontalOptions="Center"
+                Text="Remenber Me"
+                IsChecked="{Binding LoginModel.RememberMe, Mode=TwoWay}"/>
+
+            <dc:SimpleButton 
+                x:Name="BtnCreateAccount"
+                BackgroundColor="Transparent"
+                Text="Create Account"
+                TextColor="{StaticResource Primary}"
+                Command="{Binding BtnCreateAccountClickCommand}"/>
+        </VerticalStackLayout>
+                
+    </VerticalStackLayout>
+</local:BasePages>

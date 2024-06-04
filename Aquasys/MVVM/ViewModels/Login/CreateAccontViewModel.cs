@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Aquasys.MVVM.ViewModels.Login
 {
-    public class CreateAccontViewModel : BaseViewModel
+    public class CreateAccontViewModel : BaseViewModels
     {
         private UserBO userBO = new UserBO();
         public LoginModel Login { get; set; }

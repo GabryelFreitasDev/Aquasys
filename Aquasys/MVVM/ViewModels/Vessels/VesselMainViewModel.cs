@@ -3,7 +3,7 @@
 namespace Aquasys.MVVM.ViewModels.Vessel
 {
     [QueryProperty(nameof(Id), nameof(Id))]
-    public partial class VesselMainViewModel : BaseViewModel
+    public partial class VesselMainViewModel : BaseViewModels
     {
         [ObservableProperty]
         public VesselRegistrationTabViewModel vesselRegistrationTabViewModel;
@@ -18,8 +18,8 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             if (string.IsNullOrEmpty(Id))
                 return;
 
-            VesselRegistrationTabViewModel.IdVessel = Convert.ToInt64(Id);
-            VesselRegistrationTabViewModel.OnAppearing();
+            //VesselRegistrationTabViewModel.IdVessel = Convert.ToInt64(Id);
+            //VesselRegistrationTabViewModel.OnAppearing();
         }
     }
 }

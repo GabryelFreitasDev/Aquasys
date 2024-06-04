@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Aquasys.MVVM.ViewModels.Vessel
 {
-    public partial class VesselListViewModel : BaseViewModel
+    public partial class VesselListViewModel : BaseViewModels
     {
         VesselBO vesselBO = new VesselBO();
 
@@ -34,7 +34,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
         {
             if (vessel is not null)
             {
-                await Shell.Current.GoToAsync(nameof(VesselMainView),
+                await Shell.Current.GoToAsync(nameof(VesselMainPage),
                 new Dictionary<string, object>
                 {
                     [nameof(Id)] = vessel.IDVessel.ToString()
@@ -45,7 +45,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
 
         public VesselListViewModel()
         {
-            BtnAddClickCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(VesselMainView)));
+            BtnAddClickCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(VesselMainPage)));
         }
 
         public async Task LoadVesselsAsync()

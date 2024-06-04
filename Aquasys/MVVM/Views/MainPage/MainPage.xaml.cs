@@ -2,9 +2,9 @@
 
 namespace Aquasys.MVVM.Views.MainPage
 {
-    public partial class MainPageView : ContentPage
+    public partial class MainPage : ContentPage
     {
-        public MainPageView()
+        public MainPage()
         {
             InitializeComponent();
             BindingContext = new MainPageViewModel();

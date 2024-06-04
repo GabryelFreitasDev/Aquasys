@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Aquasys.MVVM.ViewModels.Vessel
 {
-    public partial class VesselRegistrationTabViewModel : BaseViewModel
+    public partial class VesselRegistrationTabViewModel : BaseViewModels
     {
         [ObservableProperty]
         private long? idVessel;

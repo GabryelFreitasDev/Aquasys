@@ -4,7 +4,7 @@
              xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
              xmlns:viewmodel="clr-namespace:Aquasys.MVVM.ViewModels.Vessel"
              xmlns:view="clr-namespace:Aquasys.MVVM.Views.Vessel"
-             x:Class="Aquasys.MVVM.Views.Vessel.VesselMainView"
+             x:Class="Aquasys.MVVM.Views.Vessel.VesselMainPage"
              Title="VesselMainView">
     <Grid>
         <dxco:TabView 
@@ -15,7 +15,7 @@
                 HeaderIcon="vesseltablist">
                 <dxco:TabViewItem.Content>
                     <ScrollView>
-                        <view:VesselRegistrationTabView BindingContext="{Binding VesselRegistrationTabViewModel}"/>
+                        <view:VesselRegistrationTabPage BindingContext="{Binding VesselRegistrationTabViewModel}"/>
                     </ScrollView>
                 </dxco:TabViewItem.Content>
             </dxco:TabViewItem>

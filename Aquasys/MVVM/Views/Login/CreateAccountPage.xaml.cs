@@ -2,9 +2,9 @@ using Aquasys.MVVM.ViewModels.Login;
 
 namespace Aquasys.MVVM.Views.Login;
 
-public partial class CreateAccountView : ContentPage
+public partial class CreateAccountPage : ContentPage
 {
-	public CreateAccountView()
+	public CreateAccountPage()
 	{
 		InitializeComponent();
 		BindingContext = new CreateAccontViewModel();

@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace Aquasys.MVVM.ViewModels
 {
-    public partial class BaseViewModel : ObservableObject
+    public partial class BaseViewModels : ObservableObject
     {
+        public bool IsLoadedViewModel;
         public string Id { get; set; }
         public virtual void OnAppearing() { }
         public virtual void OnDisappearing() { }
 
-        public BaseViewModel() { }
+        public BaseViewModels() { }
     }
 }

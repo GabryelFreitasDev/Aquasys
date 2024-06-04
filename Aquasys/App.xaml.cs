@@ -9,7 +9,7 @@ namespace Aquasys
             InitializeComponent();
             Current!.UserAppTheme = AppTheme.Light;
 
-            MainPage = new NavigationPage(new LoginView());
+            MainPage = new NavigationPage(new LoginPage());
         }
     }
 }

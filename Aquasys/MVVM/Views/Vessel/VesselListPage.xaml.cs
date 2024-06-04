@@ -2,10 +2,10 @@ using Aquasys.MVVM.ViewModels.Vessel;
 
 namespace Aquasys.MVVM.Views.Vessel;
 
-public partial class VesselListView : ContentPage
+public partial class VesselListPage : ContentPage
 {
     private VesselListViewModel _vesselListViewModel;
-    public VesselListView()
+    public VesselListPage()
 	{
 		InitializeComponent();
         _vesselListViewModel = new VesselListViewModel();

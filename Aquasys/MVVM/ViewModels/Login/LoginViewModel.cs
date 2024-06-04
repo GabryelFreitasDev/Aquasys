@@ -9,35 +9,60 @@ using System.Windows.Input;
 
 namespace Aquasys.MVVM.ViewModels.Login
 {
-    public partial class LoginViewModel : ObservableObject
+    public partial class LoginViewModel : BaseViewModels
     {
         [ObservableProperty]
-        public LoginModel _login = new();
+        public LoginModel loginModel;
+
+        [ObservableProperty]
+        private bool loadingInitInstanceDB;
 
         private UserBO userBO = new UserBO();
 
         public ICommand BtnLoginClickCommand { get; private set; }
         public ICommand BtnCreateAccountClickCommand { get; private set; }
-        public ICommand ChkRememberMeCommand { get; private set; }
+        //public ICommand ChkRememberMeCommand { get; private set; }
 
         public LoginViewModel()
         {
+            LoginModel = new();
             BtnLoginClickCommand = new Command(async () => await ValidateLogin());
             BtnCreateAccountClickCommand = new Command(async () => await CreateNewAccount());
-            ChkRememberMeCommand = new Command(RememberMe);
+            //ChkRememberMeCommand = new Command(RememberMe);
+        }
+
+        public override async void OnAppearing()
+        {
+            if (IsLoadedViewModel)
+                return;
+
+            IsLoadedViewModel = true;
+
+            base.OnAppearing();
+            var userRemember = await new UserBO().GetFilteredAsync<User>(x => x.RememberMe == true);
+
+            if (userRemember?.Any() ?? false)
+            {
+                new ContextUtils(userRemember?.FirstOrDefault() ?? new());
+                LoadingInitInstanceDB = false;
+                Application.Current!.MainPage = new AppShell();
+            }
+            LoadingInitInstanceDB = true;
+            //else
+            //await Application.Current!.MainPage!.Navigation.PushAsync(new LoginView());
         }
 
         private async Task ValidateLogin()
         {
-            if (!string.IsNullOrEmpty(Login.UserName) && !string.IsNullOrEmpty(Login.Password))
+            if (!string.IsNullOrEmpty(LoginModel.UserName) && !string.IsNullOrEmpty(LoginModel.Password))
             {
-                var user = await userBO.GetFilteredAsync<User>(x => x.UserName == Login.UserName && x.Password == Login.Password);
+                var user = await userBO.GetFilteredAsync<User>(x => x.UserName == LoginModel.UserName && x.Password == LoginModel.Password);
                 if (user?.Any() ?? false)
                 {
                     new ContextUtils(user?.FirstOrDefault() ?? new());
-                    if(ContextUtils.ContextUser.RememberMe != Login.RememberMe)
+                    if(ContextUtils.ContextUser.RememberMe != LoginModel.RememberMe)
                     {
-                        ContextUtils.ContextUser.RememberMe = Login.RememberMe;
+                        ContextUtils.ContextUser.RememberMe = LoginModel.RememberMe;
                         await userBO.UpdateAsync(ContextUtils.ContextUser);
                     }
                     Application.Current!.MainPage = new AppShell();
@@ -52,14 +77,14 @@ namespace Aquasys.MVVM.ViewModels.Login
 
         }
 
-        public void RememberMe(object isChecked)
-        {
-            Login.RememberMe = Convert.ToBoolean(isChecked);
-        }
+        //public void RememberMe(object isChecked)
+        //{
+        //    Login.RememberMe = Convert.ToBoolean(isChecked);
+        //}
 
         private async Task CreateNewAccount()
         {
-            await Application.Current!.MainPage!.Navigation.PushAsync(new CreateAccountView());
+            await Application.Current!.MainPage!.Navigation.PushAsync(new CreateAccountPage());
         }
     }
 }

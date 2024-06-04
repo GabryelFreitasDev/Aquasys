@@ -13,5 +13,5 @@
     Shell.BackgroundColor="{StaticResource Primary}"
     Shell.TitleColor="White">
 
-    <ShellContent ContentTemplate="{DataTemplate local:Vessel.VesselListView}"/>
+    <ShellContent ContentTemplate="{DataTemplate local:Vessel.VesselListPage}"/>
 </Shell>

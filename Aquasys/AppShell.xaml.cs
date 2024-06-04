@@ -17,16 +17,16 @@ public partial class AppShell : Shell
     {
         #region Login
             Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
-            Routing.RegisterRoute(nameof(LoginView), typeof(LoginView));
-            Routing.RegisterRoute(nameof(CreateAccountView), typeof(CreateAccountView));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(CreateAccountPage), typeof(CreateAccountPage));
         #endregion
 
         #region Vessel
-            Routing.RegisterRoute(nameof(VesselListView), typeof(VesselListView));
-            Routing.RegisterRoute(nameof(VesselMainView), typeof(VesselMainView));
-            Routing.RegisterRoute(nameof(VesselCargoHoldInspectionView), typeof(VesselCargoHoldInspectionView));
+            Routing.RegisterRoute(nameof(VesselListPage), typeof(VesselListPage));
+            Routing.RegisterRoute(nameof(VesselMainPage), typeof(VesselMainPage));
+            Routing.RegisterRoute(nameof(VesselCargoHoldInspectionPage), typeof(VesselCargoHoldInspectionPage));
         #endregion
 
-        Routing.RegisterRoute(nameof(MainPageView), typeof(MainPageView)); //Queima ou não queima?
+        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage)); //Queima ou não queima?
     }
 }

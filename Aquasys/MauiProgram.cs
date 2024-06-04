@@ -8,6 +8,7 @@ using Aquasys.MVVM.ViewModels.Vessel;
 using Aquasys.Core.Data;
 using Aquasys.Core.BO;
 using DevExpress.Maui;
+using InputKit.Handlers;
 
 namespace Aquasys
 {
@@ -23,30 +24,34 @@ namespace Aquasys
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            .ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddInputKitHandlers();
             });
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<DatabaseContext>();
             
-            //BOs
-            builder.Services.AddTransient<UserBO>();
-            builder.Services.AddTransient<VesselBO>();
+            ////BOs
+            //builder.Services.AddTransient<UserBO>();
+            //builder.Services.AddTransient<VesselBO>();
 
-            //Login
-            builder.Services.AddTransient<LoginView>();
-            builder.Services.AddTransient<LoadingPage>();
-            builder.Services.AddTransient<CreateAccountView>();
+            ////Login
+            //builder.Services.AddTransient<LoginView>();
+            //builder.Services.AddTransient<LoadingPage>();
+            //builder.Services.AddTransient<CreateAccountView>();
 
-            //MainPage
-            builder.Services.AddTransient<MainPageView>();
+            ////MainPage
+            //builder.Services.AddTransient<MainPageView>();
 
-            //Vessel
-            builder.Services.AddTransient<VesselListView>();
-            builder.Services.AddTransient<VesselListViewModel>();
-            builder.Services.AddTransient<VesselMainView>();
-            builder.Services.AddTransient<VesselMainViewModel>();
-            builder.Services.AddTransient<VesselCargoHoldInspectionView>();
+            ////Vessel
+            //builder.Services.AddTransient<VesselListView>();
+            //builder.Services.AddTransient<VesselListViewModel>();
+            //builder.Services.AddTransient<VesselMainView>();
+            //builder.Services.AddTransient<VesselMainViewModel>();
+            //builder.Services.AddTransient<VesselCargoHoldInspectionView>();
 
             DevExpress.Maui.Charts.Initializer.Init();
             DevExpress.Maui.CollectionView.Initializer.Init();
