@@ -2,6 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Aquasys.MVVM.Views.Login.CreateAccountPage"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False">
 
@@ -12,28 +16,26 @@
             FontSize="30"
             FontAttributes="Bold"
             TextColor="{StaticResource Primary}"/>
-        <Entry 
+        <de:TextEdit 
             x:Name="EtrUser" 
             Text="{Binding Login.UserName, Mode=TwoWay}" 
-            Placeholder="User name"/>
+            PlaceholderText="User name"/>
 
-        <Entry 
+        <de:TextEdit 
             x:Name="EtrEmail" 
-            Placeholder="Email"
+            PlaceholderText="Email"
             Text="{Binding Login.Email, Mode=TwoWay}"/>
 
-        <Entry 
+        <de:PasswordEdit 
             x:Name="EtrPassword" 
-            Placeholder="Password"
-            Text="{Binding Login.Password, Mode=TwoWay}"
-            IsPassword="True"/>
+            PlaceholderText="Password"
+            Text="{Binding Login.Password, Mode=TwoWay}"/>
 
-        <Button 
+        <dc:SimpleButton 
             x:Name="BtnCreateAccount"
             BackgroundColor="{StaticResource Primary}"
             Text="Create Account"
             FontSize="15"
-            BorderWidth="12"
             WidthRequest="300"
             Command="{Binding BtnCreateAccountClickCommand}"/>
     </VerticalStackLayout>

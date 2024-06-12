@@ -25,7 +25,7 @@ namespace Aquasys.MVVM.ViewModels.Login
                 var findUser = await userBO.GetFilteredAsync<User>(x => x.UserName == Login.UserName && x.Password == Login.Password);
                 if (findUser.Any())
                 {
-                    await Shell.Current.DisplayAlert("Informação", "Usuario já existente, realize o login.", "OK");
+                    await Application.Current!.MainPage!.DisplayAlert("Informação", "Usuario já existente, realize o login.", "OK");
                     await Application.Current!.MainPage!.Navigation.PopAsync();
                 }
                 else
@@ -36,12 +36,15 @@ namespace Aquasys.MVVM.ViewModels.Login
                     user.Email = Login.Email ?? string.Empty;
 
                     if (await userBO.InsertAsync(user))
+                    {
+                        await Application.Current!.MainPage!.DisplayAlert("Informação", "Cadastro realizado com sucesso! Realize o login.", "OK");
                         await Application.Current!.MainPage!.Navigation.PopAsync();
+                    }
                 }
             }
             else
             {
-                await Shell.Current.DisplayAlert("Alerta", "Preencha os campos corretamente.", "OK");
+                await Application.Current!.MainPage!.DisplayAlert("Alerta", "Preencha os campos corretamente.", "OK");
             }
         }
     }

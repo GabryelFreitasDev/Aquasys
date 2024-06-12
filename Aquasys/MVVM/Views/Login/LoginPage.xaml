@@ -52,7 +52,8 @@
             <input:CheckBox
                 x:Name="ChkRememberMe"
                 HorizontalOptions="Center"
-                Text="Remenber Me"
+                Text="Remember Me"
+                TextColor="Black"
                 IsChecked="{Binding LoginModel.RememberMe, Mode=TwoWay}"/>
 
             <dc:SimpleButton 

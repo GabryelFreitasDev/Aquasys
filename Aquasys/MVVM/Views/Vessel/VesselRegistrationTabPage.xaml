@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Aquasys.MVVM.Views.Vessel.VesselRegistrationTabPage">
     <ContentView.Content>
         <Grid 
@@ -8,53 +12,53 @@
             ColumnSpacing="2" 
             RowSpacing="10" 
             Padding="10">
-            <VerticalStackLayout 
+            <VerticalStackLayout Padding="10" Spacing="10"
                 Grid.ColumnSpan="4">
                 <Label 
-                    Text="Vessel Resistration" 
+                    Text="Vessel Registration" 
                     FontAttributes="Bold" 
                     FontSize="20"/>
-                <Entry 
+                <de:TextEdit
                     x:Name="OS"
                     Text="{Binding VesselModel.OS, Mode=TwoWay}"
-                    Placeholder="O.S"/>
-                <Entry 
+                    PlaceholderText="O.S"/>
+                <de:TextEdit
                     x:Name="VesselName"
                     Text="{Binding VesselModel.VesselName, Mode=TwoWay}"
-                    Placeholder="Vessel name"/>
-                <Entry 
+                    PlaceholderText="Vessel name"/>
+                <de:TextEdit
                     x:Name="Place"
                     Text="{Binding VesselModel.Place, Mode=TwoWay}"
-                    Placeholder="Place"/>
-                <Picker 
+                    PlaceholderText="Place"/>
+                <de:ComboBoxEdit 
                     x:Name="Flag"
                     ItemsSource="{Binding Flags}"
                     SelectedItem="{Binding VesselModel.Flag}"
-                    Title="Flag"/>
-                <Entry 
+                    LabelText="Flag"/>
+                <de:TextEdit
                     x:Name="IMO"
                     Text="{Binding VesselModel.IMO, Mode=TwoWay}"
-                    Placeholder="I.M.O"/>
-                <Entry 
+                    PlaceholderText="I.M.O"/>
+                <de:TextEdit
                     x:Name="PortRegistry"
                     Text="{Binding VesselModel.Place, Mode=TwoWay}"
-                    Placeholder="Port Registry"/>
-                <DatePicker 
+                    PlaceholderText="Port Registry"/>
+                <de:DateEdit 
                     x:Name="ManufacturingDate"
                     Date="{Binding VesselModel.ManufacturingDate, Mode=TwoWay}"/>
-                <Picker 
+                <de:ComboBoxEdit 
                     x:Name="TypeOfShip"
                     ItemsSource="{Binding VesselModel.OS, Mode=TwoWay}"
-                    Title="Type of Ship"/>
-                <Entry 
+                    LabelText="Type of Ship"/>
+                <de:TextEdit 
                     x:Name="Owner"
                     Text="{Binding VesselModel.Operator, Mode=TwoWay}"
-                    Placeholder="Owner"/>
-                <Entry 
+                    PlaceholderText="Owner"/>
+                <de:TextEdit 
                     x:Name="Operator"
-                   Text="{Binding VesselModel.Owner, Mode=TwoWay}"
-                   Placeholder="Operator"/>
-                <Button 
+                    Text="{Binding VesselModel.Owner, Mode=TwoWay}"
+                    PlaceholderText="Operator"/>
+                <dc:SimpleButton 
                     Text="Salvar" 
                     Command="{Binding BtnSalvarClickCommand}"/>
             </VerticalStackLayout>
