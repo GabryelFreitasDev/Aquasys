@@ -29,8 +29,8 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             VesselRegistrationTabViewModel.VesselModel.Place = vessel.Place;
             VesselRegistrationTabViewModel.VesselModel.IMO = vessel.IMO;
             VesselRegistrationTabViewModel.VesselModel.PortRegistry = vessel.PortRegistry;
-            VesselRegistrationTabViewModel.VesselModel.ManufacturingDate = vessel.ManufacturingDate;
-            VesselRegistrationTabViewModel.VesselModel.Owner = vessel.Owner
+            VesselRegistrationTabViewModel.VesselModel.ManufacturingDate = vessel.ManufacturingDate ?? DateTime.Now;
+            VesselRegistrationTabViewModel.VesselModel.Owner = vessel.Owner;
             VesselRegistrationTabViewModel.VesselModel.Operator = vessel.Operator;
 
 
