@@ -1,9 +1,14 @@
-﻿namespace Aquasys.Core.Enums
+﻿using Aquasys.Core.Entities;
+
+namespace Aquasys.Core.Enums
 {
     public enum VesselType
     {
-        BARQUINHO = 1,
+        [EnumDescription("Barco")]
+        BARCO = 1,
+        [EnumDescription("Navio")]
         NAVIO = 2,
-        CANOADORACHA = 3
+        [EnumDescription("Canoa")]
+        CANOA = 3
     }
 }

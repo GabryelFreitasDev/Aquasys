@@ -9,6 +9,7 @@ using Aquasys.Core.Data;
 using Aquasys.Core.BO;
 using DevExpress.Maui;
 using InputKit.Handlers;
+using RGPopup.Maui.Extensions;
 
 namespace Aquasys
 {
@@ -18,8 +19,15 @@ namespace Aquasys
         {
             var builder = MauiApp.CreateBuilder();
             builder.UseMauiApp<App>()
+            .UseMauiRGPopup()
             .UseMauiCommunityToolkit()
             .UseDevExpress()
+                .UseDevExpressCharts()
+                .UseDevExpressCollectionView()
+                .UseDevExpressControls()
+                .UseDevExpressDataGrid()
+                .UseDevExpressEditors()
+                .UseDevExpressScheduler()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -33,25 +41,6 @@ namespace Aquasys
             builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<DatabaseContext>();
-            
-            ////BOs
-            //builder.Services.AddTransient<UserBO>();
-            //builder.Services.AddTransient<VesselBO>();
-
-            ////Login
-            //builder.Services.AddTransient<LoginView>();
-            //builder.Services.AddTransient<LoadingPage>();
-            //builder.Services.AddTransient<CreateAccountView>();
-
-            ////MainPage
-            //builder.Services.AddTransient<MainPageView>();
-
-            ////Vessel
-            //builder.Services.AddTransient<VesselListView>();
-            //builder.Services.AddTransient<VesselListViewModel>();
-            //builder.Services.AddTransient<VesselMainView>();
-            //builder.Services.AddTransient<VesselMainViewModel>();
-            //builder.Services.AddTransient<VesselCargoHoldInspectionView>();
 
             DevExpress.Maui.Charts.Initializer.Init();
             DevExpress.Maui.CollectionView.Initializer.Init();

@@ -1,27 +1,24 @@
-﻿using Aquasys.Core.Entities;
-using Aquasys.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Aquasys.Core.Enums;
+using Aquasys.MVVM.ViewModels;
+using CountryData.Standard;
 
 namespace Aquasys.MVVM.Models.Vessel
 {
-    public class VesselModel
+    public class VesselModel : BaseModels
     {
         public VesselModel()
         {
         }
         public long IDVessel { get; set; }
-        public string OS { get; set; } = string.Empty;
-        public string VesselName { get; set; } = string.Empty;
-        public string Place { get; set; } = string.Empty;
-        public string IMO { get; set; } = string.Empty;
-        public string PortRegistry { get; set; } = string.Empty;
+        public string OS { get; set; }
+        public string VesselName { get; set; }
+        public string Place { get; set; }
+        public string Flag { get; set; }
+        public string IMO { get; set; }
+        public string PortRegistry { get; set; }
         public DateTime ManufacturingDate { get; set; }
-        public VesselType VesselType { get; set; } = VesselType.BARQUINHO;
-        public string Owner { get; set; } = string.Empty;
-        public string Operator { get; set; } = string.Empty;
+        public VesselType VesselType { get; set; }
+        public string Owner { get; set; }
+        public string Operator { get; set; }
     }
 }

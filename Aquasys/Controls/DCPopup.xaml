@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dc:DCPopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:dc="clr-namespace:Aquasys.Controls"
+                x:Class="Aquasys.Controls.DCPopup"
+                Padding="0"
+                BackgroundColor="{StaticResource ColorBlackTransparent50}">
+    <dc:DCPopupPage.Content>
+        <StackLayout x:Name="PopupCorpo"
+                     Padding="20"
+                     BackgroundColor="{StaticResource ColorWhite}"
+                     VerticalOptions="Fill">
+            <Label x:Name="Mensagem"
+                   Style="{StaticResource labelDescricaoStyle}"
+                   TextColor="{StaticResource ColorGray500}"
+                   FontFamily="Quicksand400Font"
+                   HorizontalTextAlignment="Start"
+                   HorizontalOptions="Start"
+                   FontSize="14"
+                   LineHeight="1"
+                   Padding="0,10" />
+
+            <StackLayout x:Name="OptionsListContainer"
+                         IsVisible="False"
+                         Spacing="8" />
+
+            <StackLayout x:Name="ButtonsListContainer"
+                         Margin="0"
+                         HorizontalOptions="Fill"
+                         Spacing="8">
+                <Button x:Name="CancelButton"
+                        Clicked="CancelButton_Clicked"
+                        Style="{StaticResource PopupButtonStyle}" />
+
+                <Button x:Name="ConfirmButton"
+                        Clicked="ConfirmButton_Clicked"
+                        Style="{StaticResource PopupButtonStyle}" />
+            </StackLayout>
+        </StackLayout>
+    </dc:DCPopupPage.Content>
+</dc:DCPopupPage>

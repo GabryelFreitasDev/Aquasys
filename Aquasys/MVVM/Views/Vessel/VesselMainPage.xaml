@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<local:BasePages xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:local="clr-namespace:Aquasys.MVVM.Views"
+             xmlns:s="clr-namespace:Aquasys.MVVM.ViewModels.Vessel"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
              xmlns:viewmodel="clr-namespace:Aquasys.MVVM.ViewModels.Vessel"
-             xmlns:view="clr-namespace:Aquasys.MVVM.Views.Vessel"
-             x:Class="Aquasys.MVVM.Views.Vessel.VesselMainPage"
-             Title="VesselMainView">
+             xmlns:view="clr-namespace:Aquasys.MVVM.Views.Vessel.Tabs"
+             x:Class="Aquasys.MVVM.Views.Vessel.VesselMainPage">
+
+    <local:BasePages.BindingContext>
+        <s:VesselMainViewModel />
+    </local:BasePages.BindingContext>
+
     <Grid>
         <dxco:TabView 
             HeaderPanelIndent="0"
             HeaderPanelShadowColor="{StaticResource Primary}" 
             HeaderPanelShadowHeight="3">
-            <dxco:TabViewItem
-                HeaderIcon="vesseltablist">
+            <dxco:TabViewItem HeaderIcon="vesseltablist">
                 <dxco:TabViewItem.Content>
                     <ScrollView>
                         <view:VesselRegistrationTabPage BindingContext="{Binding VesselRegistrationTabViewModel}"/>
@@ -24,4 +29,4 @@
             <dxco:TabViewItem HeaderIcon="reporttablist"></dxco:TabViewItem>
         </dxco:TabView>
     </Grid>
-</ContentPage>
+</local:BasePages>

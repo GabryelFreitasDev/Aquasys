@@ -2,9 +2,9 @@ using Aquasys.MVVM.ViewModels.Vessel;
 
 namespace Aquasys.MVVM.Views.Vessel;
 
-public partial class VesselMainPage : BasePages
+public partial class VesselImagePage : BasePages
 {
-    public VesselMainPage()
+    public VesselImagePage()
 	{
 		InitializeComponent();
 	}

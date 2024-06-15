@@ -1,9 +1,9 @@
 ﻿using Aquasys.Core.BO;
 using Aquasys.Core.Entities;
+using Aquasys.Core.Utils;
 using Aquasys.MVVM.Models.Login;
 using Aquasys.MVVM.Views.Login;
 using Aquasys.MVVM.Views.Vessel;
-using Aquasys.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
 

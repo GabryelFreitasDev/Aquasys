@@ -1,63 +1,95 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentView
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
              xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:s="clr-namespace:Aquasys.MVVM.ViewModels.Vessel.Tabs"
+             xmlns:local="clr-namespace:Aquasys.MVVM.Views"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="Aquasys.MVVM.Views.Vessel.VesselRegistrationTabPage">
+             x:Class="Aquasys.MVVM.Views.Vessel.Tabs.VesselRegistrationTabPage">
+
+    <ContentView.BindingContext>
+        <s:VesselRegistrationTabViewModel />
+    </ContentView.BindingContext>
+
     <ContentView.Content>
-        <Grid 
-            ColumnDefinitions="*,*,*,*" 
-            ColumnSpacing="2" 
-            RowSpacing="10" 
-            Padding="10">
-            <VerticalStackLayout Padding="10" Spacing="10"
-                Grid.ColumnSpan="4">
+        <Grid Padding="10">
+            <VerticalStackLayout Padding="10" Spacing="10" Grid.ColumnSpan="4">
                 <Label 
                     Text="Vessel Registration" 
                     FontAttributes="Bold" 
                     FontSize="20"/>
+                
                 <de:TextEdit
                     x:Name="OS"
                     Text="{Binding VesselModel.OS, Mode=TwoWay}"
                     PlaceholderText="O.S"/>
+
                 <de:TextEdit
                     x:Name="VesselName"
                     Text="{Binding VesselModel.VesselName, Mode=TwoWay}"
                     PlaceholderText="Vessel name"/>
+
                 <de:TextEdit
                     x:Name="Place"
                     Text="{Binding VesselModel.Place, Mode=TwoWay}"
                     PlaceholderText="Place"/>
+
                 <de:ComboBoxEdit 
                     x:Name="Flag"
                     ItemsSource="{Binding Flags}"
-                    SelectedItem="{Binding VesselModel.Flag}"
+                    SelectedValue="{Binding FlagSelecionada, Mode=TwoWay}"
+                    SelectedItem="{Binding FlagSelecionada}"
+                    SelectionChangedCommand="{Binding ChangeFlagCommand}"
+                    IsFilterEnabled="True"
+                    FilterCondition="Contains"
+                    ClearIconVisibility="Auto"
+                    DisplayMember="CountryName"
+                    ValueMember="CountryName"
                     LabelText="Flag"/>
+
                 <de:TextEdit
                     x:Name="IMO"
                     Text="{Binding VesselModel.IMO, Mode=TwoWay}"
                     PlaceholderText="I.M.O"/>
+                
                 <de:TextEdit
                     x:Name="PortRegistry"
                     Text="{Binding VesselModel.Place, Mode=TwoWay}"
                     PlaceholderText="Port Registry"/>
+                
                 <de:DateEdit 
                     x:Name="ManufacturingDate"
                     Date="{Binding VesselModel.ManufacturingDate, Mode=TwoWay}"/>
-                <de:ComboBoxEdit 
-                    x:Name="TypeOfShip"
-                    ItemsSource="{Binding VesselModel.OS, Mode=TwoWay}"
+
+                <de:ComboBoxEdit
+                    x:Name="VesselType"
+                    ItemsSource="{Binding VesselsType, Mode=TwoWay}"
+                    SelectedItem="{Binding VesselModel.VesselType}"
+                    SelectedValue="{Binding VesselModel.VesselType}"
+                    IsFilterEnabled="True"
+                    FilterCondition="Contains"
+                    ClearIconVisibility="Auto"
+                    DisplayMember="Valor"
+                    ValueMember="Chave"
                     LabelText="Type of Ship"/>
+
                 <de:TextEdit 
                     x:Name="Owner"
                     Text="{Binding VesselModel.Operator, Mode=TwoWay}"
                     PlaceholderText="Owner"/>
+                
                 <de:TextEdit 
                     x:Name="Operator"
                     Text="{Binding VesselModel.Owner, Mode=TwoWay}"
                     PlaceholderText="Operator"/>
+                
+                <dc:SimpleButton 
+                    Text="Vessel Images +" 
+                    Command="{Binding AddVesselImagesCommand}"/>
+                
                 <dc:SimpleButton 
                     Text="Salvar" 
                     Command="{Binding BtnSalvarClickCommand}"/>

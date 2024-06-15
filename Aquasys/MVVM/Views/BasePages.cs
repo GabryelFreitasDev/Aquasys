@@ -27,7 +27,7 @@ namespace Aquasys.MVVM.Views
         protected override async void OnAppearing()
         {
             (BindingContext as BaseViewModels)?.OnAppearing();
-            base.OnDisappearing();
+            base.OnAppearing();
         }
 
         protected override void OnDisappearing()

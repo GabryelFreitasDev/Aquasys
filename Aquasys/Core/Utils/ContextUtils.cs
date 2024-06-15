@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aquasys.Utils
+namespace Aquasys.Core.Utils
 {
     public class ContextUtils
     {

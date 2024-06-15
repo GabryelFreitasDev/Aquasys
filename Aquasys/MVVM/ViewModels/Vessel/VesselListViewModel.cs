@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Aquasys.Core.BO;
+using Aquasys.Core.Utils;
 using Aquasys.MVVM.Models.Vessel;
 using Aquasys.MVVM.Views.Vessel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,7 +16,10 @@ namespace Aquasys.MVVM.ViewModels.Vessel
         [ObservableProperty]
         private ObservableCollection<VesselModel> vessels = new();
 
-        public ICommand BtnAddClickCommand { get; set; }
+        private async Task BtnAddClick()
+        {
+            await Shell.Current.GoToAsync(nameof(VesselMainPage));
+        }
 
         [RelayCommand]
         public async Task DeleteVessel(VesselModel vessel)
@@ -42,10 +46,15 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             }
         }
 
-
-        public VesselListViewModel()
+        public override async void OnAppearing()
         {
-            BtnAddClickCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(VesselMainPage)));
+            await ValidPermissions();
+            await LoadVesselsAsync();
+        }
+
+        private async Task ValidPermissions()
+        {
+            await PermissionUtils.ValidPermissions();
         }
 
         public async Task LoadVesselsAsync()
@@ -55,16 +64,10 @@ namespace Aquasys.MVVM.ViewModels.Vessel
 
             if (vessels is not null && vessels.Any())
             {
-                Vessels = new ObservableCollection<VesselModel>();
                 foreach (var vessel in vessels)
                 {
                     if(!Vessels.Any(x => x.IDVessel == vessel.IDVessel))
-                        Vessels.Add(new VesselModel
-                        {
-                            IDVessel = vessel.IDVessel,
-                            VesselName = vessel.VesselName,
-                            ManufacturingDate = vessel.ManufacturingDate ?? DateTime.Now
-                        });
+                        Vessels.Add(mapper.Map<VesselModel>(vessel));
                 }
             }
         }

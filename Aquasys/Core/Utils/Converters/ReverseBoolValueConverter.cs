@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Aquasys.Utils.Converters
+namespace Aquasys.Core.Utils.Converters
 {
     public class ReverseBoolValueConverter : IValueConverter
     {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rg:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:rga="clr-namespace:RGPopup.Maui.Animations;assembly=RGPopup.Maui"
+              xmlns:rg="clr-namespace:RGPopup.Maui.Pages;assembly=RGPopup.Maui"
+              x:Name="DCPopup"
+              x:Class="Aquasys.Controls.DCPopupPage"
+              BackgroundClicked="ImageButtonFechar_Clicked"
+              HasKeyboardOffset="True"
+              KeyboardOffset="0">
+    <rg:PopupPage.Animation>
+        <rga:ScaleAnimation x:Name="DCPopupScaleAnimation"
+                            PositionIn="Right"
+                            PositionOut="Right"
+                            ScaleIn="1.2"
+                            ScaleOut="0.8"
+                            DurationIn="400"
+                            DurationOut="300"
+                            EasingIn="SinOut"
+                            EasingOut="SinIn"
+                            HasBackgroundAnimation="True" />
+    </rg:PopupPage.Animation>
+
+</rg:PopupPage>

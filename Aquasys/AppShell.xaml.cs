@@ -25,6 +25,7 @@ public partial class AppShell : Shell
             Routing.RegisterRoute(nameof(VesselListPage), typeof(VesselListPage));
             Routing.RegisterRoute(nameof(VesselMainPage), typeof(VesselMainPage));
             Routing.RegisterRoute(nameof(VesselCargoHoldInspectionPage), typeof(VesselCargoHoldInspectionPage));
+            Routing.RegisterRoute(nameof(VesselImagePage), typeof(VesselImagePage));
         #endregion
 
         Routing.RegisterRoute(nameof(MainPage), typeof(MainPage)); //Queima ou não queima?
