@@ -18,6 +18,8 @@ namespace CRM.Mobile.Core.Services.AutoMapper
                 cfg.CreateMap<VesselModel, Vessel>();
                 cfg.CreateMap<Vessel, VesselModel>();
 
+                cfg.CreateMap<VesselImageModel, VesselImage>();
+                cfg.CreateMap<VesselImage, VesselImageModel>();
             });
 
             iMapper = mapperConfiguration.CreateMapper();

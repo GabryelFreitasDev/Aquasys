@@ -8,7 +8,7 @@
     <dc:DCPopupPage.Content>
         <StackLayout x:Name="PopupCorpo"
                      Padding="20"
-                     BackgroundColor="{StaticResource ColorWhite}"
+                     BackgroundColor="{StaticResource White}"
                      VerticalOptions="Fill">
             <Label x:Name="Mensagem"
                    Style="{StaticResource labelDescricaoStyle}"

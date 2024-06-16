@@ -61,9 +61,12 @@
 	  <None Remove="Resources\images\cargotablist.svg" />
 	  <None Remove="Resources\images\img_logo_loading.gif" />
 	  <None Remove="Resources\images\inspectiontablist.svg" />
+	  <None Remove="Resources\images\lixeira.svg" />
 	  <None Remove="Resources\images\logogif.gif" />
 	  <None Remove="Resources\images\reportmain.svg" />
 	  <None Remove="Resources\images\reporttablist.svg" />
+	  <None Remove="Resources\images\setaparabaixo.svg" />
+	  <None Remove="Resources\Images\setaparacima.svg" />
 	  <None Remove="Resources\images\vesselmain.svg" />
 	  <None Remove="Resources\images\vesseltablist.svg" />
 	</ItemGroup>
@@ -79,6 +82,7 @@
 		<PackageReference Include="DevExpress.Maui.DataGrid" Version="24.1.3" />
 		<PackageReference Include="DevExpress.Maui.Editors" Version="24.1.3" />
 		<PackageReference Include="DevExpress.Maui.Scheduler" Version="24.1.3" />
+		<PackageReference Include="HorusStudio.Maui.Skeleton" Version="2.0.0" />
 		<PackageReference Include="InputKit.Maui" Version="4.4.3" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.60" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
@@ -166,5 +170,11 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Controls\Collections\" />
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadUnhandledDeviceExceptionAquasysHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -9,7 +9,7 @@
             <ActivityIndicator IsRunning="true"
                                HorizontalOptions="CenterAndExpand"
                                VerticalOptions="CenterAndExpand"
-                               Color="{StaticResource Primary500}" />
+                               Color="{StaticResource Primary}" />
         </StackLayout>
     </rg:PopupPage.Content>
 </rg:PopupPage>

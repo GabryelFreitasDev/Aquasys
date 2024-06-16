@@ -15,7 +15,8 @@ namespace Aquasys.MVVM.ViewModels.Vessel
 
         [ObservableProperty]
         private ObservableCollection<VesselModel> vessels = new();
-
+        
+        [RelayCommand]
         private async Task BtnAddClick()
         {
             await Shell.Current.GoToAsync(nameof(VesselMainPage));
@@ -37,13 +38,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
         public async Task EditVessel(VesselModel vessel)
         {
             if (vessel is not null)
-            {
-                await Shell.Current.GoToAsync(nameof(VesselMainPage),
-                new Dictionary<string, object>
-                {
-                    [nameof(Id)] = vessel.IDVessel.ToString()
-                });
-            }
+                await Shell.Current.GoToAsync($"{nameof(VesselMainPage)}?{nameof(Id)}={vessel.IDVessel}");
         }
 
         public override async void OnAppearing()

@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
 using Newtonsoft.Json;
-using DevExpress.Maui.Core.Internal;
-using static Aquasys.Core.Utils.ObjectExtensions;
 
 namespace Aquasys.Core.Utils
 {
@@ -67,8 +65,6 @@ namespace Aquasys.Core.Utils
             var type = objectToCheck.GetType();
             return type.GetProperty(methodName) != null;
         }
-
-
 
         public static bool IsNullOrEmpty(this string String)
         {

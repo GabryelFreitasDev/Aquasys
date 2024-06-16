@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CRM.Entidades.entidades
+namespace Aquasys.Core.Entities
 {
     public class EntidadeGenerica
     {

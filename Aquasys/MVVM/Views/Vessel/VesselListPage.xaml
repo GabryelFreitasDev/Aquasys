@@ -58,15 +58,15 @@
                                             </HorizontalStackLayout>
                                             <HorizontalStackLayout Spacing="5">
                                                 <Label Text="Port Registry:"></Label>
-                                                <Label Text="{Binding VesselName}"></Label>
+                                                <Label Text="{Binding PortRegistry}"></Label>
                                             </HorizontalStackLayout>
                                             <HorizontalStackLayout Spacing="5">
                                                 <Label Text="I.M.O:"></Label>
-                                                <Label Text="{Binding VesselName}"></Label>
+                                                <Label Text="{Binding IMO}"></Label>
                                             </HorizontalStackLayout>
                                             <HorizontalStackLayout Spacing="5">
                                                 <Label Text="Owner:"></Label>
-                                                <Label Text="{Binding VesselName}"></Label>
+                                                <Label Text="{Binding Owner}"></Label>
                                             </HorizontalStackLayout>
                                         </VerticalStackLayout>
                                     </Grid>

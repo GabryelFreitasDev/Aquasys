@@ -1,12 +1,7 @@
 ﻿using Aquasys.Core.Data;
 using Aquasys.Core.Entities;
 using Aquasys.Core.Intefaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aquasys.Core.BO
 {

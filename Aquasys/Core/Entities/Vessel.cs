@@ -1,5 +1,6 @@
 ﻿using Aquasys.Core.Enums;
 using SQLite;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
@@ -17,7 +18,7 @@ namespace Aquasys.Core.Entities
         [NotNull] public VesselType? VesselType { get; set; }
         [NotNull] public string? Owner { get; set; }
         [NotNull] public string? Operator { get; set; }
-        [ForeignKey("UserRegistration")] public User UserRegistration = new();
-        [NotNull] public DateTime DateTimeOfRegister { get; set; }
+        [ForeignKey("IDUserRegistration")] public long IDUserRegistration { get; set; }
+        public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
     }
 }

@@ -99,11 +99,11 @@ namespace Aquasys.Controls
             Button optionButton = new Button()
             {
                 AutomationId = "AIDCPopupOptionButton-" + optionLabel,
-                TextColor = (Color)ResourceUtils.GetResourceValue(IsGreenButton(index) ? "ColorWhite" : "Primary500"),
-                BorderColor = (Color)ResourceUtils.GetResourceValue("Primary500"),
+                TextColor = (Color)ResourceUtils.GetResourceValue("White"),
+                BorderColor = (Color)ResourceUtils.GetResourceValue("Primary"),
                 BorderWidth = 1,
                 TextTransform = TextTransform.None,
-                BackgroundColor = (Color)ResourceUtils.GetResourceValue(IsGreenButton(index) ? "Primary500" : "ColorWhite"),
+                BackgroundColor = (Color)ResourceUtils.GetResourceValue("Primary"),
                 Text = optionLabel,
                 FontFamily = "Quicksand600Font"
             };

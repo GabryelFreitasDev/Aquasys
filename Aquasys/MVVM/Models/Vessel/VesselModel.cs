@@ -16,8 +16,8 @@ namespace Aquasys.MVVM.Models.Vessel
         public string Flag { get; set; }
         public string IMO { get; set; }
         public string PortRegistry { get; set; }
-        public DateTime ManufacturingDate { get; set; }
-        public VesselType VesselType { get; set; }
+        public DateTime ManufacturingDate { get; set; } = DateTime.Now;
+        public VesselType VesselType { get; set; } = VesselType.NAVIO;
         public string Owner { get; set; }
         public string Operator { get; set; }
     }
