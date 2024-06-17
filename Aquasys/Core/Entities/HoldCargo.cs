@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aquasys.Core.Entities
 {
-    internal class HoldCargo
+    public class HoldCargo
     {
         [PrimaryKey, AutoIncrement] public long IDHoldCargo { get; set; }
         [MaxLength(60)] public string? Cargo { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aquasys.Core.Entities
 {
-    internal class Inspection
+    public class Inspection
     {
         [PrimaryKey, AutoIncrement] public long IDInspection { get; set; }
         public int WorkOrder { get; set; }

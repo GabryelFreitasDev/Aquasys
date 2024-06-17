@@ -205,6 +205,8 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
                     await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                     await Shell.Current.GoToAsync("..", true);
                 }
+
+                VesselModel = mapper.Map<VesselModel>(vesselSave);
             }
         }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aquasys.Core.Entities
 {
-    internal class HoldInspection
+    public class HoldInspection
     {
         [PrimaryKey, AutoIncrement] public long IDHoldInspection { get; set; }
         [MaxLength(60)] public string? CleaningMethod { get; set; }

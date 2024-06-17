@@ -24,7 +24,6 @@ public partial class AppShell : Shell
         #region Vessel
             Routing.RegisterRoute(nameof(VesselListPage), typeof(VesselListPage));
             Routing.RegisterRoute(nameof(VesselMainPage), typeof(VesselMainPage));
-            Routing.RegisterRoute(nameof(VesselCargoHoldInspectionPage), typeof(VesselCargoHoldInspectionPage));
             Routing.RegisterRoute(nameof(VesselImagePage), typeof(VesselImagePage));
         #endregion
 

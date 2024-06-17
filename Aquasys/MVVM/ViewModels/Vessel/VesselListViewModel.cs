@@ -57,6 +57,8 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             var vessels = await vesselBO.GetAllAsync();
             vessels.OrderBy(x => x.VesselName);
 
+            Vessels.Clear();
+
             if (vessels is not null && vessels.Any())
             {
                 foreach (var vessel in vessels)

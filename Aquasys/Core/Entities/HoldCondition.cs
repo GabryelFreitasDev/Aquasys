@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aquasys.Core.Entities
 {
-    internal class HoldCondition
+    public class HoldCondition
     {
         [PrimaryKey, AutoIncrement] public long IDHoldCondition { get; set; }
         public int Empty { get; set; }
