@@ -24,7 +24,7 @@ namespace Aquasys
 
                 var typeInfo = enumVal.GetType().GetTypeInfo();
                 var v = typeInfo.DeclaredMembers.FirstOrDefault(x => x.Name == enumVal.ToString());
-                EnumDescription customAttribute = v?.GetCustomAttribute<EnumDescription>();
+                EnumDescription? customAttribute = v?.GetCustomAttribute<EnumDescription>();
                 if (customAttribute == null)
                     return string.Empty;
                 return customAttribute.Description;

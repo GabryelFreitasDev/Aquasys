@@ -42,11 +42,26 @@
                                     CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
                                 <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
-                                    <Image Grid.Column="0" Source="{Binding Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="100" WidthRequest="100"></Image>
-                                    <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="5" VerticalOptions="Center">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="5" Padding="5" VerticalOptions="Center">
                                         <HorizontalStackLayout Spacing="5">
                                             <Label Text="Name:" FontAttributes="Bold"></Label>
                                             <Label Text="{Binding Name}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Cargo:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding Cargo}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Capacity:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding Capacity}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Load Plan:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding LoadPlan}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Product Weight:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding ProductWeight}"></Label>
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
                                     <dx:DXButton 

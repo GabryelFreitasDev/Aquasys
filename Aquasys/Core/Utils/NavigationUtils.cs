@@ -31,7 +31,7 @@ namespace Aquasys.Core.Utils
             _isPageTransitioning = true;
             try
             {
-                await StartLoading(showLoading);
+                //await StartLoading(showLoading);
 
                 await Application.Current!.MainPage!.Navigation.PushAsync(page, animate);
             }
@@ -65,7 +65,7 @@ namespace Aquasys.Core.Utils
             _isPageTransitioning = true;
             try
             {
-                await StartLoading(showLoading);
+                //await StartLoading(showLoading);
                 await page.Navigation.PushPopupAsync(page, animate);
             }
             finally
@@ -89,7 +89,7 @@ namespace Aquasys.Core.Utils
 
             try
             {
-                await StartLoading(true);
+                //await StartLoading(true);
                 var pageType = typeof(T);
                 var page = (RGPopup.Maui.Pages.PopupPage)Activator.CreateInstance(pageType, parameter);
                 await page.Navigation.PushPopupAsync(page, false);
@@ -124,7 +124,7 @@ namespace Aquasys.Core.Utils
             _isPageTransitioning = true;
             try
             {
-                await StartLoading(showLoading);
+                //await StartLoading(showLoading);
 
 
                 await MainThread.InvokeOnMainThreadAsync(async () => await Shell.Current.GoToAsync(state, animate));

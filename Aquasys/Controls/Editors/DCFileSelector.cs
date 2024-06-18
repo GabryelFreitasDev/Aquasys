@@ -93,10 +93,10 @@ namespace Aquasys.Controls.Editors
             if (imagens == null)
                 return;
 
-            //foreach (var imagem in imagens)
-            //{
-            //    await CropImage(imagem);
-            //}
+            foreach (var imagem in imagens)
+            {
+                await CropImage(imagem);
+            }
 
 
             if (imagens != null && imagens.Count > 0)
@@ -121,14 +121,14 @@ namespace Aquasys.Controls.Editors
             }
         }
 
-        //private static async Task<DCImagem> CropImage(DCImagem dcImagem)
-        //{
-        //    DCCropImagePage dcCropImagePage = new DCCropImagePage(dcImagem);
+        private static async Task<DCImagem> CropImage(DCImagem dcImagem)
+        {
+            DCCropImagePage dcCropImagePage = new DCCropImagePage(dcImagem);
 
-        //    await NavigationUtils.PushAsync(dcCropImagePage);
+            await NavigationUtils.PushAsync(dcCropImagePage);
 
-        //    return await dcCropImagePage.WaitForResultAsync();
-        //}
+            return await dcCropImagePage.WaitForResultAsync();
+        }
 
         private static async Task<List<DCArquivoAbstrato>> ObtenhaETrateFotosObtidosDaGaleria(int LimiteAnexo = 7)
         {
