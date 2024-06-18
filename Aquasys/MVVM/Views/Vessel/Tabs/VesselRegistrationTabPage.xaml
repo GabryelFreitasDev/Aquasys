@@ -39,6 +39,7 @@
 
                 <de:TextEdit
                     x:Name="Place"
+
                     Text="{Binding VesselModel.Place, Mode=TwoWay}"
                     PlaceholderText="Place"/>
 

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePages xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:local="clr-namespace:Aquasys.MVVM.Views"
+             xmlns:s="clr-namespace:Aquasys.MVVM.ViewModels.Vessel"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:Aquasys.MVVM.ViewModels.Vessel"
+             xmlns:view="clr-namespace:Aquasys.MVVM.Views.Vessel"
+             x:Class="Aquasys.MVVM.Views.Vessel.HoldPage">
+
+    <local:BasePages.BindingContext>
+        <s:HoldViewModel />
+    </local:BasePages.BindingContext>
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="10">
+
+                <Label 
+                    Text="Hold Registration" 
+                    FontAttributes="Bold" 
+                    FontSize="20"/>
+
+                <de:TextEdit
+                    x:Name="Name"
+                    IsLabelFloating="True"
+                    LabelText="Name"
+                    Text="{Binding HoldModel.Name, Mode=TwoWay}"
+                    PlaceholderText="Name"/>
+
+                <de:TextEdit
+                    x:Name="Cargo"
+                    IsLabelFloating="True"
+                    LabelText="Cargo"
+                    Text="{Binding HoldModel.Cargo, Mode=TwoWay}"
+                    PlaceholderText="Cargo"/>
+
+                <de:NumericEdit
+                    x:Name="Capacity"
+                    Value="{Binding HoldModel.Capacity, Mode=TwoWay}"
+                    IsLabelFloating="True"
+                    LabelText="Capacity"
+                    PlaceholderText="Capacity"/>
+
+                <de:NumericEdit
+                    x:Name="LoadPlan"
+                    Value="{Binding HoldModel.LoadPlan, Mode=TwoWay}"
+                    IsLabelFloating="True"
+                    LabelText="Load Plan"
+                    PlaceholderText="Load Plan"/>
+
+                <de:NumericEdit
+                    x:Name="ProductWeight"
+                    Value="{Binding HoldModel.ProductWeight, Mode=TwoWay}"
+                    IsLabelFloating="True"
+                    LabelText="Product Weight"
+                    PlaceholderText="Product Weight"/>
+
+                <toolkit:Expander Command="{Binding ExpandCommand}">
+                    <toolkit:Expander.Header>
+                        <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
+                            <Grid ColumnDefinitions="*,50">
+                                <Label Grid.Column="0" Text="Last Cargos" VerticalOptions="Center"></Label>
+                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
+                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
+                            </Grid>
+                        </Frame>
+                    </toolkit:Expander.Header>
+                    <StackLayout>
+                        <de:TextEdit
+                            x:Name="LastCargo"
+                            IsLabelFloating="True"
+                            LabelText="Last Cargo"
+                            Text="{Binding HoldModel.LastCargo, Mode=TwoWay}"
+                            PlaceholderText="Last Cargo"/>
+
+                        <de:TextEdit
+                            x:Name="SecondLastCargo"
+                            IsLabelFloating="True"
+                            LabelText="Second Last Cargo"
+                            Text="{Binding HoldModel.SecondLastCargo, Mode=TwoWay}"
+                            PlaceholderText="Second Last Cargo"/>
+
+                        <de:TextEdit
+                            x:Name="ThirdLastCargo"
+                            IsLabelFloating="True"
+                            LabelText="Third Last Cargo"
+                            Text="{Binding HoldModel.ThirdLastCargo, Mode=TwoWay}"
+                            PlaceholderText="Third Last Cargo"/>
+
+                        <de:TextEdit
+                            x:Name="FourthLastCargo"
+                            IsLabelFloating="True"
+                            LabelText="Fourth Last Cargo"
+                            Text="{Binding HoldModel.FourthLastCargo, Mode=TwoWay}"
+                            PlaceholderText="Fourth Last Cargo"/>
+                    </StackLayout>
+
+                </toolkit:Expander>
+
+                <dx:DXButton 
+                    ButtonType="Accent"
+                    Content="Save"
+                    Command="{Binding SaveHoldCommand}"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        
+    </Grid>
+</local:BasePages>
