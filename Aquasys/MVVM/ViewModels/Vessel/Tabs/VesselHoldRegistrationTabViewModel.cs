@@ -85,36 +85,37 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
         [RelayCommand]
         private async Task AddHold()
         {
-            //try
-            //{
-            //    if (IsProcessRunning)
-            //        return;
+            try
+            {
+                if (IsProcessRunning)
+                    return;
 
-            //    //await SaveOrUpdateVessel(false);
+                //await SaveOrUpdateVessel(false);
 
-            //    IsProcessRunning = true;
+                //IsProcessRunning = true;
 
-            //    var anexo = (await DCFileSelector.GetImagens(1)).FirstOrDefault();
-            //    if (anexo != null && anexo is DCImagem _anexo && (!_anexo.ImageSource?.IsEmpty ?? false))
-            //    {
-            //        VesselImage vesselImage = new VesselImage();
-            //        vesselImage.Image = anexo.Content;
-            //        vesselImage.IDVessel = VesselModel.IDVessel;
+                //var anexo = (await DCFileSelector.GetImagens(1)).FirstOrDefault();
+                //if (anexo != null && anexo is DCImagem _anexo && (!_anexo.ImageSource?.IsEmpty ?? false))
+                //{
+                //    VesselImage vesselImage = new VesselImage();
+                //    vesselImage.Image = anexo.Content;
+                //    vesselImage.IDVessel = VesselModel.IDVessel;
 
-            //        await new VesselImageBO().InsertAsync(vesselImage);
+                //    await new VesselImageBO().InsertAsync(vesselImage);
 
-            //        MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"{nameof(VesselImagePage)}?{nameof(Id)}={vesselImage.IDVesselImage}"));
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new Exception(ex.Message);
-            //}
-            //finally
-            //{
-            //    IsProcessRunning = false;
-            //}
+                //    MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"{nameof(VesselImagePage)}?{nameof(Id)}={vesselImage.IDVesselImage}"));
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                IsProcessRunning = false;
+            }
         }
+
         //[RelayCommand]
         //private async Task EditHold(VesselImageModel vesselImageModel)
         //{

@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:local="clr-namespace:Aquasys.MVVM.Views"
     mc:Ignorable="d"
     Shell.NavBarIsVisible="True"
@@ -12,6 +13,11 @@
     Shell.TabBarIsVisible="False"
     Shell.BackgroundColor="{StaticResource Primary}"
     Shell.TitleColor="White">
+
+    <Shell.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Transparent}"
+                               StatusBarStyle="LightContent" />
+    </Shell.Behaviors>
 
     <ShellContent ContentTemplate="{DataTemplate local:Vessel.VesselListPage}"/>
 </Shell>

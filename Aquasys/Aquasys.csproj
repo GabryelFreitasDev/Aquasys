@@ -59,6 +59,12 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\aquasyslogo.svg" />
 	  <None Remove="Resources\images\cargotablist.svg" />
+	  <None Remove="Resources\images\icon_back_arrow.svg" />
+	  <None Remove="Resources\images\icon_checksinc.svg" />
+	  <None Remove="Resources\images\icon_flip_horizontal.svg" />
+	  <None Remove="Resources\images\icon_flip_vertical.svg" />
+	  <None Remove="Resources\images\icon_rotate_left.svg" />
+	  <None Remove="Resources\images\icon_rotate_right.svg" />
 	  <None Remove="Resources\images\img_logo_loading.gif" />
 	  <None Remove="Resources\images\inspectiontablist.svg" />
 	  <None Remove="Resources\images\lixeira.svg" />
@@ -103,6 +109,9 @@
 	  <Compile Update="Controls\DCPopup.xaml.cs">
 	    <DependentUpon>DCPopup.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Controls\DCCropImagePage.xaml.cs">
+	    <DependentUpon>DCCropImagePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Controls\DCPopupPage.xaml.cs">
 	    <DependentUpon>DCPopupPage.xaml</DependentUpon>
 	  </Compile>
@@ -137,6 +146,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\DCPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\DCCropImagePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\DCPopupPage.xaml">
