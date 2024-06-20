@@ -18,7 +18,7 @@
     <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="10" VerticalOptions="Center">
         <Label 
             x:Name="LblUpdateAccount" 
-            Text="Account Configutarion"
+            Text="Account Configurarion"
             FontSize="30"
             FontAttributes="Bold"
             TextColor="{StaticResource Primary}"/>

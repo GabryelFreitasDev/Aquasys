@@ -7,6 +7,7 @@
              xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
              xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False">
@@ -41,9 +42,9 @@
                 PlaceholderText="Password"
                 Text="{Binding LoginModel.Password, Mode=TwoWay}"/>
 
-            <dc:SimpleButton
+            <dx:DXButton
                 x:Name="BtnLogin"
-                Text="LOGIN"
+                Content="LOGIN"
                 FontSize="15"
                 CornerRadius="20"
                 WidthRequest="300"
@@ -56,10 +57,10 @@
                 TextColor="Black"
                 IsChecked="{Binding LoginModel.RememberMe, Mode=TwoWay}"/>
 
-            <dc:SimpleButton 
+            <dx:DXButton 
                 x:Name="BtnCreateAccount"
                 BackgroundColor="Transparent"
-                Text="Create Account"
+                Content="Create Account"
                 TextColor="{StaticResource Primary}"
                 Command="{Binding BtnCreateAccountClickCommand}"/>
         </VerticalStackLayout>

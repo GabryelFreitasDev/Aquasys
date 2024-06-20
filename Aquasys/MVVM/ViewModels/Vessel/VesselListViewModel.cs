@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Aquasys.Core.BO;
 using Aquasys.Core.Utils;
 using Aquasys.MVVM.Models.Vessel;
@@ -61,10 +60,18 @@ namespace Aquasys.MVVM.ViewModels.Vessel
 
             if (vessels is not null && vessels.Any())
             {
+                VesselImageBO vesselImageBO = new();
                 foreach (var vessel in vessels)
                 {
                     if(!Vessels.Any(x => x.IDVessel == vessel.IDVessel))
-                        Vessels.Add(mapper.Map<VesselModel>(vessel));
+                    {
+                        var vesselModel = mapper.Map<VesselModel>(vessel);
+                        var vesselImages = await vesselImageBO.GetFilteredAsync(x => x.IDVessel == vesselModel.IDVessel);
+
+                        vesselModel.FirstImage = vesselImages?.FirstOrDefault()?.Image ?? (byte[])ResourceUtils.GetResourceValue("aquasyslogo");
+
+                        Vessels.Add(vesselModel);
+                    }
                 }
             }
         }

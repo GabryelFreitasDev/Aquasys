@@ -3,9 +3,14 @@
              xmlns:local="clr-namespace:Aquasys.MVVM.Views"
              xmlns:s="clr-namespace:Aquasys.MVVM.ViewModels.Vessel"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
+             xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+             xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
              xmlns:viewmodel="clr-namespace:Aquasys.MVVM.ViewModels.Vessel"
              xmlns:view="clr-namespace:Aquasys.MVVM.Views.Vessel.Tabs"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Aquasys.MVVM.Views.Vessel.VesselListPage"
              Shell.BackButtonBehavior="{BackButtonBehavior IsVisible=False}"
              Shell.FlyoutBehavior="Flyout"
@@ -18,63 +23,70 @@
     <Grid ColumnDefinitions="*,*" RowDefinitions="50,*" VerticalOptions="Start">
         <Frame Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="0"></Frame>
 
-        <Button Grid.Column="0" Grid.Row="0"
+        <dx:DXButton Grid.Column="0" Grid.Row="0"
             BackgroundColor="Transparent"
-            Text="Filters"
+            Content="Filters"
+            ButtonType="Outlined"
+            FontAttributes="None"
+            CornerRadius="0"
             TextColor="Black"/>
-        <Button Grid.Column="1" Grid.Row="0"
+        <dx:DXButton Grid.Column="1" Grid.Row="0"
             BackgroundColor="Transparent"
-            Text="Add"
+            Content="Add"
+            ButtonType="Outlined"
+            CornerRadius="0"
             TextColor="Black"
-            ImageSource="Add"
+            FontAttributes="None"
             Command="{Binding BtnAddClickCommand}"/>
-        <ScrollView Grid.Row="2" Grid.ColumnSpan="2" Orientation="Vertical">
-            <CollectionView ItemsSource="{Binding Vessels}" SelectionMode="None" VerticalScrollBarVisibility="Default">
-                <CollectionView.ItemTemplate Grid.Row="2">
+        <ScrollView Grid.Row="2" Grid.ColumnSpan="2" Orientation="Vertical" Padding="0,5,0,0">
+            <dxcv:DXCollectionView ItemsSource="{Binding Vessels}" SelectionMode="None" IsScrollBarVisible="False">
+                <dxcv:DXCollectionView.ItemTemplate Grid.Row="2">
                     <DataTemplate>
-                        <SwipeView>
+                        <SwipeView Padding="5,0,5,5">
                             <SwipeView.RightItems>
                                 <SwipeItem Text="Delete" 
                                            BackgroundColor="Red" 
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselListViewModel }}, Path=DeleteVesselCommand}"
                                            CommandParameter="{Binding .}"/>
                             </SwipeView.RightItems>
-                            <Frame Grid.ColumnSpan="2" CornerRadius="0" Padding="0" HasShadow="True">
+                            <Frame Grid.ColumnSpan="2" CornerRadius="5" Padding="0" HasShadow="True">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselListViewModel }}, Path=EditVesselCommand}"
                                         CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
-                                    <Grid Grid.Row="2" ColumnDefinitions="45*,55*">
-                                        <Image Source="aquasyslogo" Grid.Column="0" WidthRequest="120" HeightRequest="120"></Image>
-                                        <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="5">
-                                            <HorizontalStackLayout Spacing="5">
-                                                <Label Text="Name:" FontAttributes="Bold"></Label>
-                                                <Label Text="{Binding VesselName}"></Label>
-                                            </HorizontalStackLayout>
-                                            <HorizontalStackLayout Spacing="5">
-                                                <Label Text="Flag:"></Label>
-                                                <Label Text="{Binding Flag}"></Label>
-                                            </HorizontalStackLayout>
-                                            <HorizontalStackLayout Spacing="5">
-                                                <Label Text="Port Registry:"></Label>
-                                                <Label Text="{Binding PortRegistry}"></Label>
-                                            </HorizontalStackLayout>
-                                            <HorizontalStackLayout Spacing="5">
-                                                <Label Text="I.M.O:"></Label>
-                                                <Label Text="{Binding IMO}"></Label>
-                                            </HorizontalStackLayout>
-                                            <HorizontalStackLayout Spacing="5">
-                                                <Label Text="Owner:"></Label>
-                                                <Label Text="{Binding Owner}"></Label>
-                                            </HorizontalStackLayout>
-                                        </VerticalStackLayout>
-                                    </Grid>
-                                </Frame>
+                                <Grid Grid.Row="2" ColumnDefinitions="30*,1*,60*">
+
+                                    <Image Source="{Binding FirstImage, Converter={toolkit:ByteArrayToImageSourceConverter}}" Grid.Column="0" Aspect="AspectFill" HeightRequest="120" WidthRequest="120"/>
+                                    <dx:DXSeparator Grid.Column="1" FlowDirection="MatchParent" Orientation="Vertical"></dx:DXSeparator>
+                                    <VerticalStackLayout Grid.Column="2" Spacing="5" Padding="5">
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Name:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding VesselName}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Flag:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding Flag}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Port Registry:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding PortRegistry}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="I.M.O:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding IMO}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Owner:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding Owner}"></Label>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
                         </SwipeView>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </dxcv:DXCollectionView.ItemTemplate>
+            </dxcv:DXCollectionView>
         </ScrollView>
     </Grid>
 </local:BasePages>

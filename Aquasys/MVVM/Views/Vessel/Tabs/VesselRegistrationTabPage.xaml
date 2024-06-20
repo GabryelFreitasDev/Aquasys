@@ -134,6 +134,8 @@
                                             Grid.Column="2"
                                             ButtonType="ToolButton"
                                             Icon="lixeira"
+                                            IconColor="Red"
+                                            BackgroundColor="Transparent"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselRegistrationTabViewModel }}, Path=DeleteVesselImageCommand}"
                                             CommandParameter="{Binding .}"/>
                                     </Grid>

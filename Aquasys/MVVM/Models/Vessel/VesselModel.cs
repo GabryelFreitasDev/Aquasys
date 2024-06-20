@@ -19,5 +19,7 @@ namespace Aquasys.MVVM.Models.Vessel
         public VesselType VesselType { get; set; } = VesselType.NAVIO;
         public string Owner { get; set; }
         public string Operator { get; set; }
+
+        public byte[] FirstImage { get; set; }
     }
 }

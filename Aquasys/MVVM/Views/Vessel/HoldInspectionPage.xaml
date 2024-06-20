@@ -103,6 +103,8 @@
                                             Grid.Column="2"
                                             ButtonType="ToolButton"
                                             Icon="lixeira"
+                                            IconColor="Red"
+                                            BackgroundColor="Transparent"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HoldInspectionViewModel }}, Path=DeleteHoldImageCommand}"
                                             CommandParameter="{Binding .}"/>
                                     </Grid>

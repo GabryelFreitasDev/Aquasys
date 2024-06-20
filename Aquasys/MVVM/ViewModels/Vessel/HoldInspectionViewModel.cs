@@ -82,11 +82,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
                 if(holdInspection is not null)
                 {
                     holdInspection = mapper.Map<HoldInspection>(HoldInspectionModel);
-                    if (await new HoldInspectionBO().UpdateAsync(holdInspection))
-                    {
-                        //await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
-                        //await Shell.Current.GoToAsync("..", true);
-                    }
+                    await new HoldInspectionBO().UpdateAsync(holdInspection);
                 }
             }
             else
@@ -94,11 +90,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
                 var holdInspection = mapper.Map<HoldInspection>(HoldInspectionModel);
                 holdInspection.IDHold = IDHold;
                 holdInspection.IDInspection = IDInspection;
-                if (await new HoldInspectionBO().InsertAsync(holdInspection))
-                {
-                    //await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
-                    //await Shell.Current.GoToAsync("..", true);
-                }
+                await new HoldInspectionBO().InsertAsync(holdInspection);
             }
 
             if (HoldConditionModel?.IDHoldCondition is not null && HoldConditionModel?.IDHoldCondition != 0)

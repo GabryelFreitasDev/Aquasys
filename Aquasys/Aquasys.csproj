@@ -195,10 +195,6 @@
 	  </MauiXaml>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Controls\Collections\" />
-	</ItemGroup>
-
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadUnhandledDeviceExceptionAquasysHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

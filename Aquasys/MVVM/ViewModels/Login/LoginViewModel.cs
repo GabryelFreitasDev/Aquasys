@@ -21,14 +21,12 @@ namespace Aquasys.MVVM.ViewModels.Login
 
         public ICommand BtnLoginClickCommand { get; private set; }
         public ICommand BtnCreateAccountClickCommand { get; private set; }
-        //public ICommand ChkRememberMeCommand { get; private set; }
 
         public LoginViewModel()
         {
             LoginModel = new();
             BtnLoginClickCommand = new Command(async () => await ValidateLogin());
             BtnCreateAccountClickCommand = new Command(async () => await CreateNewAccount());
-            //ChkRememberMeCommand = new Command(RememberMe);
         }
 
         public override async void OnAppearing()
@@ -48,8 +46,6 @@ namespace Aquasys.MVVM.ViewModels.Login
                 Application.Current!.MainPage = new AppShell();
             }
             LoadingInitInstanceDB = true;
-            //else
-            //await Application.Current!.MainPage!.Navigation.PushAsync(new LoginView());
         }
 
         private async Task ValidateLogin()
@@ -76,11 +72,6 @@ namespace Aquasys.MVVM.ViewModels.Login
             }
 
         }
-
-        //public void RememberMe(object isChecked)
-        //{
-        //    Login.RememberMe = Convert.ToBoolean(isChecked);
-        //}
 
         private async Task CreateNewAccount()
         {
