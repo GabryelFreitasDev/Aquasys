@@ -8,7 +8,6 @@ namespace Aquasys.Core.Entities
     public class Vessel
     {
         [PrimaryKey, AutoIncrement] public long IDVessel { get; set; }
-        [MaxLength(200), NotNull] public string? OS { get; set; }
         [MaxLength(200), NotNull] public string? VesselName { get; set; }
         [MaxLength(200), NotNull] public string? Place { get; set; }
         [MaxLength(200), NotNull] public string? IMO { get; set; } 

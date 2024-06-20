@@ -17,8 +17,9 @@ namespace Aquasys.Core.Entities
         public int OdorFree { get; set; }
         public int CargoResidue { get; set; }
         public int Insects { get; set; }
+        [MaxLength(60)] public string? CleaningMethod { get; set; }
         [NotNull] public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
 
-        [ForeignKey("IDHoldInspection")] public HoldInspection HoldInspection = new();
+        [ForeignKey("IDHoldInspection")] public long IDHoldInspection { get; set; }
     }
 }

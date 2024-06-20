@@ -20,7 +20,7 @@
     </Shell.BindingContext>
 
     <Shell.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Transparent}"
+        <toolkit:StatusBarBehavior StatusBarColor="Transparent"
                                StatusBarStyle="LightContent" />
     </Shell.Behaviors>
 

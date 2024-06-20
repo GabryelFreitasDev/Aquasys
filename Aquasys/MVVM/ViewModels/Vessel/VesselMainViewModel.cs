@@ -21,6 +21,12 @@ namespace Aquasys.MVVM.ViewModels.Vessel
         [ObservableProperty]
         public VesselHoldRegistrationTabPage vesselHoldRegistrationTabPage;
 
+        [ObservableProperty]
+        public VesselInspectionRegistrationTabViewModel vesselInspectionRegistrationTabViewModel;
+
+        [ObservableProperty]
+        public VesselInspectionRegistrationTabPage vesselInspectionRegistrationTabPage;
+
         public VesselMainViewModel()
         {
             vesselRegistrationTabViewModel = new VesselRegistrationTabViewModel();
@@ -28,6 +34,9 @@ namespace Aquasys.MVVM.ViewModels.Vessel
 
             vesselHoldRegistrationTabViewModel = new VesselHoldRegistrationTabViewModel();
             vesselHoldRegistrationTabPage = new VesselHoldRegistrationTabPage();
+
+            vesselInspectionRegistrationTabViewModel = new VesselInspectionRegistrationTabViewModel();
+            vesselInspectionRegistrationTabPage = new VesselInspectionRegistrationTabPage();
         }
         public override async void OnAppearing()
         {
@@ -48,9 +57,11 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             {
                 VesselRegistrationTabViewModel.VesselModel = mapper.Map<VesselModel>(vessel);
                 VesselHoldRegistrationTabViewModel.IDVessel = vessel.IDVessel;
+                VesselInspectionRegistrationTabViewModel.IDVessel = vessel.IDVessel;
 
                 VesselRegistrationTabViewModel.OnAppearing();
                 VesselHoldRegistrationTabViewModel.OnAppearing();
+                VesselInspectionRegistrationTabViewModel.OnAppearing();
             }
         }
     }

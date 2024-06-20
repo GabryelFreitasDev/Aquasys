@@ -124,11 +124,20 @@
 	  <Compile Update="MVVM\Views\MainPage\MainPage.xaml.cs">
 	    <DependentUpon>MainPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="MVVM\Views\Vessel\HoldInspectionPage.xaml.cs">
+	    <DependentUpon>HoldInspectionPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MVVM\Views\Vessel\Tabs\VesselInspectionRegistrationTabPage.xaml.cs">
+	    <DependentUpon>VesselInspectionRegistrationTabPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="MVVM\Views\Vessel\Tabs\VesselHoldRegistrationTabPage.xaml.cs">
 	    <DependentUpon>VesselHoldRegistrationTabPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="MVVM\Views\Vessel\HoldPage.xaml.cs">
 	    <DependentUpon>HoldPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MVVM\Views\Vessel\HoldImagePage.xaml.cs">
+	    <DependentUpon>HoldImagePage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="MVVM\Views\Vessel\VesselListPage.xaml.cs">
 	    <DependentUpon>VesselListPage.xaml</DependentUpon>
@@ -160,6 +169,12 @@
 	  <MauiXaml Update="MVVM\Views\Login\LoadingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="MVVM\Views\Vessel\HoldInspectionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="MVVM\Views\Vessel\Tabs\VesselInspectionRegistrationTabPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="MVVM\Views\Vessel\Tabs\VesselHoldRegistrationTabPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -167,6 +182,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="MVVM\Views\Vessel\HoldPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="MVVM\Views\Vessel\HoldImagePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="MVVM\Views\Vessel\VesselImagePage.xaml">

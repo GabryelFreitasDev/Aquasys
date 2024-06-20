@@ -32,7 +32,7 @@
                     Content="Add Hold +"
                     Command="{Binding AddHoldCommand}"/>
 
-                <dxcv:DXCollectionView ItemsSource="{Binding Holds}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2">
+                <dxcv:DXCollectionView ItemsSource="{Binding Holds}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
                     <dxcv:DXCollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame CornerRadius="5" Padding="0" HasShadow="True">

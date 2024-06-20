@@ -10,7 +10,6 @@ namespace Aquasys.MVVM.Models.Vessel
         {
         }
         public long IDVessel { get; set; }
-        public string OS { get; set; }
         public string VesselName { get; set; }
         public string Place { get; set; }
         public string Flag { get; set; }

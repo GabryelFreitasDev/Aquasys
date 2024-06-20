@@ -16,6 +16,6 @@ namespace Aquasys.Core.Entities
         [MaxLength(60)] public string? Description { get; set; }
         [MaxLength(300)] public string? Observation { get; set; }
         [NotNull] public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
-        [ForeignKey("IDHold")] public long IDHold = new();
+        [ForeignKey("IDHold")] public long IDHold { get; set; }
     }
 }
