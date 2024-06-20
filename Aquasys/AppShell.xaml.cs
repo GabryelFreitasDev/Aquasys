@@ -28,6 +28,8 @@ public partial class AppShell : Shell
             Routing.RegisterRoute(nameof(HoldPage), typeof(HoldPage));
         #endregion
 
+        Routing.RegisterRoute(nameof(OptionsPage), typeof(OptionsPage));
+
         Routing.RegisterRoute(nameof(MainPage), typeof(MainPage)); //Queima ou não queima?
     }
 }

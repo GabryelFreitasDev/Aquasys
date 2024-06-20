@@ -47,18 +47,21 @@
                          WidthRequest="35"
                          HorizontalOptions="End"
                          VerticalOptions="Center"
-                         Margin="0,0,10,0" />
+                         Margin="0,0,10,0"
+                         Command="{Binding BtnConfigClickCommand}"/>
             </Grid>
         </Border>
     </Shell.FlyoutHeader>
 
-    <ShellContent ContentTemplate="{DataTemplate local:Vessel.VesselListPage}" />
+    <ShellContent Title="Home" ContentTemplate="{DataTemplate local:Vessel.VesselListPage}" />
+    
     <Shell.FlyoutFooter>
         <VerticalStackLayout Padding="10" Spacing="10">
             <dx:DXButton 
                     ButtonType="Accent"
                     Content="Logout"
-                    BackgroundColor="#801515"/>
+                    BackgroundColor="#801515"
+                    Command="{Binding BtnLogoutClickCommand}"/>
         </VerticalStackLayout>
     </Shell.FlyoutFooter>
 </Shell>
