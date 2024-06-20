@@ -26,6 +26,19 @@ namespace CRM.Mobile.Core.Services.AutoMapper
 
                 cfg.CreateMap<HoldModel, Hold>();
                 cfg.CreateMap<Hold, HoldModel>();
+
+                cfg.CreateMap<HoldConditionModel, HoldCondition>();
+                cfg.CreateMap<HoldCondition, HoldConditionModel>();
+
+                cfg.CreateMap<HoldInspectionModel, HoldInspection>();
+                cfg.CreateMap<HoldInspection, HoldInspectionModel>();
+
+                cfg.CreateMap<HoldImageModel, HoldImage>();
+                cfg.CreateMap<HoldImage, HoldImageModel>();
+
+                cfg.CreateMap<InspectionModel, Inspection>();
+                cfg.CreateMap<Inspection, InspectionModel>();
+
             });
 
             iMapper = mapperConfiguration.CreateMapper();

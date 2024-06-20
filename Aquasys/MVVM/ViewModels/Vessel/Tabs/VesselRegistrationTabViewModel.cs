@@ -121,12 +121,6 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
         #region ValidateVessel
         private async Task<bool> ValidateVessel()
         {
-            if (string.IsNullOrEmpty(VesselModel.OS))
-            {
-                await Shell.Current.DisplayAlert("Alerta", "Insira o OS", "OK");
-                return false;
-            }
-
             if (string.IsNullOrEmpty(VesselModel.VesselName))
             {
                 await Shell.Current.DisplayAlert("Alerta", "Insira o Vessel Name", "OK");
@@ -282,8 +276,10 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
                 var vesselImage = mapper.Map<VesselImage>(vesselImageModel);
 
                 if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
+                {
                     await vesselBO.DeleteAsync(vesselImage);
                     Images.Remove(vesselImageModel);
+                }
             }
             catch (Exception ex)
             {

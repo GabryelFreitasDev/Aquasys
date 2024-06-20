@@ -45,6 +45,45 @@ namespace Aquasys.MVVM.ViewModels.MainPage
                 }
             }
         }
+
+        [RelayCommand]
+        private async Task BtnDeleteUser()
+        {
+            try
+            {
+                if (IsProcessRunning || user is null)
+                    return;
+
+                IsProcessRunning = true;
+
+                var userDelete = mapper.Map<User>(user);
+
+                if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
+                {
+                    try
+                    {
+                        await new UserBO().DeleteAsync(userDelete);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                IsProcessRunning = false;
+            }
+            Shell.Current.FlyoutIsPresented = false;
+            var currentPage = Application.Current!.MainPage;
+            Shell.SetNavBarIsVisible(currentPage, false);
+            await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage());
+        }
+
         [RelayCommand]
         private async Task BtnLogoutClick()
         {

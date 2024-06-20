@@ -12,6 +12,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:ReverseBoolValueConverter x:Key="ReverseBoolValueConverter" />
+            <converters:BooleanToStringConverter x:Key="BooleanToStringConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

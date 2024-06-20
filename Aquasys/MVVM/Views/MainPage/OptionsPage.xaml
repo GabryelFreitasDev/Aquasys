@@ -35,5 +35,12 @@
             FontSize="15"
             WidthRequest="300"
             Command="{Binding BtnEditUserCommand}"/>
+        <dx:DXButton 
+            x:Name="BtnDeleteAccount"
+            BackgroundColor="#801515"
+            Content="Delete Account"
+            FontSize="15"
+            WidthRequest="300"
+            Command="{Binding BtnDeleteUserCommand}"/>
     </VerticalStackLayout>
 </local:BasePages>

@@ -1,7 +1,6 @@
 using Aquasys.MVVM.Views.Login;
 using Aquasys.MVVM.Views.MainPage;
 using Aquasys.MVVM.Views.Vessel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace Aquasys;
 
@@ -26,6 +25,8 @@ public partial class AppShell : Shell
             Routing.RegisterRoute(nameof(VesselMainPage), typeof(VesselMainPage));
             Routing.RegisterRoute(nameof(VesselImagePage), typeof(VesselImagePage));
             Routing.RegisterRoute(nameof(HoldPage), typeof(HoldPage));
+            Routing.RegisterRoute(nameof(HoldInspectionPage), typeof(HoldInspectionPage));
+            Routing.RegisterRoute(nameof(HoldImagePage), typeof(HoldImagePage));
         #endregion
 
         Routing.RegisterRoute(nameof(OptionsPage), typeof(OptionsPage));

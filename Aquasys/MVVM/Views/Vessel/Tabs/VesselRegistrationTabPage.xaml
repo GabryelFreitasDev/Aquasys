@@ -28,18 +28,16 @@
                     FontSize="20"/>
 
                 <de:TextEdit
-                    x:Name="OS"
-                    Text="{Binding VesselModel.OS, Mode=TwoWay}"
-                    PlaceholderText="O.S"/>
-
-                <de:TextEdit
                     x:Name="VesselName"
+                    IsLabelFloating="True"
+                    LabelText="Vessel name"
                     Text="{Binding VesselModel.VesselName, Mode=TwoWay}"
                     PlaceholderText="Vessel name"/>
 
                 <de:TextEdit
                     x:Name="Place"
-
+                    IsLabelFloating="True"
+                    LabelText="Place"
                     Text="{Binding VesselModel.Place, Mode=TwoWay}"
                     PlaceholderText="Place"/>
 
@@ -58,11 +56,15 @@
 
                 <de:TextEdit
                     x:Name="IMO"
+                    IsLabelFloating="True"
+                    LabelText="I.M.O"
                     Text="{Binding VesselModel.IMO, Mode=TwoWay}"
                     PlaceholderText="I.M.O"/>
 
                 <de:TextEdit
                     x:Name="PortRegistry"
+                    IsLabelFloating="True"
+                    LabelText="Port Registry"
                     Text="{Binding VesselModel.PortRegistry, Mode=TwoWay}"
                     PlaceholderText="Port Registry"/>
 
@@ -85,11 +87,15 @@
 
                 <de:TextEdit 
                     x:Name="Owner"
+                    IsLabelFloating="True"
+                    LabelText="Owner"
                     Text="{Binding VesselModel.Operator, Mode=TwoWay}"
                     PlaceholderText="Owner"/>
 
                 <de:TextEdit 
                     x:Name="Operator"
+                    IsLabelFloating="True"
+                    LabelText="Operator"
                     Text="{Binding VesselModel.Owner, Mode=TwoWay}"
                     PlaceholderText="Operator"/>
 
@@ -107,7 +113,7 @@
                             </Grid>
                         </Frame>
                     </toolkit:Expander.Header>
-                    <dxcv:DXCollectionView ItemsSource="{Binding Images}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2">
+                    <dxcv:DXCollectionView ItemsSource="{Binding Images}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
                         <dxcv:DXCollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Frame CornerRadius="5" Padding="0" HasShadow="True">

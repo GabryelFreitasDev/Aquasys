@@ -31,7 +31,13 @@
                     </ScrollView>
                 </dxco:TabViewItem.Content>
             </dxco:TabViewItem>
-            <dxco:TabViewItem HeaderIcon="inspectiontablist"></dxco:TabViewItem>
+            <dxco:TabViewItem HeaderIcon="inspectiontablist">
+                <dxco:TabViewItem.Content>
+                    <ScrollView>
+                        <view:VesselInspectionRegistrationTabPage BindingContext="{Binding VesselInspectionRegistrationTabViewModel}"/>
+                    </ScrollView>
+                </dxco:TabViewItem.Content>
+            </dxco:TabViewItem>
             <dxco:TabViewItem HeaderIcon="reporttablist"></dxco:TabViewItem>
         </dxco:TabView>
     </Grid>

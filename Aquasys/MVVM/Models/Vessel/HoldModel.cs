@@ -21,5 +21,7 @@ namespace Aquasys.MVVM.Models.Vessel
 
         public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
         public long IDVessel { get; set; }
+
+        public bool Inspectioned { get; set; } = false;
     }
 }

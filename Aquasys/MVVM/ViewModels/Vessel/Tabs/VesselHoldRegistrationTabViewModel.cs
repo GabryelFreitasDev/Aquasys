@@ -72,8 +72,16 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
                 var hold = mapper.Map<Hold>(holdModel);
 
                 if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
-                    await holdBO.DeleteAsync(hold);
-                Holds.Remove(holdModel);
+                {
+                    try
+                    {
+                        await holdBO.DeleteAsync(hold);
+                        Holds.Remove(holdModel);
+                    }catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+                }
             }
             catch (Exception ex)
             {
