@@ -38,7 +38,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
             inspectionBO = new();
         }
 
-        public override async void OnAppearing()
+        public override async Task OnAppearing()
         {
             await CarregaDados();
         }

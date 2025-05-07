@@ -40,7 +40,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
                 await Shell.Current.GoToAsync($"{nameof(VesselMainPage)}?{nameof(Id)}={vessel.IDVessel}");
         }
 
-        public override async void OnAppearing()
+        public override async Task OnAppearing()
         {
             await ValidPermissions();
             await LoadVesselsAsync();

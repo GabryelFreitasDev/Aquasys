@@ -51,7 +51,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
             images = new();
         }
 
-        public override async void OnAppearing()
+        public override async Task OnAppearing()
         {
             await CarregaDados();
         }
@@ -184,6 +184,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel.Tabs
                     vesselExists = mapper.Map<Core.Entities.Vessel>(VesselModel);
                     if (await vesselBO.UpdateAsync(vesselExists) && mostraMensagem)
                     {
+
                         await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                         await Shell.Current.GoToAsync("..", true);
                     }

@@ -18,7 +18,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             holdImageModel = new();
         }
 
-        public override async void OnAppearing()
+        public override async Task OnAppearing()
         {
             await PreencheDados();
         }

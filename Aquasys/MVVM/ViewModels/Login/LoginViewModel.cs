@@ -29,14 +29,13 @@ namespace Aquasys.MVVM.ViewModels.Login
             BtnCreateAccountClickCommand = new Command(async () => await CreateNewAccount());
         }
 
-        public override async void OnAppearing()
+        public override async Task OnAppearing()
         {
             if (IsLoadedViewModel)
                 return;
 
             IsLoadedViewModel = true;
 
-            base.OnAppearing();
             var userRemember = await new UserBO().GetFilteredAsync<User>(x => x.RememberMe == true);
 
             if (userRemember?.Any() ?? false)

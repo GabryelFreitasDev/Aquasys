@@ -38,7 +38,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             vesselInspectionRegistrationTabViewModel = new VesselInspectionRegistrationTabViewModel();
             vesselInspectionRegistrationTabPage = new VesselInspectionRegistrationTabPage();
         }
-        public override async void OnAppearing()
+        public override async Task OnAppearing()
         {
             await LoadTabs();
         }
@@ -47,8 +47,8 @@ namespace Aquasys.MVVM.ViewModels.Vessel
         {
             if (string.IsNullOrEmpty(Id))
             {
-                VesselRegistrationTabViewModel.OnAppearing();
-                VesselHoldRegistrationTabViewModel.OnAppearing();
+                await VesselRegistrationTabViewModel.OnAppearing();
+                await VesselHoldRegistrationTabViewModel.OnAppearing();
                 return;
             }
 
@@ -59,9 +59,9 @@ namespace Aquasys.MVVM.ViewModels.Vessel
                 VesselHoldRegistrationTabViewModel.IDVessel = vessel.IDVessel;
                 VesselInspectionRegistrationTabViewModel.IDVessel = vessel.IDVessel;
 
-                VesselRegistrationTabViewModel.OnAppearing();
-                VesselHoldRegistrationTabViewModel.OnAppearing();
-                VesselInspectionRegistrationTabViewModel.OnAppearing();
+                await VesselRegistrationTabViewModel.OnAppearing();
+                await VesselHoldRegistrationTabViewModel.OnAppearing();
+                await VesselInspectionRegistrationTabViewModel.OnAppearing();
             }
         }
     }

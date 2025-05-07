@@ -7,7 +7,6 @@ using Aquasys.MVVM.Views.Vessel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using static Android.Provider.MediaStore;
 
 namespace Aquasys.MVVM.ViewModels.Vessel
 {
@@ -41,7 +40,7 @@ namespace Aquasys.MVVM.ViewModels.Vessel
             holdImages = new();
         }
 
-        public override async void OnAppearing()
+        public override async Task OnAppearing()
         {
             await PreencheDados();
         }

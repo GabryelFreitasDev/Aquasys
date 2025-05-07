@@ -13,8 +13,8 @@ namespace Aquasys.MVVM.ViewModels
         public IMapper mapper = MapperService.CreateMapper();
         public void SetInstancePage(Page page) => this.Page = page;
         public string Id { get; set; }
-        public virtual void OnAppearing() { }
-        public virtual void OnDisappearing() { }
+        public virtual async Task OnAppearing() { }
+        public virtual async Task OnDisappearing() { }
 
         public BaseViewModels() { }
     }
