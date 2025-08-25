@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePages xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:local="clr-namespace:Aquasys.App.MVVM.Views"
+             xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+             x:Class="Aquasys.App.MVVM.Views.Vessel.HoldInspectionPage">
+
+    <local:BasePages.BindingContext>
+        <s:HoldInspectionViewModel />
+    </local:BasePages.BindingContext>
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="10">
+
+                <Label 
+                    Text="Hold Inspection" 
+                    FontAttributes="Bold" 
+                    FontSize="20"/>
+                
+                <input:CheckBox
+                    x:Name="Empty"
+                    HorizontalOptions="Start"
+                    Text="Empty"
+                    TextColor="Black"
+                    IsChecked="{Binding HoldConditionModel.Empty, Mode=TwoWay}"/>
+
+                <input:CheckBox
+                     x:Name="Clean"
+                     HorizontalOptions="Start"
+                     Text="Clean"
+                     TextColor="Black"
+                     IsChecked="{Binding HoldConditionModel.Clean, Mode=TwoWay}"/>
+
+                <input:CheckBox
+                     x:Name="Dry"
+                     HorizontalOptions="Start"
+                     Text="Dry"
+                     TextColor="Black"
+                     IsChecked="{Binding HoldConditionModel.Dry, Mode=TwoWay}"/>
+
+                <input:CheckBox
+                     x:Name="OdorFree"
+                     HorizontalOptions="Start"
+                     Text="Odor free"
+                     TextColor="Black"
+                     IsChecked="{Binding HoldConditionModel.OdorFree, Mode=TwoWay}"/>
+
+                <input:CheckBox
+                     x:Name="Insects"
+                     HorizontalOptions="Start"
+                     Text="Insect free"
+                     TextColor="Black"
+                     IsChecked="{Binding HoldConditionModel.Insects, Mode=TwoWay}"/>
+
+                <input:CheckBox
+                     x:Name="CargoResidue"
+                     HorizontalOptions="Start"
+                     Text="Free from residue from previous cargos"
+                     TextColor="Black"
+                     IsChecked="{Binding HoldConditionModel.CargoResidue, Mode=TwoWay}"/>
+
+                <dx:DXButton 
+                    ButtonType="Accent"
+                    Content="Add Hold Image +"
+                    Command="{Binding AddHoldImageCommand}"/>
+
+                <toolkit:Expander Command="{Binding ExpandCommand}" IsVisible="{Binding HasImages}">
+                    <toolkit:Expander.Header>
+                        <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
+                            <Grid ColumnDefinitions="*,50">
+                                <Label Grid.Column="0" Text="Cargo Images" VerticalOptions="Center"></Label>
+                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
+                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
+                            </Grid>
+                        </Frame>
+                    </toolkit:Expander.Header>
+                    <dxcv:DXCollectionView ItemsSource="{Binding HoldImages}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
+                        <dxcv:DXCollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame CornerRadius="5" Padding="0" HasShadow="True">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HoldInspectionViewModel }}, Path=EditHoldImageCommand}"
+                                             CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
+                                        <Image Grid.Column="0" Source="{Binding Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="100" WidthRequest="100"></Image>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="5" VerticalOptions="Center">
+                                            <HorizontalStackLayout Spacing="5">
+                                                <Label Text="Name:" FontAttributes="Bold"></Label>
+                                                <Label Text="{Binding Description}"></Label>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <dx:DXButton 
+                                            Grid.Column="2"
+                                            ButtonType="ToolButton"
+                                            Icon="lixeira"
+                                            IconColor="Red"
+                                            BackgroundColor="Transparent"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HoldInspectionViewModel }}, Path=DeleteHoldImageCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </dxcv:DXCollectionView.ItemTemplate>
+                    </dxcv:DXCollectionView>
+
+                </toolkit:Expander>
+
+                <dx:DXButton 
+                    ButtonType="Accent"
+                    Content="Save"
+                    Command="{Binding SaveHoldInspectionCommand}"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        
+    </Grid>
+</local:BasePages>

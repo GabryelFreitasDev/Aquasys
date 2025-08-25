@@ -1,0 +1,67 @@
+<Shell
+    x:Class="Aquasys.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+    xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Aquasys.App.MVVM.Views"
+    mc:Ignorable="d"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.MainPage"
+    Shell.NavBarIsVisible="True"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarIsVisible="False"
+    Shell.BackgroundColor="{StaticResource Primary}"
+    Shell.TitleColor="White">
+
+    <Shell.BindingContext>
+        <s:OptionsViewModel/>
+    </Shell.BindingContext>
+
+    <Shell.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="Transparent"
+                               StatusBarStyle="LightContent" />
+    </Shell.Behaviors>
+
+    <Shell.FlyoutHeader>
+        <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" HeightRequest="60">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                   Text="{Binding User.UserName, StringFormat='Hi, {0}'}"
+                   TextColor="White"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Start"
+                   FontAttributes="Bold"
+                   Padding="10" />
+
+                <ImageButton Grid.Column="1"
+                         Source="config.png"
+                         Aspect="AspectFill"
+                         HeightRequest="35"
+                         WidthRequest="35"
+                         HorizontalOptions="End"
+                         VerticalOptions="Center"
+                         Margin="0,0,10,0"
+                         Command="{Binding BtnConfigClickCommand}"/>
+            </Grid>
+        </Border>
+    </Shell.FlyoutHeader>
+
+    <ShellContent ContentTemplate="{DataTemplate local:Vessel.VesselListPage}" />
+    
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <dx:DXButton 
+                    ButtonType="Accent"
+                    Content="Logout"
+                    BackgroundColor="#801515"
+                    Command="{Binding BtnLogoutClickCommand}"/>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+</Shell>

@@ -1,0 +1,48 @@
+﻿using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
+using Aquasys.App.Core.Data;
+using DevExpress.Maui;
+using InputKit.Handlers;
+using RGPopup.Maui.Extensions;
+
+namespace Aquasys.App
+{
+    public static class MauiProgram
+    {
+        public static MauiApp CreateMauiApp()
+        {
+            var builder = MauiApp.CreateBuilder();
+            builder.UseMauiApp<App>()
+            .UseMauiRGPopup()
+            .UseMauiCommunityToolkit()
+            .UseDevExpress()
+                .UseDevExpressCharts()
+                .UseDevExpressCollectionView()
+                .UseDevExpressControls()
+                .UseDevExpressDataGrid()
+                .UseDevExpressEditors()
+                .UseDevExpressScheduler()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            .ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddInputKitHandlers();
+            });
+#if DEBUG
+            builder.Logging.AddDebug();
+#endif
+            builder.Services.AddSingleton<DatabaseContext>();
+
+            DevExpress.Maui.Charts.Initializer.Init();
+            DevExpress.Maui.CollectionView.Initializer.Init();
+            DevExpress.Maui.Controls.Initializer.Init();
+            DevExpress.Maui.Editors.Initializer.Init();
+            DevExpress.Maui.Scheduler.Initializer.Init();
+
+            return builder.Build();
+        }
+    }
+}
