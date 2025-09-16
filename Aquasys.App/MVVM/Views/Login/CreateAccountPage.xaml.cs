@@ -4,9 +4,9 @@ namespace Aquasys.App.MVVM.Views.Login;
 
 public partial class CreateAccountPage : ContentPage
 {
-	public CreateAccountPage()
+	public CreateAccountPage(CreateAccountViewModel createAccontViewModel)
 	{
 		InitializeComponent();
-		BindingContext = new CreateAccontViewModel();
+		BindingContext = createAccontViewModel;
 	}
 }

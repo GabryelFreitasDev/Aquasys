@@ -14,13 +14,10 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel.Tabs"
              x:Class="Aquasys.App.MVVM.Views.Vessel.Tabs.VesselRegistrationTabPage">
-
-    <ContentView.BindingContext>
-        <s:VesselRegistrationTabViewModel />
-    </ContentView.BindingContext>
-
+    
     <ContentView.Content>
         <Grid Padding="10">
+            <ScrollView>
             <VerticalStackLayout Padding="10" Spacing="10" Grid.ColumnSpan="4">
                 <Label 
                     Text="Vessel Registration" 
@@ -145,11 +142,13 @@
                     </dxcv:DXCollectionView>
                 </toolkit:Expander>
                 
+                
                 <dx:DXButton 
                     ButtonType="Accent"
                     Content="Save"
                     Command="{Binding BtnSalvarClickCommand}"/>
             </VerticalStackLayout>
+            </ScrollView>
         </Grid>
     </ContentView.Content>
 </ContentView>

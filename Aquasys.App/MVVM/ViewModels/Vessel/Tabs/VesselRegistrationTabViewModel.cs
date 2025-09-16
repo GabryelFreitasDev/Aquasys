@@ -1,6 +1,6 @@
 ﻿using Aquasys.App.Controls.Editors;
-using Aquasys.App.Core.BO;
-using Aquasys.App.Core.Entities;
+
+using Aquasys.Core.Entities;
 using Aquasys.App.Core.Enums;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CountryData.Standard;
 using System.Collections.ObjectModel;
+using Aquasys.App.Core.Data;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 {
@@ -16,39 +17,32 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
     public partial class VesselRegistrationTabViewModel : BaseViewModels
     {
 
-        [ObservableProperty]
-        private VesselModel vesselModel;
+        private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
+        private readonly ILocalRepository<VesselImage> _vesselImageRepository;
 
         [ObservableProperty]
-        private List<Country> flags;
+        private VesselModel _vesselModel;
 
-        [ObservableProperty]
-        private Country flagSelecionada;
+        [ObservableProperty] private List<Country> _flags;
+        [ObservableProperty] private Country _flagSelecionada;
+        [ObservableProperty] private List<EntidadeGenerica> _vesselsType;
+        [ObservableProperty] private EntidadeGenerica _vesselTypeSelecionado;
+        [ObservableProperty] private ObservableCollection<VesselImageModel> _images;
+        [ObservableProperty] private bool _expanded = true;
+        [ObservableProperty] private bool _hasImages = false;
 
-        [ObservableProperty]
-        private List<EntidadeGenerica> vesselsType;
-
-        [ObservableProperty]
-        private EntidadeGenerica vesselTypeSelecionado;
-
-        [ObservableProperty]
-        private ObservableCollection<VesselImageModel> images;
-
-        [ObservableProperty]
-        private bool expanded = true;
-
-        [ObservableProperty]
-        private bool hasImages = false;
-
-        private VesselBO vesselBO;
-        public VesselRegistrationTabViewModel()
+        public VesselRegistrationTabViewModel(
+            ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
+            ILocalRepository<VesselImage> vesselImageRepository)
         {
-            vesselBO = new();
-            vesselModel = new();
-            flags = new();
-            vesselsType = new();
-            flagSelecionada = new();
-            images = new();
+            _vesselRepository = vesselRepository;
+            _vesselImageRepository = vesselImageRepository;
+
+            _vesselModel = new();
+            _flags = new();
+            _vesselsType = new();
+            _flagSelecionada = new();
+            _images = new();
         }
 
         public override async Task OnAppearing()
@@ -92,7 +86,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         {
             if (VesselModel?.IDVessel is not null && VesselModel?.IDVessel != 0)
             {
-                var vesselImages = await new VesselImageBO().GetFilteredAsync(x => x.IDVessel == VesselModel.IDVessel);
+                var vesselImages = await _vesselImageRepository.GetFilteredAsync(x => x.IDVessel == VesselModel.IDVessel);
                 ObservableCollection<VesselImageModel> vesselImagesModel = new();
 
                 vesselImages.ForEach(x => vesselImagesModel.Add(mapper.Map<VesselImageModel>(x)));
@@ -178,11 +172,11 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         {
             if (VesselModel?.IDVessel is not null && VesselModel?.IDVessel != 0)
             {
-                var vesselExists = await vesselBO.GetByIdAsync(VesselModel?.IDVessel ?? -1);
+                var vesselExists = await _vesselRepository.GetByIdAsync(VesselModel?.IDVessel ?? -1);
                 if (vesselExists is not null)
                 {
-                    vesselExists = mapper.Map<Core.Entities.Vessel>(VesselModel);
-                    if (await vesselBO.UpdateAsync(vesselExists) && mostraMensagem)
+                    vesselExists = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
+                    if (await _vesselRepository.UpdateAsync(vesselExists) && mostraMensagem)
                     {
 
                         await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
@@ -192,10 +186,10 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             }
             else
             {
-                var vesselSave = mapper.Map<Core.Entities.Vessel>(VesselModel);
+                var vesselSave = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
                 vesselSave.IDUserRegistration = ContextUtils.ContextUser.IDUser;
                 
-                if (await vesselBO.InsertAsync(vesselSave) && mostraMensagem)
+                if (await _vesselRepository.InsertAsync(vesselSave) && mostraMensagem)
                 {
                     await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                     await Shell.Current.GoToAsync("..", true);
@@ -224,7 +218,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
                     vesselImage.Image = anexo.Content;
                     vesselImage.IDVessel = VesselModel.IDVessel;
 
-                    await new VesselImageBO().InsertAsync(vesselImage);
+                    await _vesselImageRepository.InsertAsync(vesselImage);
 
                     MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"{nameof(VesselImagePage)}?{nameof(Id)}={vesselImage.IDVesselImage}"));
                 }
@@ -278,7 +272,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 
                 if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
                 {
-                    await vesselBO.DeleteAsync(vesselImage);
+                    await _vesselImageRepository.DeleteAsync(vesselImage);
                     Images.Remove(vesselImageModel);
                 }
             }

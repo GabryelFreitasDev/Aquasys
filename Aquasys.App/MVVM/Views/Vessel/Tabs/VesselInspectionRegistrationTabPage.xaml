@@ -15,10 +15,6 @@
              xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel.Tabs"
              x:Class="Aquasys.App.MVVM.Views.Vessel.Tabs.VesselInspectionRegistrationTabPage">
 
-    <ContentView.BindingContext>
-        <s:VesselInspectionRegistrationTabViewModel />
-    </ContentView.BindingContext>
-
     <ContentView.Content>
         <Grid Padding="10">
             <VerticalStackLayout Padding="10" Spacing="10" Grid.ColumnSpan="4">

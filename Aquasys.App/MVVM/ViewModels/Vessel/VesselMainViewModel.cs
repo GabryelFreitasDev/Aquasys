@@ -1,43 +1,44 @@
-﻿using Aquasys.App.Core.BO;
+﻿using Aquasys.App.Core.Intefaces;
+using Aquasys.Core.Entities;
+using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
-using Aquasys.App.MVVM.ViewModels.Vessel.Tabs;
-using Aquasys.App.MVVM.Views.Vessel.Tabs;
+using Aquasys.App.MVVM.Views.Vessel.Tabs; // Using para as páginas das abas
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Threading.Tasks;
+using Aquasys.App.Core.Data;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
     [QueryProperty(nameof(Id), nameof(Id))]
     public partial class VesselMainViewModel : BaseViewModels
     {
+        private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
+
+        // Propriedades para segurar as PÁGINAS das abas
         [ObservableProperty]
-        public VesselRegistrationTabViewModel vesselRegistrationTabViewModel;
+        public VesselRegistrationTabPage _vesselRegistrationTabPage;
 
         [ObservableProperty]
-        public VesselRegistrationTabPage vesselRegistrationTabPage;
+        public VesselHoldRegistrationTabPage _vesselHoldRegistrationTabPage;
 
         [ObservableProperty]
-        public VesselHoldRegistrationTabViewModel vesselHoldRegistrationTabViewModel;
+        public VesselInspectionRegistrationTabPage _vesselInspectionRegistrationTabPage;
 
-        [ObservableProperty]
-        public VesselHoldRegistrationTabPage vesselHoldRegistrationTabPage;
-
-        [ObservableProperty]
-        public VesselInspectionRegistrationTabViewModel vesselInspectionRegistrationTabViewModel;
-
-        [ObservableProperty]
-        public VesselInspectionRegistrationTabPage vesselInspectionRegistrationTabPage;
-
-        public VesselMainViewModel()
+        public VesselMainViewModel(
+            ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
+            // O construtor agora recebe as PÁGINAS, já prontas e com suas ViewModels
+            VesselRegistrationTabPage vesselRegistrationTabPage,
+            VesselHoldRegistrationTabPage vesselHoldRegistrationTabPage,
+            VesselInspectionRegistrationTabPage vesselInspectionRegistrationTabPage)
         {
-            vesselRegistrationTabViewModel = new VesselRegistrationTabViewModel();
-            vesselRegistrationTabPage = new VesselRegistrationTabPage();
+            _vesselRepository = vesselRepository;
 
-            vesselHoldRegistrationTabViewModel = new VesselHoldRegistrationTabViewModel();
-            vesselHoldRegistrationTabPage = new VesselHoldRegistrationTabPage();
-
-            vesselInspectionRegistrationTabViewModel = new VesselInspectionRegistrationTabViewModel();
-            vesselInspectionRegistrationTabPage = new VesselInspectionRegistrationTabPage();
+            // Atribui as páginas injetadas às propriedades
+            _vesselRegistrationTabPage = vesselRegistrationTabPage;
+            _vesselHoldRegistrationTabPage = vesselHoldRegistrationTabPage;
+            _vesselInspectionRegistrationTabPage = vesselInspectionRegistrationTabPage;
         }
+
         public override async Task OnAppearing()
         {
             await LoadTabs();
@@ -47,21 +48,36 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         {
             if (string.IsNullOrEmpty(Id))
             {
-                await VesselRegistrationTabViewModel.OnAppearing();
-                await VesselHoldRegistrationTabViewModel.OnAppearing();
+                // Para um novo Vessel, apenas chama OnAppearing para inicializações
+                await (VesselRegistrationTabPage.BindingContext as BaseViewModels)?.OnAppearing();
+                await (VesselHoldRegistrationTabPage.BindingContext as BaseViewModels)?.OnAppearing();
                 return;
             }
 
-            var vessel = await new VesselBO().GetByIdAsync(Id);
-            if(vessel is not null)
+            var vessel = await _vesselRepository.GetByIdAsync(Id.ToLong());
+            if (vessel is not null)
             {
-                VesselRegistrationTabViewModel.VesselModel = mapper.Map<VesselModel>(vessel);
-                VesselHoldRegistrationTabViewModel.IDVessel = vessel.IDVessel;
-                VesselInspectionRegistrationTabViewModel.IDVessel = vessel.IDVessel;
+                // Pega a ViewModel de dentro da Página e passa os dados
+                var vmRegistration = VesselRegistrationTabPage.BindingContext as Tabs.VesselRegistrationTabViewModel;
+                if (vmRegistration != null)
+                {
+                    vmRegistration.VesselModel = mapper.Map<VesselModel>(vessel);
+                    await vmRegistration.OnAppearing();
+                }
 
-                await VesselRegistrationTabViewModel.OnAppearing();
-                await VesselHoldRegistrationTabViewModel.OnAppearing();
-                await VesselInspectionRegistrationTabViewModel.OnAppearing();
+                var vmHold = VesselHoldRegistrationTabPage.BindingContext as Tabs.VesselHoldRegistrationTabViewModel;
+                if (vmHold != null)
+                {
+                    vmHold.IDVessel = vessel.IDVessel;
+                    await vmHold.OnAppearing();
+                }
+
+                var vmInspection = VesselInspectionRegistrationTabPage.BindingContext as Tabs.VesselInspectionRegistrationTabViewModel;
+                if (vmInspection != null)
+                {
+                    vmInspection.IDVessel = vessel.IDVessel;
+                    await vmInspection.OnAppearing();
+                }
             }
         }
     }

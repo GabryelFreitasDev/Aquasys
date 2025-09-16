@@ -1,5 +1,5 @@
 ﻿using Aquasys.App.Core.DependencyServices;
-using Aquasys.App.Core.Entities;
+using Aquasys.Core.Entities;
 using Aquasys.App.Core.Utils;
 using DevExpress.Maui.Core.Internal;
 

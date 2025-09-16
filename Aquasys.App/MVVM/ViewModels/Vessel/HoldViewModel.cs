@@ -1,9 +1,11 @@
-﻿using Aquasys.App.Core.BO;
-using Aquasys.App.Core.Entities;
+﻿using Aquasys.App.Core.Data;
+using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
+using Aquasys.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
@@ -11,17 +13,20 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
     [QueryProperty(nameof(IDVessel), nameof(IDVessel))]
     public partial class HoldViewModel : BaseViewModels
     {
-        [ObservableProperty]
-        private HoldModel holdModel;
+        private readonly ILocalRepository<Hold> _holdRepository;
 
         [ObservableProperty]
-        private bool expanded = true;
+        private HoldModel _holdModel;
+
+        [ObservableProperty]
+        private bool _expanded = true;
 
         public long IDVessel { get; set; }
 
-        public HoldViewModel()
+        public HoldViewModel(ILocalRepository<Hold> holdRepository)
         {
-            holdModel = new();
+            _holdRepository = holdRepository;
+            _holdModel = new();
         }
 
         public override async Task OnAppearing()
@@ -33,7 +38,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         {
             if (Id.IsNotNullOrEmpty())
             {
-                var hold = await new HoldBO().GetByIdAsync(Id.ToLong());
+                var hold = await _holdRepository.GetByIdAsync(Id.ToLong());
                 HoldModel = mapper.Map<HoldModel>(hold);
             }
         }
@@ -41,18 +46,13 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         private async Task SaveHold()
         {
-            await SaveOrUpdateHold();
-        }
-
-        private async Task SaveOrUpdateHold()
-        {
-            if(HoldModel?.IDHold is not null && HoldModel?.IDHold != 0)
+            if (HoldModel.IDHold != 0)
             {
-                var hold = await new HoldBO().GetByIdAsync(HoldModel?.IDHold ?? -1);
-                if(hold is not null)
+                var hold = await _holdRepository.GetByIdAsync(HoldModel.IDHold);
+                if (hold is not null)
                 {
                     hold = mapper.Map<Hold>(HoldModel);
-                    if (await new HoldBO().UpdateAsync(hold))
+                    if (await _holdRepository.UpdateAsync(hold))
                     {
                         await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                         await Shell.Current.GoToAsync("..", true);
@@ -63,7 +63,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             {
                 var hold = mapper.Map<Hold>(HoldModel);
                 hold.IDVessel = IDVessel;
-                if (await new HoldBO().InsertAsync(hold))
+                if (await _holdRepository.InsertAsync(hold))
                 {
                     await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                     await Shell.Current.GoToAsync("..", true);
@@ -72,13 +72,9 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         }
 
         [RelayCommand]
-        private async Task Expand(VesselImageModel vesselImageModel)
+        private void Expand()
         {
-            if (Expanded == true)
-                Expanded = false;
-            else
-                Expanded = true;
+            Expanded = !Expanded;
         }
-
     }
 }

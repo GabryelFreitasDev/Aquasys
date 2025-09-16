@@ -1,5 +1,5 @@
 ﻿
-using Aquasys.App.Core.Entities;
+using Aquasys.Core.Entities;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;

@@ -4,8 +4,9 @@ namespace Aquasys.App.MVVM.Views.Vessel;
 
 public partial class HoldPage : BasePages
 {
-    public HoldPage()
-	{
-		InitializeComponent();
-	}
+    public HoldPage(HoldViewModel viewModel)
+    {
+        InitializeComponent();
+        BindingContext = viewModel;
+    }
 }

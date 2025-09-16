@@ -6,39 +6,28 @@
              xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
              xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
              xmlns:view="clr-namespace:Aquasys.App.MVVM.Views.Vessel.Tabs"
-             x:Class="Aquasys.App.MVVM.Views.Vessel.VesselMainPage">
-
-    <local:BasePages.BindingContext>
-        <s:VesselMainViewModel />
-    </local:BasePages.BindingContext>
+             x:Class="Aquasys.App.MVVM.Views.Vessel.VesselMainPage"
+             x:DataType="viewmodel:VesselMainViewModel">
 
     <Grid>
-        <dxco:TabView 
-            HeaderPanelIndent="0"
-            HeaderPanelShadowColor="{StaticResource Primary}" 
-            HeaderPanelShadowHeight="3">
-            <dxco:TabViewItem HeaderIcon="vesseltablist">
+        <dxco:TabView>
+            <dxco:TabViewItem HeaderText="Vessel">
                 <dxco:TabViewItem.Content>
-                    <ScrollView>
-                        <view:VesselRegistrationTabPage BindingContext="{Binding VesselRegistrationTabViewModel}"/>
-                    </ScrollView>
+                    <ContentView Content="{Binding VesselRegistrationTabPage}" />
                 </dxco:TabViewItem.Content>
             </dxco:TabViewItem>
-            <dxco:TabViewItem HeaderIcon="cargotablist">
+
+            <dxco:TabViewItem HeaderText="Porões">
                 <dxco:TabViewItem.Content>
-                    <ScrollView>
-                        <view:VesselHoldRegistrationTabPage BindingContext="{Binding VesselHoldRegistrationTabViewModel}"/>
-                    </ScrollView>
+                    <ContentView Content="{Binding VesselHoldRegistrationTabPage}" />
                 </dxco:TabViewItem.Content>
             </dxco:TabViewItem>
-            <dxco:TabViewItem HeaderIcon="inspectiontablist">
+
+            <dxco:TabViewItem HeaderText="Inspeção">
                 <dxco:TabViewItem.Content>
-                    <ScrollView>
-                        <view:VesselInspectionRegistrationTabPage BindingContext="{Binding VesselInspectionRegistrationTabViewModel}"/>
-                    </ScrollView>
+                    <ContentView Content="{Binding VesselInspectionRegistrationTabPage}" />
                 </dxco:TabViewItem.Content>
             </dxco:TabViewItem>
-            <dxco:TabViewItem HeaderIcon="reporttablist"></dxco:TabViewItem>
         </dxco:TabView>
     </Grid>
 </local:BasePages>

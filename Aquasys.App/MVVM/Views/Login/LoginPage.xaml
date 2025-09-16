@@ -12,27 +12,23 @@
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False">
 
-    <local:BasePages.BindingContext>
-        <s:LoginViewModel />
-    </local:BasePages.BindingContext>
-
     <VerticalStackLayout Padding="5" Spacing="5" VerticalOptions="Center">
 
-        <Grid Grid.Row="0"
+        <!--<Grid Grid.Row="0"
             IsVisible="{Binding LoadingInitInstanceDB, Converter={StaticResource ReverseBoolValueConverter}}">
             <Image VerticalOptions="Fill"
                    Aspect="AspectFit"
                    Source="aquasyslogo.svg"
                    IsAnimationPlaying="True"
                    WidthRequest="256" />
-        </Grid>
+        </Grid>-->
 
         <Image 
             Aspect="Fill" 
             Source="aquasyslogo.png"/>
 
         <VerticalStackLayout Padding="10" Spacing="10">
-            <de:TextEdit
+            <!--<de:TextEdit
                 x:Name="User" 
                 Text="{Binding LoginModel.UserName, Mode=TwoWay}" 
                 PlaceholderText="User"/>
@@ -62,7 +58,13 @@
                 BackgroundColor="Transparent"
                 Content="Create Account"
                 TextColor="{StaticResource Primary}"
-                Command="{Binding BtnCreateAccountClickCommand}"/>
+                Command="{Binding BtnCreateAccountClickCommand}"/>-->
+
+            <Entry Text="{Binding LoginModel.UserName}" Placeholder="Usuário" />
+
+            <Entry Text="{Binding LoginModel.Password}" Placeholder="Senha" IsPassword="True" />
+
+            <Button Text="Entrar" Command="{Binding ValidateLoginCommand}" />
         </VerticalStackLayout>
                 
     </VerticalStackLayout>

@@ -1,28 +1,30 @@
-﻿using Aquasys.App.Core.BO;
-using Aquasys.App.Core.Entities;
+﻿
+using Aquasys.Core.Entities;
 using Aquasys.App.MVVM.Models.Login;
 using System.Windows.Input;
+using Aquasys.App.Core.Data;
 
 namespace Aquasys.App.MVVM.ViewModels.Login
 {
-    public class CreateAccontViewModel : BaseViewModels
+    // Corrigido o nome da classe de "CreateAccontViewModel" para "CreateAccountViewModel"
+    public class CreateAccountViewModel : BaseViewModels
     {
-        private UserBO userBO = new UserBO();
+        private readonly ILocalRepository<User> _userRepository;
         public LoginModel Login { get; set; }
         public ICommand BtnCreateAccountClickCommand { get; private set; }
 
-        public CreateAccontViewModel()
+        public CreateAccountViewModel(ILocalRepository<User> userRepository)
         {
+            _userRepository = userRepository;
             Login = new LoginModel();
-
             BtnCreateAccountClickCommand = new Command(async () => await CreateNewAccount());
         }
 
         private async Task CreateNewAccount()
         {
-            if(!string.IsNullOrEmpty(Login.UserName) && !string.IsNullOrEmpty(Login.Password))
+            if (!string.IsNullOrEmpty(Login.UserName) && !string.IsNullOrEmpty(Login.Password))
             {
-                var findUser = await userBO.GetFilteredAsync<User>(x => x.UserName == Login.UserName && x.Password == Login.Password);
+                var findUser = await _userRepository.GetFilteredAsync(x => x.UserName == Login.UserName);
                 if (findUser.Any())
                 {
                     await Application.Current!.MainPage!.DisplayAlert("Informação", "Usuario já existente, realize o login.", "OK");
@@ -30,12 +32,14 @@ namespace Aquasys.App.MVVM.ViewModels.Login
                 }
                 else
                 {
-                    User user = new User();
-                    user.UserName = Login.UserName;
-                    user.Password = Login.Password;
-                    user.Email = Login.Email ?? string.Empty;
+                    User user = new User
+                    {
+                        UserName = Login.UserName,
+                        Password = Login.Password,
+                        Email = Login.Email ?? string.Empty
+                    };
 
-                    if (await userBO.InsertAsync(user))
+                    if (await _userRepository.InsertAsync(user))
                     {
                         await Application.Current!.MainPage!.DisplayAlert("Informação", "Cadastro realizado com sucesso! Realize o login.", "OK");
                         await Application.Current!.MainPage!.Navigation.PopAsync();

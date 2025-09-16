@@ -4,8 +4,9 @@ namespace Aquasys.App.MVVM.Views.Vessel;
 
 public partial class VesselImagePage : BasePages
 {
-    public VesselImagePage()
-	{
-		InitializeComponent();
-	}
+    public VesselImagePage(VesselImageViewModel viewModel)
+    {
+        InitializeComponent();
+        BindingContext = viewModel;
+    }
 }

@@ -11,11 +11,7 @@
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
              x:Class="Aquasys.App.MVVM.Views.Vessel.HoldInspectionPage">
-
-    <local:BasePages.BindingContext>
-        <s:HoldInspectionViewModel />
-    </local:BasePages.BindingContext>
-
+    
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="10">

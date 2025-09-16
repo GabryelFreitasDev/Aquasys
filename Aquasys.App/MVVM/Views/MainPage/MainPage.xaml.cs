@@ -4,10 +4,10 @@ namespace Aquasys.App.MVVM.Views.MainPage
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        public MainPage(MainPageViewModel mainPageViewModel)
         {
             InitializeComponent();
-            BindingContext = new MainPageViewModel();
+            BindingContext = mainPageViewModel;
         }
 
         protected override bool OnBackButtonPressed()

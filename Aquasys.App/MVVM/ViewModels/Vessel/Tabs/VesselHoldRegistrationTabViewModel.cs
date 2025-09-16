@@ -1,31 +1,30 @@
-﻿using Aquasys.App.Controls.Editors;
-using Aquasys.App.Core.BO;
-using Aquasys.App.Core.Entities;
-using Aquasys.App.Core.Enums;
+﻿using Aquasys.App.Core.Intefaces;
+using Aquasys.Core.Entities;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.App.MVVM.Views.Vessel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CountryData.Standard;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Aquasys.App.Core.Data;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 {
     [QueryProperty(nameof(Id), nameof(Id))]
     public partial class VesselHoldRegistrationTabViewModel : BaseViewModels
     {
-        public long IDVessel;
+        private readonly ILocalRepository<Hold> _holdRepository;
+
+        public long IDVessel { get; set; }
 
         [ObservableProperty]
-        private ObservableCollection<HoldModel> holds;
+        private ObservableCollection<HoldModel> _holds;
 
-        private HoldBO holdBO;
-
-        public VesselHoldRegistrationTabViewModel()
+        public VesselHoldRegistrationTabViewModel(ILocalRepository<Hold> holdRepository)
         {
-            holdBO = new();
-            Holds = new();
+            _holdRepository = holdRepository;
+            _holds = new();
         }
 
         public override async Task OnAppearing()
@@ -37,12 +36,8 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         {
             if (IDVessel != 0)
             {
-                var holds = await holdBO.GetFilteredAsync(x => x.IDVessel == IDVessel);
-                ObservableCollection<HoldModel> vesselImagesModel = new();
-
-                holds.ForEach(x => vesselImagesModel.Add(mapper.Map<HoldModel>(x)));
-
-                Holds = vesselImagesModel;
+                var holdsData = await _holdRepository.GetFilteredAsync(x => x.IDVessel == IDVessel);
+                Holds = new ObservableCollection<HoldModel>(mapper.Map<List<HoldModel>>(holdsData));
             }
         }
 
@@ -62,30 +57,17 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         [RelayCommand]
         private async Task DeleteHold(HoldModel holdModel)
         {
+            if (IsProcessRunning || holdModel is null) return;
+
             try
             {
-                if (IsProcessRunning || holdModel is null)
-                    return;
-
                 IsProcessRunning = true;
-
-                var hold = mapper.Map<Hold>(holdModel);
-
                 if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
                 {
-                    try
-                    {
-                        await holdBO.DeleteAsync(hold);
-                        Holds.Remove(holdModel);
-                    }catch (Exception ex)
-                    {
-                        throw new Exception(ex.Message);
-                    }
+                    var hold = await _holdRepository.GetByIdAsync(holdModel.IDHold);
+                    await _holdRepository.DeleteAsync(hold);
+                    Holds.Remove(holdModel);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
             finally
             {

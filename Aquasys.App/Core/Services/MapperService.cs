@@ -1,6 +1,7 @@
-﻿using Aquasys.App.Core.Entities;
+﻿using Aquasys.Core.Entities;
 using Aquasys.App.MVVM.Models.Vessel;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace Aquasys.App.Core.Services
 {

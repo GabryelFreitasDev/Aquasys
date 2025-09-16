@@ -16,10 +16,6 @@
              Shell.FlyoutBehavior="Flyout"
              Title="Aquasys">
 
-    <local:BasePages.BindingContext>
-        <s:VesselListViewModel />
-    </local:BasePages.BindingContext>
-
     <Grid ColumnDefinitions="*,*" RowDefinitions="50,*" VerticalOptions="Start">
         <Frame Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="0"></Frame>
 

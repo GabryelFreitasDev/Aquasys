@@ -11,10 +11,6 @@
              xmlns:view="clr-namespace:Aquasys.App.MVVM.Views.Vessel.Tabs"
              x:Class="Aquasys.App.MVVM.Views.Vessel.VesselImagePage">
 
-    <local:BasePages.BindingContext>
-        <s:VesselImageViewModel />
-    </local:BasePages.BindingContext>
-
     <Grid RowDefinitions="*,*">
         <Image Source="{Binding VesselImageModel.Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" ></Image>
 

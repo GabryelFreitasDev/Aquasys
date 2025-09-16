@@ -1,4 +1,4 @@
-﻿using Aquasys.App.Core.Entities;
+﻿using Aquasys.Core.Entities;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Globalization;

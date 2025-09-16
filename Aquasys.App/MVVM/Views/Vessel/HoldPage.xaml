@@ -11,10 +11,6 @@
              xmlns:view="clr-namespace:Aquasys.App.MVVM.Views.Vessel"
              x:Class="Aquasys.App.MVVM.Views.Vessel.HoldPage">
 
-    <local:BasePages.BindingContext>
-        <s:HoldViewModel />
-    </local:BasePages.BindingContext>
-
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="10">

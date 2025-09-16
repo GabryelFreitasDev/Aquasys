@@ -52,6 +52,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
 	  <None Remove="Resources\Images\aquasyslogo.svg" />
 	  <None Remove="Resources\images\cargotablist.svg" />
 	  <None Remove="Resources\images\icon_back_arrow.svg" />
@@ -74,7 +75,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="14.0.0" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="11.2.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="12.2.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CountryData.Standard" Version="1.5.0" />
 		<PackageReference Include="DevExpress.Maui.Charts" Version="24.1.3" />
@@ -84,17 +85,21 @@
 		<PackageReference Include="DevExpress.Maui.Editors" Version="24.1.3" />
 		<PackageReference Include="DevExpress.Maui.Scheduler" Version="24.1.3" />
 		<PackageReference Include="HorusStudio.Maui.Skeleton" Version="2.0.0" />
-		<PackageReference Include="InputKit.Maui" Version="4.5.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.60" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.60" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
-		<PackageReference Include="RGPopup.Maui" Version="1.1.2" />
+		<PackageReference Include="InputKit.Maui" Version="4.5.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.110" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.110" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
+		<PackageReference Include="RGPopup.Maui" Version="1.2.1" />
 		<PackageReference Include="SkiaSharp" Version="3.119.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.11" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.11" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="3.0.2" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="3.0.2" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="3.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Aquasys.Core\Aquasys.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

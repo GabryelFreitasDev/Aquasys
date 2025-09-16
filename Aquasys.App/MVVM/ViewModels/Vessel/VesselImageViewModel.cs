@@ -1,21 +1,26 @@
-﻿using Aquasys.App.Core.BO;
-using Aquasys.App.Core.Entities;
+﻿using Aquasys.App.Core.Intefaces;
+using Aquasys.Core.Entities;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+using Aquasys.App.Core.Data;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
     [QueryProperty(nameof(Id), nameof(Id))]
     public partial class VesselImageViewModel : BaseViewModels
     {
-        [ObservableProperty]
-        private VesselImageModel vesselImageModel;
+        private readonly ILocalRepository<VesselImage> _vesselImageRepository;
 
-        public VesselImageViewModel()
+        [ObservableProperty]
+        private VesselImageModel _vesselImageModel;
+
+        public VesselImageViewModel(ILocalRepository<VesselImage> vesselImageRepository)
         {
-            vesselImageModel = new();
+            _vesselImageRepository = vesselImageRepository;
+            _vesselImageModel = new();
         }
 
         public override async Task OnAppearing()
@@ -27,7 +32,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         {
             if (Id.IsNotNullOrEmpty())
             {
-                var vesselImage = await new VesselImageBO().GetByIdAsync(Id.ToLong());
+                var vesselImage = await _vesselImageRepository.GetByIdAsync(Id.ToLong());
                 VesselImageModel = mapper.Map<VesselImageModel>(vesselImage);
             }
         }
@@ -35,18 +40,13 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         private async Task SaveVesselImage()
         {
-            await SaveOrUpdateVesselImage();
-        }
-
-        private async Task SaveOrUpdateVesselImage()
-        {
-            if(VesselImageModel?.IDVesselImage is not null && VesselImageModel?.IDVesselImage != 0)
+            if (VesselImageModel.IDVesselImage != 0)
             {
-                var vesselImage = await new VesselImageBO().GetByIdAsync(VesselImageModel?.IDVesselImage ?? -1);
-                if(vesselImage is not null)
+                var vesselImage = await _vesselImageRepository.GetByIdAsync(VesselImageModel.IDVesselImage);
+                if (vesselImage is not null)
                 {
                     vesselImage = mapper.Map<VesselImage>(VesselImageModel);
-                    if (await new VesselImageBO().UpdateAsync(vesselImage))
+                    if (await _vesselImageRepository.UpdateAsync(vesselImage))
                     {
                         await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                         await Shell.Current.GoToAsync("..", true);
@@ -56,16 +56,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             else
             {
                 var vesselImage = mapper.Map<VesselImage>(VesselImageModel);
-
-                if (await new VesselImageBO().InsertAsync(vesselImage))
+                if (await _vesselImageRepository.InsertAsync(vesselImage))
                 {
                     await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                     await Shell.Current.GoToAsync("..", true);
                 }
             }
-            
-            
         }
-
     }
 }

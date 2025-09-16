@@ -1,20 +1,32 @@
-﻿using System.Collections.ObjectModel;
-using Aquasys.App.Core.BO;
+﻿using Aquasys.App.Core.Data;
+using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.App.MVVM.Views.Vessel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
     public partial class VesselListViewModel : BaseViewModels
     {
-        VesselBO vesselBO = new VesselBO();
+        private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
+        private readonly ILocalRepository<Aquasys.Core.Entities.VesselImage> _vesselImageRepository;
 
         [ObservableProperty]
-        private ObservableCollection<VesselModel> vessels = new();
-        
+        private ObservableCollection<VesselModel> _vessels = new();
+
+        public VesselListViewModel(
+            ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
+            ILocalRepository<Aquasys.Core.Entities.VesselImage> vesselImageRepository)
+        {
+            _vesselRepository = vesselRepository;
+            _vesselImageRepository = vesselImageRepository;
+        }
+
         [RelayCommand]
         private async Task BtnAddClick()
         {
@@ -24,11 +36,11 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         public async Task DeleteVessel(VesselModel vessel)
         {
-            if(await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
+            if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
                 if (vessel is not null)
                 {
-                    var vesselDeleted = await vesselBO.GetByIdAsync(vessel.IDVessel);
-                    await vesselBO.DeleteAsync(vesselDeleted);
+                    var vesselToDelete = await _vesselRepository.GetByIdAsync(vessel.IDVessel);
+                    await _vesselRepository.DeleteAsync(vesselToDelete);
                     Vessels.Remove(vessel);
                 }
         }
@@ -53,25 +65,19 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         public async Task LoadVesselsAsync()
         {
-            var vessels = await vesselBO.GetAllAsync();
-            vessels.OrderBy(x => x.VesselName);
+            var vesselsData = await _vesselRepository.GetAllAsync();
+            var orderedVessels = vesselsData.OrderBy(x => x.VesselName);
 
             Vessels.Clear();
 
-            if (vessels is not null && vessels.Any())
+            if (orderedVessels.Any())
             {
-                VesselImageBO vesselImageBO = new();
-                foreach (var vessel in vessels)
+                foreach (var vessel in orderedVessels)
                 {
-                    if(!Vessels.Any(x => x.IDVessel == vessel.IDVessel))
-                    {
-                        var vesselModel = mapper.Map<VesselModel>(vessel);
-                        var vesselImages = await vesselImageBO.GetFilteredAsync(x => x.IDVessel == vesselModel.IDVessel);
-
-                        vesselModel.FirstImage = vesselImages?.FirstOrDefault()?.Image ?? (byte[])ResourceUtils.GetResourceValue("aquasyslogo");
-
-                        Vessels.Add(vesselModel);
-                    }
+                    var vesselModel = mapper.Map<VesselModel>(vessel);
+                    var vesselImages = await _vesselImageRepository.GetFilteredAsync(x => x.IDVessel == vesselModel.IDVessel);
+                    vesselModel.FirstImage = vesselImages?.FirstOrDefault()?.Image ?? (byte[])ResourceUtils.GetResourceValue("aquasyslogo");
+                    Vessels.Add(vesselModel);
                 }
             }
         }
