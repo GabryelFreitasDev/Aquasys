@@ -53,7 +53,7 @@
         </Border>
     </Shell.FlyoutHeader>
 
-    <ShellContent ContentTemplate="{DataTemplate local:Vessel.VesselListPage}" />
+    <ShellContent ContentTemplate="{DataTemplate local:MainPage.MainPage}" />
     
     <Shell.FlyoutFooter>
         <VerticalStackLayout Padding="10" Spacing="10">

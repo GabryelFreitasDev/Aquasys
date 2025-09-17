@@ -100,34 +100,34 @@
                     ButtonType="Accent"
                     Content="Add Vessel Image +"
                     Command="{Binding AddVesselImageCommand}"/>
-                <toolkit:Expander Command="{Binding ExpandImagesCommand}" IsVisible="{Binding HasImages}">
-                    <toolkit:Expander.Header>
-                        <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
-                            <Grid ColumnDefinitions="*,50">
-                                <Label Grid.Column="0" Text="Vessel Images" VerticalOptions="Center"></Label>
-                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
-                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
-                            </Grid>
-                        </Frame>
-                    </toolkit:Expander.Header>
-                    <dxcv:DXCollectionView ItemsSource="{Binding Images}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
-                        <dxcv:DXCollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Frame CornerRadius="5" Padding="0" HasShadow="True">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer
+                    <toolkit:Expander Command="{Binding ExpandImagesCommand}" IsVisible="{Binding HasImages}">
+                        <toolkit:Expander.Header>
+                            <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
+                                <Grid ColumnDefinitions="*,50">
+                                    <Label Grid.Column="0" Text="Vessel Images" VerticalOptions="Center"></Label>
+                                    <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
+                                    <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
+                                </Grid>
+                            </Frame>
+                        </toolkit:Expander.Header>
+                        <dxcv:DXCollectionView ItemsSource="{Binding Images}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
+                            <dxcv:DXCollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame CornerRadius="5" Padding="0" HasShadow="True">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselRegistrationTabViewModel }}, Path=EditVesselImageCommand}"
                                             CommandParameter="{Binding .}"/>
-                                    </Frame.GestureRecognizers>
-                                    <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
-                                        <Image Grid.Column="0" Source="{Binding Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="100" WidthRequest="100"></Image>
-                                        <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="5" VerticalOptions="Center">
-                                            <HorizontalStackLayout Spacing="5">
-                                                <Label Text="Name:" FontAttributes="Bold"></Label>
-                                                <Label Text="{Binding Name}"></Label>
-                                            </HorizontalStackLayout>
-                                        </VerticalStackLayout>
-                                        <dx:DXButton 
+                                        </Frame.GestureRecognizers>
+                                        <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
+                                            <Image Grid.Column="0" Source="{Binding Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="100" WidthRequest="100"></Image>
+                                            <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="5" VerticalOptions="Center">
+                                                <HorizontalStackLayout Spacing="5">
+                                                    <Label Text="Name:" FontAttributes="Bold"></Label>
+                                                    <Label Text="{Binding Name}"></Label>
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                            <dx:DXButton 
                                             Grid.Column="2"
                                             ButtonType="ToolButton"
                                             Icon="lixeira"
@@ -135,19 +135,13 @@
                                             BackgroundColor="Transparent"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselRegistrationTabViewModel }}, Path=DeleteVesselImageCommand}"
                                             CommandParameter="{Binding .}"/>
-                                    </Grid>
-                                </Frame>
-                            </DataTemplate>
-                        </dxcv:DXCollectionView.ItemTemplate>
-                    </dxcv:DXCollectionView>
-                </toolkit:Expander>
-                
-                
-                <dx:DXButton 
-                    ButtonType="Accent"
-                    Content="Save"
-                    Command="{Binding BtnSalvarClickCommand}"/>
-            </VerticalStackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </dxcv:DXCollectionView.ItemTemplate>
+                        </dxcv:DXCollectionView>
+                    </toolkit:Expander>
+                </VerticalStackLayout>
             </ScrollView>
         </Grid>
     </ContentView.Content>

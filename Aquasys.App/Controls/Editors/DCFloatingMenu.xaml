@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView x:Class="Aquasys.App.Controls.Editors.DCFloatingMenu"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+             xmlns:dc="clr-namespace:Aquasys.App.Controls"
+             x:Name="root"
+             AbsoluteLayout.LayoutFlags="PositionProportional"
+             AbsoluteLayout.LayoutBounds="1,1,AutoSize,AutoSize">
+    <ContentView.Content>
+        <Grid x:Name="gridFloatMenu"
+              BindingContext="{x:Reference root}"
+              VerticalOptions="End"
+              RowDefinitions="*,Auto"
+              Padding="20"
+              Margin="0">
+            <dc:DCButtonForm Grid.Row="1"
+                             AutomationId="AIDCFloatingMenu"
+                             x:Name="BtnPlus"
+                             Clicked="BtnPlus_Clicked"
+                             Style="{StaticResource FloatButton}"
+                             FontSize="15"
+                             FontFamily="Quicksand400Font"
+                             InputTransparent="False"
+                             CornerRadius="25"
+                             ShowShadow="False"
+                             Padding="15"
+                             Margin="5"
+                             Opacity="1"
+                             WidthRequest="{Binding WidthRequest}"
+                             HeightRequest="{Binding HeightRequest}"
+                             Icon="{Binding MainButtonIcon}"
+                             Text="{Binding MainButtonText}"
+                             TextColor="{StaticResource ColorWhite}"
+                             BackgroundColor="{Binding MainButtonBackgroundColor}"
+                             BorderThickness="0"
+                             IconColor="{StaticResource ColorWhite}"
+                             VerticalOptions="End" />
+
+        </Grid>
+    </ContentView.Content>
+</ContentView>

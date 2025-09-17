@@ -24,7 +24,6 @@ namespace Aquasys.Core.Sync
         {
             _httpClient = httpClient;
             _typeRegistry = GetClientSideTypeRegistry();
-            // Pega todos os repositórios registrados de uma vez e guarda
             _repositories = _typeRegistry.Values.Select(type =>
                 (IBaseRepository)serviceProvider.GetService(typeof(ILocalRepository<>).MakeGenericType(type))
             ).Where(repo => repo != null).ToList();

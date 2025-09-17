@@ -6,6 +6,7 @@ using Aquasys.App.MVVM.Views.Vessel.Tabs; // Using para as páginas das abas
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Threading.Tasks;
 using Aquasys.App.Core.Data;
+using Aquasys.App.MVVM.ViewModels.Vessel.Tabs;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
@@ -23,6 +24,22 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         [ObservableProperty]
         public VesselInspectionRegistrationTabPage _vesselInspectionRegistrationTabPage;
+
+        private int _selectedTabIndex;
+        public int SelectedTabIndex
+        {
+            get => _selectedTabIndex;
+            set
+            {
+                // Antes de mudar o valor, salva a aba anterior
+                SaveCurrentTabData().ContinueWith(t => {
+                    // Garante que a atualização da propriedade ocorra na thread da UI
+                    MainThread.BeginInvokeOnMainThread(() => {
+                        SetProperty(ref _selectedTabIndex, value);
+                    });
+                });
+            }
+        }
 
         public VesselMainViewModel(
             ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
@@ -42,6 +59,22 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         public override async Task OnAppearing()
         {
             await LoadTabs();
+        }
+
+        private async Task SaveCurrentTabData()
+        {
+            switch (_selectedTabIndex)
+            {
+                case 0:
+                    var vmRegistration = VesselRegistrationTabPage.BindingContext as VesselRegistrationTabViewModel;
+                    if (vmRegistration != null) await vmRegistration.SaveOrUpdateVessel(false);
+                    break;
+                    // Adicione casos para outras abas se elas também precisarem salvar dados
+                    // case 1:
+                    //     var vmHold = VesselHoldRegistrationTabPage.BindingContext as VesselHoldRegistrationTabViewModel;
+                    //     if (vmHold != null) await vmHold.SaveData(); // (Este método precisaria ser criado)
+                    //     break;
+            }
         }
 
         public async Task LoadTabs()

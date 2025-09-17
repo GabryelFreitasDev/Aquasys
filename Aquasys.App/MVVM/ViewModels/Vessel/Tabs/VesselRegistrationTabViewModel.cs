@@ -165,10 +165,10 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         private async Task BtnSalvarClick()
         {
             if(await ValidateVessel())
-                await SaveOrUpdateVessel();
+                await SaveOrUpdateVessel(true);
         }
 
-        private async Task SaveOrUpdateVessel(bool mostraMensagem = true)
+        public async Task SaveOrUpdateVessel(bool mostraMensagem = true)
         {
             if (VesselModel?.IDVessel is not null && VesselModel?.IDVessel != 0)
             {
@@ -176,6 +176,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
                 if (vesselExists is not null)
                 {
                     vesselExists = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
+                    vesselExists.IDUserRegistration = ContextUtils.ContextUser.IDUser;
                     if (await _vesselRepository.UpdateAsync(vesselExists) && mostraMensagem)
                     {
 

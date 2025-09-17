@@ -46,9 +46,15 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         private async Task SaveHold()
         {
+
+            //var a = await _holdRepository.GetFilteredAsync(x => x.IDVessel == 0);
+            //var b = a.FirstOrDefault();
+            //b.IDVessel = IDVessel;
+            //await _holdRepository.UpdateAsync(b);
             if (HoldModel.IDHold != 0)
             {
                 var hold = await _holdRepository.GetByIdAsync(HoldModel.IDHold);
+                hold.IDVessel = IDVessel;
                 if (hold is not null)
                 {
                     hold = mapper.Map<Hold>(HoldModel);

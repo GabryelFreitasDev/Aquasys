@@ -1,17 +1,27 @@
-﻿using System.Windows.Input;
+﻿using Aquasys.App.Core.Utils;
+using Aquasys.App.MVVM.Views.Vessel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
 
 namespace Aquasys.App.MVVM.ViewModels.MainPage
 {
-    public class MainPageViewModel
+    public partial class MainPageViewModel : BaseViewModels // Supondo que você tenha uma BaseViewModels
     {
-        public ICommand BtnVesselClickCommand { get; set; }
+        [ObservableProperty]
+        private string _userName;
 
-        public MainPageViewModel() {
-            BtnVesselClickCommand = new Command(async () =>
-            {
-                //await Shell.Current.GoToAsync(nameof(VesselListView));
-            });
+        public MainPageViewModel()
+        {
+            // Carrega o nome do usuário do contexto global que definimos no login
+            _userName = ContextUtils.ContextUser?.UserName ?? "Usuário";
+        }
 
+        [RelayCommand]
+        private async Task NavigateToVesselModule()
+        {
+            // Navega para a página de lista de embarcações
+            await Shell.Current.GoToAsync(nameof(VesselListPage));
         }
     }
 }

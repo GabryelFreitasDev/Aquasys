@@ -4,8 +4,10 @@ using Aquasys.WebApi.Data;
 using Aquasys.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
 namespace Aquasys.WebApi.Controllers
@@ -32,23 +34,40 @@ namespace Aquasys.WebApi.Controllers
                 return Ok("Nada para sincronizar.");
             }
 
+            var processingOrder = new List<string> {
+                "User", "TypeVessel", "Vessel", "Inspection", "Hold",
+                "VesselImage", "HoldInspection", "HoldImage", "HoldCargo", "HoldCondition"
+            };
+
             await using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                foreach (var entry in pushRequest.Entities)
+                var globalIdToServerIdMap = new Dictionary<Guid, long>();
+
+                // 3. Processa cada tipo de entidade NA ORDEM definida.
+                foreach (var entityName in processingOrder)
                 {
-                    var entityType = _typeRegistry.GetType(entry.Key);
+                    if (!pushRequest.Entities.TryGetValue(entityName, out var entityObjects) || !entityObjects.Any())
+                        continue;
+
+                    var entityType = _typeRegistry.GetType(entityName);
                     if (entityType == null) continue;
 
-                    var items = entry.Value
+                    var items = entityObjects
                         .Select(obj => (JsonConvert.DeserializeObject(obj.ToString(), entityType) as SyncableEntity))
-                        .Where(item => item != null)
-                        .ToList();
+                        .Where(item => item != null).ToList();
 
-                    // AJUSTE 1: Correção do DateTimeKind para evitar o erro do PostgreSQL.
-                    // Este bloco garante que todas as datas sejam salvas como UTC.
+                    if (!items.Any()) continue;
+
+                    var dbSet = GetDbSetFor(entityType);
+                    var receivedGlobalIds = items.Select(i => i.GlobalId).ToList();
+                    var existingEntities = await dbSet.Where(e => receivedGlobalIds.Contains(e.GlobalId)).ToListAsync();
+                    var existingEntitiesMap = existingEntities.ToDictionary(e => e.GlobalId);
+                    var toAdd = new List<SyncableEntity>();
+
                     foreach (var item in items)
                     {
+
                         var dateTimeProperties = item.GetType().GetProperties()
                             .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
 
@@ -59,26 +78,11 @@ namespace Aquasys.WebApi.Controllers
                                 prop.SetValue(item, DateTime.SpecifyKind(dt, DateTimeKind.Utc));
                             }
                         }
-                    }
-
-                    // AJUSTE 3: Usando o método auxiliar para deixar o código mais limpo.
-                    var dbSet = GetDbSetFor(entityType);
-                    if (dbSet == null) continue;
-
-                    var receivedGlobalIds = items.Select(i => i.GlobalId).ToList();
-                    var existingEntities = await dbSet.Where(e => receivedGlobalIds.Contains(e.GlobalId)).ToListAsync();
-
-                    // AJUSTE 2: Otimização de Performance.
-                    // Converter para um dicionário torna a busca por um item existente instantânea,
-                    // em vez de ter que percorrer a lista 'existingEntities' toda vez.
-                    var existingEntitiesMap = existingEntities.ToDictionary(e => e.GlobalId);
-
-                    var toAdd = new List<SyncableEntity>();
-
-                    foreach (var item in items)
-                    {
                         var primaryKeyProperty = item.GetType().GetProperties()
                             .FirstOrDefault(p => p.IsDefined(typeof(KeyAttribute), true));
+
+                        var foreignKeyProperties = item.GetType().GetProperties()
+                            .Where(p => p.IsDefined(typeof(ForeignKeyAttribute), true));
 
                         // Se o item JÁ EXISTE no servidor (lógica de ATUALIZAÇÃO)
                         if (existingEntitiesMap.TryGetValue(item.GlobalId, out var existingEntity))
@@ -99,20 +103,33 @@ namespace Aquasys.WebApi.Controllers
                         }
                         else // Se o item é NOVO (lógica de INSERÇÃO)
                         {
-                            if (primaryKeyProperty != null)
-                            {
-                                var pkType = primaryKeyProperty.PropertyType;
-                                primaryKeyProperty.SetValue(item, Activator.CreateInstance(pkType));
-                            }
+                            //if (primaryKeyProperty != null)
+                            //{
+                            //    var pkType = primaryKeyProperty.PropertyType;
+                            //    primaryKeyProperty.SetValue(item, Activator.CreateInstance(pkType));
+                            //}
                             toAdd.Add(item);
                         }
                     }
 
-                    // Usar AddRange (síncrono) é geralmente mais seguro com o ChangeTracker do EF Core
-                    if (toAdd.Any()) _context.AddRange(toAdd);
+                    if (toAdd.Any()) await _context.AddRangeAsync(toAdd);
+
+                    // 6. SALVAR EM ETAPAS: Salva as mudanças deste lote de entidades (ex: todos os Vessels).
+                    // Isso gera os IDs numéricos para os pais.
+                    await _context.SaveChangesAsync();
+
+                    // 7. POPULAR O MAPA: Após salvar, guardamos os novos IDs gerados.
+                    foreach (var newItem in toAdd)
+                    {
+                        var pkProp = newItem.GetType().GetProperties().FirstOrDefault(p => p.IsDefined(typeof(KeyAttribute), true));
+                        if (pkProp != null)
+                        {
+                            globalIdToServerIdMap[newItem.GlobalId] = (long)pkProp.GetValue(newItem);
+                        }
+                    }
                 }
 
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
                 return Ok(new { Status = "Sincronizado com sucesso" });
             }

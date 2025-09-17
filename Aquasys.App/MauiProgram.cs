@@ -25,15 +25,15 @@ namespace Aquasys.App
         {
             var builder = MauiApp.CreateBuilder();
             builder.UseMauiApp<App>()
-            .UseMauiRGPopup()
-            .UseMauiCommunityToolkit()
-            .UseDevExpress()
+                .UseDevExpress()
                 .UseDevExpressCharts()
                 .UseDevExpressCollectionView()
                 .UseDevExpressControls()
                 .UseDevExpressDataGrid()
                 .UseDevExpressEditors()
                 .UseDevExpressScheduler()
+            .UseMauiRGPopup()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -46,6 +46,13 @@ namespace Aquasys.App
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+            DevExpress.Maui.Charts.Initializer.Init();
+            DevExpress.Maui.CollectionView.Initializer.Init();
+            DevExpress.Maui.Controls.Initializer.Init();
+            DevExpress.Maui.Editors.Initializer.Init();
+            DevExpress.Maui.Scheduler.Initializer.Init();
+
             builder.Services.AddSingleton(new HttpClient
             {
                 // IMPORTANTE: Use o endereço da sua API. Para testes locais, pode ser necessário um ajuste.
@@ -111,12 +118,6 @@ namespace Aquasys.App
             builder.Services.AddTransient<VesselRegistrationTabPage>();
 
             builder.Services.AddSingleton<App>();
-
-            DevExpress.Maui.Charts.Initializer.Init();
-            DevExpress.Maui.CollectionView.Initializer.Init();
-            DevExpress.Maui.Controls.Initializer.Init();
-            DevExpress.Maui.Editors.Initializer.Init();
-            DevExpress.Maui.Scheduler.Initializer.Init();
 
             return builder.Build();
         }

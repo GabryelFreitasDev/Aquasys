@@ -1,4 +1,5 @@
 ﻿using Aquasys.App.Core.Data;
+using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.ViewModels.Login;
 using Aquasys.App.MVVM.Views.Login;
 
@@ -6,10 +7,14 @@ namespace Aquasys.App
 {
     public partial class App : Application
     {
-        public App(LoginPage loginPage) 
+        public App() 
         {
             InitializeComponent();
-            MainPage = new NavigationPage(loginPage);
+            Application.Current!.UserAppTheme = AppTheme.Light;
+
+            ResourceUtils.AddThemeOrDefaultStyle();
+
+            MainPage = new LoadingPage();
         }
 
         protected override async void OnStart()
