@@ -1,12 +1,14 @@
-﻿using Aquasys.App.Core.Intefaces;
-using Aquasys.Core.Entities;
+﻿using Aquasys.App.Core.Data;
+using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
+using Aquasys.App.MVVM.ViewModels.Vessel.Tabs;
 using Aquasys.App.MVVM.Views.Vessel.Tabs; // Using para as páginas das abas
+using Aquasys.Core.Entities;
+using Aquasys.Reports.Enums;
+using Aquasys.Reports.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Threading.Tasks;
-using Aquasys.App.Core.Data;
-using Aquasys.App.MVVM.ViewModels.Vessel.Tabs;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
@@ -14,6 +16,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
     public partial class VesselMainViewModel : BaseViewModels
     {
         private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
+        private readonly ReportGeneratorService _reportService;
 
         // Propriedades para segurar as PÁGINAS das abas
         [ObservableProperty]
@@ -46,9 +49,11 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             // O construtor agora recebe as PÁGINAS, já prontas e com suas ViewModels
             VesselRegistrationTabPage vesselRegistrationTabPage,
             VesselHoldRegistrationTabPage vesselHoldRegistrationTabPage,
-            VesselInspectionRegistrationTabPage vesselInspectionRegistrationTabPage)
+            VesselInspectionRegistrationTabPage vesselInspectionRegistrationTabPage,
+            ReportGeneratorService reportService)
         {
             _vesselRepository = vesselRepository;
+            _reportService = reportService;
 
             // Atribui as páginas injetadas às propriedades
             _vesselRegistrationTabPage = vesselRegistrationTabPage;

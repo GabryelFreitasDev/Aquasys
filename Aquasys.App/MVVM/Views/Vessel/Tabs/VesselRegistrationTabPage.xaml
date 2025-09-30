@@ -96,7 +96,12 @@
                     Text="{Binding VesselModel.Owner, Mode=TwoWay}"
                     PlaceholderText="Operator"/>
 
-                <dx:DXButton 
+                    <dx:DXButton
+                    ButtonType="Accent"
+                    Content="Generete Report"
+                    Command="{Binding GenerateReportCommand}"/>
+                
+                    <dx:DXButton 
                     ButtonType="Accent"
                     Content="Add Vessel Image +"
                     Command="{Binding AddVesselImageCommand}"/>

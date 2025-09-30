@@ -64,6 +64,8 @@ namespace Aquasys.App.MVVM.ViewModels.Login
         [RelayCommand(CanExecute = nameof(CanExecuteCommands))]
         private async Task ValidateLogin()
         {
+            Application.Current!.MainPage = new AppShell();
+            /*
             LoginModel.UserName = "inspector.joao";
             LoginModel.Password = "Password123!";
 
@@ -112,7 +114,7 @@ namespace Aquasys.App.MVVM.ViewModels.Login
             {
                 IsBusy = false;
                 StatusMessage = string.Empty;
-            }
+            }*/
         }
 
         private async Task AuthenticateAndSync(User? user)
