@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aquasys.Core", "Aquasys.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aquasys.WebApi", "Aquasys.WebApi\Aquasys.WebApi.csproj", "{08990431-075F-2E20-2845-CEF3382CFE93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aquasys.Reports", "Aquasys.Reports\Aquasys.Reports.csproj", "{7A87B17D-1289-4FCB-AAD1-5003B701F3D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{08990431-075F-2E20-2845-CEF3382CFE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08990431-075F-2E20-2845-CEF3382CFE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08990431-075F-2E20-2845-CEF3382CFE93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A87B17D-1289-4FCB-AAD1-5003B701F3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A87B17D-1289-4FCB-AAD1-5003B701F3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A87B17D-1289-4FCB-AAD1-5003B701F3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A87B17D-1289-4FCB-AAD1-5003B701F3D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

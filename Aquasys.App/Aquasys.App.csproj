@@ -89,8 +89,9 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.110" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.110" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
+		<PackageReference Include="QuestPDF" Version="2025.7.2" />
 		<PackageReference Include="RGPopup.Maui" Version="1.2.1" />
-		<PackageReference Include="SkiaSharp" Version="3.119.0" />
+		<PackageReference Include="Scrutor" Version="6.1.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
 		<PackageReference Include="SQLitePCLRaw.core" Version="3.0.2" />
@@ -100,7 +101,9 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Aquasys.Core\Aquasys.Core.csproj" />
+		<ProjectReference Include="..\Aquasys.Reports\Aquasys.Reports.csproj" />
 	</ItemGroup>
+	
 
 	<ItemGroup>
 	  <Compile Update="Controls\DCLoadingScreen.xaml.cs">

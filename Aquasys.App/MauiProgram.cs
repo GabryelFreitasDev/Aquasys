@@ -11,6 +11,10 @@ using Aquasys.App.MVVM.Views.Vessel;
 using Aquasys.App.MVVM.Views.Vessel.Tabs;
 using Aquasys.Core.Entities;
 using Aquasys.Core.Sync;
+using Aquasys.Reports;
+using Aquasys.Reports.Interfaces;
+using Aquasys.Reports.Services;
+using Aquasys.Reports.Templates;
 using CommunityToolkit.Maui;
 using DevExpress.Maui;
 using InputKit.Handlers;
@@ -75,6 +79,18 @@ namespace Aquasys.App
             builder.Services.AddSingleton<ILocalRepository<HoldCondition>, LocalRepository<HoldCondition>>();
             builder.Services.AddSingleton<ILocalRepository<HoldInspection>, LocalRepository<HoldInspection>>();
             builder.Services.AddSingleton<ILocalRepository<VesselImage>, LocalRepository<VesselImage>>();
+            builder.Services.AddSingleton<ReportGeneratorService>();
+
+
+            // Report
+            var assemblies = new[] { typeof(VesselReport).Assembly };
+            builder.Services.Scan(scan => scan
+            .FromAssemblies(assemblies)
+            .AddClasses(classes => classes.AssignableTo<IReportTemplate>())
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime());
+
+            builder.Services.AddSingleton<Aquasys.Reports.Services.ReportGeneratorService>();
 
             // Login
             builder.Services.AddTransient<LoginViewModel>();
