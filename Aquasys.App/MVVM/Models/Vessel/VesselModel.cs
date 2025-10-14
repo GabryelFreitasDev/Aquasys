@@ -1,24 +1,58 @@
-﻿using Aquasys.App.Core.Enums;
-using Aquasys.App.MVVM.ViewModels;
-using CountryData.Standard;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Aquasys.App.MVVM.Models.Vessel
 {
-    public class VesselModel : BaseModels
+    public partial class VesselModel : BaseModels
     {
         public VesselModel()
         {
         }
-        public long IDVessel { get; set; }
-        public string VesselName { get; set; }
-        public string Place { get; set; }
-        public string Flag { get; set; }
-        public string IMO { get; set; }
-        public string PortRegistry { get; set; }
-        public DateTime ManufacturingDate { get; set; } = DateTime.Now;
-        public VesselType VesselType { get; set; } = VesselType.NAVIO;
-        public string Owner { get; set; }
-        public string Operator { get; set; }
+
+        public long IDVessel { get; set; } = -1;
+
+        [ObservableProperty]
+        private string os;
+
+        [ObservableProperty]
+        private string dockingLocation;
+
+        [ObservableProperty]
+        private string vesselName;
+
+        [ObservableProperty]
+        private string flag;
+
+        [ObservableProperty]
+        private string imo;
+
+        [ObservableProperty]
+        private string portRegistry;
+
+        [ObservableProperty]
+        private DateTime? dateOfBuilding;
+
+        [ObservableProperty]
+        private string owner;
+
+        [ObservableProperty]
+        private string vesselOperator;
+
+        [ObservableProperty]
+        private string shippingAgent;
+
+        [ObservableProperty]
+        private string lastCargo;
+
+        [ObservableProperty]
+        private string secondLastCargo;
+
+        [ObservableProperty]
+        private string thirdLastCargo;
+
+        [ObservableProperty]
+        private string fourthLastCargo;
+
+        public string FlagIcon { get; set; }
 
         public byte[] FirstImage { get; set; }
     }

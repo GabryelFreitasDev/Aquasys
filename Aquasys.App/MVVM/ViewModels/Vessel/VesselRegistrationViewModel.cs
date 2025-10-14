@@ -1,25 +1,21 @@
 ﻿using Aquasys.App.Controls.Editors;
 using Aquasys.App.Core.Data;
-using Aquasys.App.Core.Enums;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.App.MVVM.Views.Vessel;
 using Aquasys.Core.Entities;
-using Aquasys.Reports.Enums;
-using Aquasys.Reports.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CountryData.Standard;
 using System.Collections.ObjectModel;
 
-namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
+namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
     [QueryProperty(nameof(Id), nameof(Id))]
-    public partial class VesselRegistrationTabViewModel : BaseViewModels
+    public partial class VesselRegistrationViewModel : BaseViewModels
     {
         private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
         private readonly ILocalRepository<VesselImage> _vesselImageRepository;
-        private readonly ReportGeneratorService _reportService;
 
         [ObservableProperty]
         private VesselModel vesselModel;
@@ -33,14 +29,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 
         private List<Country> allFlags =  new List<Country>();
 
-        public VesselRegistrationTabViewModel(
+        public VesselRegistrationViewModel(
             ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
-            ILocalRepository<VesselImage> vesselImageRepository,
-            ReportGeneratorService reportService)
+            ILocalRepository<VesselImage> vesselImageRepository)
         {
             _vesselRepository = vesselRepository;
             _vesselImageRepository = vesselImageRepository;
-            _reportService = reportService;
 
             vesselModel = new();
             flags = new();
@@ -94,12 +88,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             }
         }
 
-        //[RelayCommand]
-        //private void ChangeFlag(Country flag)
-        //{
-        //    if (flag is not null)
-        //        FlagSelecionada = flag;
-        //}
+        [RelayCommand]
+        private void ChangeFlag(Country flag)
+        {
+            if (flag is not null)
+                VesselModel.Flag = flag.CountryName;
+        }
 
         [RelayCommand]
         private void ChangeFlagName(string name)
@@ -171,6 +165,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
                 await Shell.Current.GoToAsync("..", true);
             }
 
+            vesselEntity = await _vesselRepository.GetByIdAsync(VesselModel?.IDVessel ?? -1);
             VesselModel = mapper.Map<VesselModel>(vesselEntity);
         }
 
@@ -204,6 +199,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             }
             finally
             {
+                await CarregaImages();
                 IsProcessRunning = false;
             }
         }
@@ -227,6 +223,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             }
             finally
             {
+                await CarregaImages();
                 IsProcessRunning = false;
             }
         }
@@ -268,41 +265,6 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
                 Expanded = false;
             else
                 Expanded = true;
-        }
-
-        [RelayCommand]
-        private async Task GenerateReport()
-        {
-            try
-            {
-                if (VesselModel == null || VesselModel.IDVessel == 0)
-                {
-                    await Shell.Current.DisplayAlert("Aviso", "Salve o Vessel antes de gerar o relatório.", "OK");
-                    return;
-                }
-
-                // Mapeia o VesselModel para a Entity, se necessário
-                var vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
-
-                // Gera os bytes do relatório usando o serviço injetado via DI
-                var pdfBytes = await _reportService.GenerateAsync(ReportType.Vessel, vesselEntity);
-
-                // Salva em arquivo local (AppDataDirectory é seguro para Android/iOS/Windows)
-                var fileName = $"Relatorio_{VesselModel.VesselName}.pdf";
-                var filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
-                File.WriteAllBytes(filePath, pdfBytes);
-
-                // Compartilha/abre com aplicativo nativo (Google Drive, WhatsApp, etc)
-                await Share.Default.RequestAsync(new ShareFileRequest
-                {
-                    Title = "Abrir/Compartilhar Relatório",
-                    File = new ShareFile(filePath)
-                });
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Erro ao gerar relatório", ex.Message, "OK");
-            }
         }
     }
 }

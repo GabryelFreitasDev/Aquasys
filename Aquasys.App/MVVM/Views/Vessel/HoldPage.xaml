@@ -21,86 +21,49 @@
                     FontSize="20"/>
 
                 <de:TextEdit
-                    x:Name="Name"
-                    IsLabelFloating="True"
+                    x:Name="BasementNumber"
                     LabelText="Name"
-                    Text="{Binding HoldModel.Name, Mode=TwoWay}"
-                    PlaceholderText="Name"/>
+                    Text="{Binding HoldModel.BasementNumber, Mode=TwoWay}"/>
+
+                <de:TextEdit
+                    x:Name="Agent"
+                    LabelText="Agent"
+                    Text="{Binding HoldModel.Agent, Mode=TwoWay}"/>
 
                 <de:TextEdit
                     x:Name="Cargo"
-                    IsLabelFloating="True"
                     LabelText="Cargo"
-                    Text="{Binding HoldModel.Cargo, Mode=TwoWay}"
-                    PlaceholderText="Cargo"/>
+                    Text="{Binding HoldModel.Cargo, Mode=TwoWay}"/>
 
                 <de:NumericEdit
                     x:Name="Capacity"
                     Value="{Binding HoldModel.Capacity, Mode=TwoWay}"
-                    IsLabelFloating="True"
-                    LabelText="Capacity"
-                    PlaceholderText="Capacity"/>
-
-                <de:NumericEdit
-                    x:Name="LoadPlan"
-                    Value="{Binding HoldModel.LoadPlan, Mode=TwoWay}"
-                    IsLabelFloating="True"
-                    LabelText="Load Plan"
-                    PlaceholderText="Load Plan"/>
+                    LabelText="Capacity"/>
 
                 <de:NumericEdit
                     x:Name="ProductWeight"
                     Value="{Binding HoldModel.ProductWeight, Mode=TwoWay}"
-                    IsLabelFloating="True"
-                    LabelText="Product Weight"
-                    PlaceholderText="Product Weight"/>
+                    LabelText="Product Weight"/>
 
-                <toolkit:Expander Command="{Binding ExpandCommand}">
-                    <toolkit:Expander.Header>
-                        <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
-                            <Grid ColumnDefinitions="*,50">
-                                <Label Grid.Column="0" Text="Last Cargos" VerticalOptions="Center"></Label>
-                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
-                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
-                            </Grid>
-                        </Frame>
-                    </toolkit:Expander.Header>
-                    <StackLayout>
-                        <de:TextEdit
-                            x:Name="LastCargo"
-                            IsLabelFloating="True"
-                            LabelText="Last Cargo"
-                            Text="{Binding HoldModel.LastCargo, Mode=TwoWay}"
-                            PlaceholderText="Last Cargo"/>
-
-                        <de:TextEdit
-                            x:Name="SecondLastCargo"
-                            IsLabelFloating="True"
-                            LabelText="Second Last Cargo"
-                            Text="{Binding HoldModel.SecondLastCargo, Mode=TwoWay}"
-                            PlaceholderText="Second Last Cargo"/>
-
-                        <de:TextEdit
-                            x:Name="ThirdLastCargo"
-                            IsLabelFloating="True"
-                            LabelText="Third Last Cargo"
-                            Text="{Binding HoldModel.ThirdLastCargo, Mode=TwoWay}"
-                            PlaceholderText="Third Last Cargo"/>
-
-                        <de:TextEdit
-                            x:Name="FourthLastCargo"
-                            IsLabelFloating="True"
-                            LabelText="Fourth Last Cargo"
-                            Text="{Binding HoldModel.FourthLastCargo, Mode=TwoWay}"
-                            PlaceholderText="Fourth Last Cargo"/>
-                    </StackLayout>
-
-                </toolkit:Expander>
+                <de:TextEdit
+                    x:Name="LoadPlan"
+                    Text="{Binding HoldModel.LoadPlan, Mode=TwoWay}"
+                    LabelText="Load Plan"/>
 
                 <dx:DXButton 
                     ButtonType="Accent"
+                    Icon="setaparadireita.png"
+                    IconAspect="AspectFill"
+                    IconPlacement="Right"
+                    BackgroundColor="{StaticResource Primary}"
+                    Content="Inspection"
+                    Command="{Binding InspectionCommand}"/>
+                
+                <dx:DXButton 
+                    ButtonType="Accent"
                     Content="Save"
-                    Command="{Binding SaveHoldCommand}"/>
+                    Command="{Binding SaveHoldCommand}"
+                    IsVisible="{Binding IsNew}"/>
 
             </VerticalStackLayout>
         </ScrollView>

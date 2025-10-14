@@ -34,11 +34,11 @@ namespace Aquasys.Reports.Templates
 
             page.Graphics.DrawString($"IMO: {vessel.IMO}", font, PdfBrushes.Black, new PointF(0, y += step));
             page.Graphics.DrawString($"Porto Registro: {vessel.PortRegistry}", font, PdfBrushes.Black, new PointF(0, y += step));
-            page.Graphics.DrawString($"Tipo: {vessel.VesselType}", font, PdfBrushes.Black, new PointF(0, y += step));
+            //page.Graphics.DrawString($"Tipo: {vessel.VesselType}", font, PdfBrushes.Black, new PointF(0, y += step));
             page.Graphics.DrawString($"Bandeira: {vessel.Flag}", font, PdfBrushes.Black, new PointF(0, y += step));
             page.Graphics.DrawString($"Proprietário: {vessel.Owner}", font, PdfBrushes.Black, new PointF(0, y += step));
-            page.Graphics.DrawString($"Operador: {vessel.Operator}", font, PdfBrushes.Black, new PointF(0, y += step));
-            page.Graphics.DrawString($"Data Fabricação: {vessel.ManufacturingDate:dd/MM/yyyy}", font, PdfBrushes.Black, new PointF(0, y += step));
+            page.Graphics.DrawString($"Operador: {vessel.VesselOperator}", font, PdfBrushes.Black, new PointF(0, y += step));
+            page.Graphics.DrawString($"Data Fabricação: {vessel.DateOfBuilding:dd/MM/yyyy}", font, PdfBrushes.Black, new PointF(0, y += step));
             page.Graphics.DrawString($"Data Cadastro: {vessel.RegistrationDateTime:dd/MM/yyyy}", font, PdfBrushes.Black, new PointF(0, y += step));
 
             using var stream = new MemoryStream();

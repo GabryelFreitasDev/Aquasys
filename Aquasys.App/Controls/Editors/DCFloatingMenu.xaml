@@ -20,7 +20,7 @@
                              Clicked="BtnPlus_Clicked"
                              Style="{StaticResource FloatButton}"
                              FontSize="15"
-                             FontFamily="Quicksand400Font"
+                             FontFamily="OpenSansRegular"
                              InputTransparent="False"
                              CornerRadius="25"
                              ShowShadow="False"

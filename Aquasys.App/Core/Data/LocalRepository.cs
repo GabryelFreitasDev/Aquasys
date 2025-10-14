@@ -52,30 +52,26 @@ namespace Aquasys.App.Core.Data
 
         public async Task<bool> InsertAsync(T item)
         {
-            // Preenche os campos de sincronização na criação
             if (item.GlobalId == Guid.Empty)
             {
                 item.GlobalId = Guid.NewGuid();
             }
             item.LastModifiedAt = DateTime.UtcNow;
-            item.IsSynced = false; // Marcar como não sincronizado para o próximo Push
+            item.IsSynced = false;
 
             return await _database.InsertAsync(item) > 0;
         }
 
         public async Task<bool> UpdateAsync(T item)
         {
-            // Preenche os campos de sincronização na atualização
             item.LastModifiedAt = DateTime.UtcNow;
-            item.IsSynced = false; // Marcar como não sincronizado para o próximo Push
+            item.IsSynced = false; 
 
             return await _database.UpdateAsync(item) > 0;
         }
 
         public async Task<bool> DeleteAsync(T item)
         {
-            // Em um sistema de sincronização, deletar de verdade pode ser complexo.
-            // Uma abordagem comum é ter um campo 'IsDeleted'. Por simplicidade, vamos deletar.
             return await _database.DeleteAsync(item) > 0;
         }
 
@@ -109,16 +105,15 @@ namespace Aquasys.App.Core.Data
                 {
                     var pkProp = typeof(T).GetProperties().FirstOrDefault(p => p.IsDefined(typeof(PrimaryKeyAttribute), true));
                     if (pkProp != null) pkProp.SetValue(item, pkProp.GetValue(existingItem));
-                    await _database.UpdateAsync(item);
+                    await UpdateAsync(item);
                 }
             }
             else
             {
-                await _database.InsertAsync(item);
+                await InsertAsync(item);
             }
         }
 
-        // A versão não-genérica do Upsert para a interface base
         public Task UpsertAsync(SyncableEntity item)
         {
             return UpsertAsync((T)item);

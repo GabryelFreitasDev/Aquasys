@@ -12,15 +12,18 @@ namespace Aquasys.Core.Entities
         [Column("idvessel", TypeName = "bigint")]
         public long IDVessel { get; set; }
 
+        [StringLength(200)]
+        [Column("os")]
+        public string OS { get; set; }
+
+        [StringLength(200)]
+        [Column("dockinglocation")]
+        public string DockingLocation { get; set; }
+
         [Required]
         [StringLength(200)]
         [Column("vesselname")]
         public string VesselName { get; set; }
-
-        [Required]
-        [StringLength(200)]
-        [Column("place")]
-        public string Place { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -32,16 +35,16 @@ namespace Aquasys.Core.Entities
         [Column("portregistry")]
         public string PortRegistry { get; set; }
 
-        [Column("manufacturingdate", TypeName = "date")]
-        public DateTime? ManufacturingDate { get; set; }
+        [Column("dateofbuilding", TypeName = "date")]
+        public DateTime? DateOfBuilding { get; set; }
+
+        [StringLength(200)]
+        [Column("shippingagent")]
+        public string? ShippingAgent { get; set; }
 
         [StringLength(100)]
         [Column("flag")]
         public string? Flag { get; set; }
-
-        [Required]
-        [Column("vesseltype", TypeName = "integer")]
-        public VesselType VesselType { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -50,8 +53,24 @@ namespace Aquasys.Core.Entities
 
         [Required]
         [StringLength(200)]
-        [Column("operator")]
-        public string Operator { get; set; }
+        [Column("vesseloperator")]
+        public string VesselOperator { get; set; }
+
+        [StringLength(200)]
+        [Column("lastcargo")]
+        public string? LastCargo { get; set; }
+
+        [StringLength(200)]
+        [Column("secondlastcargo")]
+        public string? SecondLastCargo { get; set; }
+
+        [StringLength(200)]
+        [Column("thirdlastcargo")]
+        public string? ThirdLastCargo { get; set; }
+
+        [StringLength(200)]
+        [Column("fourthlastcargo")]
+        public string? FourthLastCargo { get; set; }
 
         [Required]
         [Column("datacadastro", TypeName = "date")]

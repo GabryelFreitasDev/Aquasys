@@ -1,10 +1,10 @@
 ﻿namespace Aquasys.App.MVVM.Models.Vessel
 {
-    public class HoldConditionModel : BaseModels
+    public class HoldInspectionConditionModel : BaseModels
     {
-        public HoldConditionModel() {}
+        public HoldInspectionConditionModel() {}
 
-        public long IDHoldCondition { get; set; }
+        public long IDHoldInspectionCondition { get; set; }
         public int Empty { get; set; }
         public int Clean { get; set; }
         public int Dry { get; set; }

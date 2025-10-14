@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
 {
-    public class HoldImage : SyncableEntity
+    public class HoldInspectionImage : SyncableEntity
     {
         [Key]
         [SQLite.PrimaryKey, SQLite.AutoIncrement]
-        [Column("idholdimage", TypeName = "bigint")]
-        public long IDHoldImage { get; set; }
+        [Column("idholdinspection", TypeName = "bigint")]
+        public long IDHoldInspectionImage { get; set; }
 
         [Required]
         [Column("image", TypeName = "bytea")]

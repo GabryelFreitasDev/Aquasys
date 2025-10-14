@@ -7,6 +7,7 @@ namespace Aquasys.App.MVVM.ViewModels
 {
     public partial class BaseViewModels : ObservableObject
     {
+        public string Title { get; protected set; }
         public bool IsLoadedViewModel;
         public Page Page { get; private set; }
         public bool IsProcessRunning { get; set; } = false;

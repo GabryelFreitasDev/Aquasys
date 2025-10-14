@@ -19,12 +19,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         public long IDVessel { get; set; }
 
         [ObservableProperty]
-        private ObservableCollection<HoldModel> _holds;
+        private ObservableCollection<HoldModel> holds;
 
         public VesselHoldRegistrationTabViewModel(ILocalRepository<Hold> holdRepository)
         {
             _holdRepository = holdRepository;
-            _holds = new();
+            holds = new();
         }
 
         public override async Task OnAppearing()
@@ -34,7 +34,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 
         private async Task CarregaDados()
         {
-            if (IDVessel != 0)
+            if (IDVessel != -1)
             {
                 var holdsData = await _holdRepository.GetFilteredAsync(x => x.IDVessel == IDVessel);
                 Holds = new ObservableCollection<HoldModel>(mapper.Map<List<HoldModel>>(holdsData));

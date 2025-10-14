@@ -40,6 +40,16 @@ namespace Aquasys.App
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
+                fonts.AddFont("Quicksand-Light.ttf", "Quicksand300Font");
+                fonts.AddFont("Quicksand-Regular.ttf", "Quicksand400Font");
+                fonts.AddFont("Quicksand-Medium.ttf", "Quicksand500Font");
+                fonts.AddFont("Quicksand-SemiBold.ttf", "Quicksand600Font");
+                fonts.AddFont("Quicksand-Bold.ttf", "Quicksand700Font");
+
+                fonts.AddFont("FontAwesome6Brands.otf", "FontAwesomeBrands");
+                fonts.AddFont("FontAwesome6Regular.otf", "FontAwesomeRegular");
+                fonts.AddFont("FontAwesome6Solid.otf", "FontAwesomeSolid");
+
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
@@ -72,15 +82,12 @@ namespace Aquasys.App
             builder.Services.AddSingleton<ILocalRepository<User>, LocalRepository<User>>();
             builder.Services.AddSingleton<ILocalRepository<Vessel>, LocalRepository<Vessel>>();
             builder.Services.AddSingleton<ILocalRepository<Hold>, LocalRepository<Hold>>();
-            builder.Services.AddSingleton<ILocalRepository<Inspection>, LocalRepository<Inspection>>();
             builder.Services.AddSingleton<ILocalRepository<TypeVessel>, LocalRepository<TypeVessel>>();
-            builder.Services.AddSingleton<ILocalRepository<HoldCargo>, LocalRepository<HoldCargo>>();
-            builder.Services.AddSingleton<ILocalRepository<HoldImage>, LocalRepository<HoldImage>>();
-            builder.Services.AddSingleton<ILocalRepository<HoldCondition>, LocalRepository<HoldCondition>>();
+            builder.Services.AddSingleton<ILocalRepository<HoldInspectionImage>, LocalRepository<HoldInspectionImage>>();
+            builder.Services.AddSingleton<ILocalRepository<HoldInspectionCondition>, LocalRepository<HoldInspectionCondition>>();
             builder.Services.AddSingleton<ILocalRepository<HoldInspection>, LocalRepository<HoldInspection>>();
             builder.Services.AddSingleton<ILocalRepository<VesselImage>, LocalRepository<VesselImage>>();
             builder.Services.AddSingleton<ReportGeneratorService>();
-
 
             // Report
             var assemblies = new[] { typeof(VesselReport).Assembly };
@@ -101,12 +108,12 @@ namespace Aquasys.App
             builder.Services.AddTransient<OptionsViewModel>();
 
             //Vessel e Tabs
+            builder.Services.AddTransient<VesselRegistrationViewModel>();
             builder.Services.AddTransient<VesselMainViewModel>();
             builder.Services.AddTransient<VesselListViewModel>();
             builder.Services.AddTransient<VesselHoldRegistrationTabViewModel>();
-            builder.Services.AddTransient<VesselInspectionRegistrationTabViewModel>();
-            builder.Services.AddTransient<VesselRegistrationTabViewModel>();
-            builder.Services.AddTransient<HoldImageViewModel>();
+            builder.Services.AddTransient<VesselRegistrationViewModel>();
+            builder.Services.AddTransient<HoldInspectionImageViewModel>();
             builder.Services.AddTransient<HoldInspectionViewModel>();
             builder.Services.AddTransient<HoldViewModel>();
             builder.Services.AddTransient<VesselImageViewModel>();
@@ -121,6 +128,7 @@ namespace Aquasys.App
             builder.Services.AddTransient<OptionsPage>();
 
             // Vessel
+            builder.Services.AddTransient<VesselRegistrationPage>();
             builder.Services.AddTransient<VesselMainPage>();
             builder.Services.AddTransient<VesselListPage>();
             builder.Services.AddTransient<HoldImagePage>();
@@ -130,7 +138,6 @@ namespace Aquasys.App
 
             // Vessel/Tabs
             builder.Services.AddTransient<VesselHoldRegistrationTabPage>();
-            builder.Services.AddTransient<VesselInspectionRegistrationTabPage>();
             builder.Services.AddTransient<VesselRegistrationTabPage>();
 
             builder.Services.AddSingleton<App>();

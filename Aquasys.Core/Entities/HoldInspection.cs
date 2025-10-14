@@ -12,15 +12,16 @@ namespace Aquasys.Core.Entities
         public long IDHoldInspection { get; set; }
 
         [Required]
-        [Column("datacadastro", TypeName = "date")]
+        [Column("inspectiondatetime", TypeName = "date")]
+        public DateTime InspectionDateTime { get; set; } = DateTime.Now;
+
+        [StringLength(60)]
+        [Column("leadinspector")]
+        public string? LeadInspector { get; set; }
+
+        [Required]
+        [Column("registrationdatetime", TypeName = "date")]
         public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
-
-        [Column("idinspection", TypeName = "bigint")]
-        public long IDInspection { get; set; }
-
-        [SQLite.Ignore]
-        [ForeignKey(nameof(IDInspection))]
-        public virtual Inspection? InspectionEntity { get; set; }
 
         [Column("idhold", TypeName = "bigint")]
         public long IDHold { get; set; }

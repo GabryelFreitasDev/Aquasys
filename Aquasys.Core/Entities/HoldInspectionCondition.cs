@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
 {
-    public class HoldCondition : SyncableEntity
+    public class HoldInspectionCondition : SyncableEntity
     {
         [Key]
         [SQLite.PrimaryKey, SQLite.AutoIncrement]
-        [Column("idholdcondition", TypeName = "bigint")]
-        public long IDHoldCondition { get; set; }
+        [Column("idholdinspectioncondition", TypeName = "bigint")]
+        public long IDHoldInspectionCondition { get; set; }
 
         [Column("empty", TypeName = "integer")]
         public int Empty { get; set; }

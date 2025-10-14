@@ -8,23 +8,26 @@
     xmlns:local="clr-namespace:Aquasys.App.MVVM.Views"
     mc:Ignorable="d"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.MainPage"
+    xmlns:s="clr-namespace:Aquasys.App.MVVM.Views.MainPage"
     Shell.NavBarIsVisible="True"
+    Shell.NavBarHasShadow="True"
+    NavigationPage.HasNavigationBar="True"
     Shell.FlyoutBehavior="Flyout"
     Shell.TabBarIsVisible="False"
     Shell.BackgroundColor="{StaticResource Primary}"
     Shell.TitleColor="White">
 
-    <Shell.BindingContext>
+    <!--<Shell.BindingContext>
         <s:OptionsViewModel/>
-    </Shell.BindingContext>
+    </Shell.BindingContext>-->
 
     <Shell.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="Transparent"
-                               StatusBarStyle="LightContent" />
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Primary}"
+                               StatusBarStyle="LightContent"
+                                   />
     </Shell.Behaviors>
 
-    <Shell.FlyoutHeader>
+    <!--<Shell.FlyoutHeader>
         <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" HeightRequest="60">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -51,11 +54,13 @@
                          Command="{Binding BtnConfigClickCommand}"/>
             </Grid>
         </Border>
-    </Shell.FlyoutHeader>
+    </Shell.FlyoutHeader>-->
 
-    <ShellContent ContentTemplate="{DataTemplate local:MainPage.MainPage}" />
-    
-    <Shell.FlyoutFooter>
+    <TabBar>
+        <ShellContent ContentTemplate="{DataTemplate s:MainPage}" />
+    </TabBar>
+
+    <!--<Shell.FlyoutFooter>
         <VerticalStackLayout Padding="10" Spacing="10">
             <dx:DXButton 
                     ButtonType="Accent"
@@ -63,5 +68,5 @@
                     BackgroundColor="#801515"
                     Command="{Binding BtnLogoutClickCommand}"/>
         </VerticalStackLayout>
-    </Shell.FlyoutFooter>
+    </Shell.FlyoutFooter>-->
 </Shell>

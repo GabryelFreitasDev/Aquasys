@@ -10,10 +10,13 @@ namespace Aquasys.App.MVVM.Models.Vessel
     {
         public HoldInspectionModel() {}
 
-        public long IDHoldInspection { get; set; }
+        public long IDHoldInspection { get; set; } = -1;
+        public DateTime InspectionDateTime { get; set; } = DateTime.Now;
+        public string? LeadInspector { get; set; }
         public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
 
-        public long IDInspection { get; set; }
+        public long IDHoldInspectionCondition { get; set; }
+
         public long IDHold { get; set; }
     }
 }

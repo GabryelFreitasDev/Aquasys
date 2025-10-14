@@ -1,7 +1,9 @@
 using Aquasys.App.MVVM.Views.Login;
 using Aquasys.App.MVVM.Views.MainPage;
 using Aquasys.App.MVVM.Views.Vessel;
-
+using Aquasys.App.MVVM.Views.Vessel.Tabs;
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 namespace Aquasys.App;
 
 public partial class AppShell : Shell
@@ -24,6 +26,8 @@ public partial class AppShell : Shell
             Routing.RegisterRoute(nameof(VesselListPage), typeof(VesselListPage));
             Routing.RegisterRoute(nameof(VesselMainPage), typeof(VesselMainPage));
             Routing.RegisterRoute(nameof(VesselImagePage), typeof(VesselImagePage));
+            Routing.RegisterRoute(nameof(VesselRegistrationPage), typeof(VesselRegistrationPage));
+            //Routing.RegisterRoute(nameof(VesselHoldRegistrationTabPage), typeof(VesselHoldRegistrationTabPage));
             Routing.RegisterRoute(nameof(HoldPage), typeof(HoldPage));
             Routing.RegisterRoute(nameof(HoldInspectionPage), typeof(HoldInspectionPage));
             Routing.RegisterRoute(nameof(HoldImagePage), typeof(HoldImagePage));

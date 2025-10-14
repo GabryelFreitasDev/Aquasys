@@ -7,6 +7,7 @@
              xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
              xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
              xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+             xmlns:dcc="clr-namespace:Aquasys.App.Controls"
              xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel.Tabs"
              xmlns:local="clr-namespace:Aquasys.App.MVVM.Views"
              xmlns:model="clr-namespace:Aquasys.App.MVVM.Models.Vessel"
@@ -14,97 +15,144 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel.Tabs"
              x:Class="Aquasys.App.MVVM.Views.Vessel.Tabs.VesselRegistrationTabPage">
-    
+
+    <ContentView.Resources>
+        <DataTemplate x:Key="CountryItemTemplate">
+            <HorizontalStackLayout VerticalOptions="Center">
+                <Label
+                 Text="{Binding CountryFlag}"
+                 VerticalOptions="Center"
+                 FontSize="20" />
+
+                <Label
+                 Text="{Binding CountryName}"
+                 VerticalOptions="Center"
+                 Margin="10,0,0,0" />
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </ContentView.Resources>
+
     <ContentView.Content>
         <Grid Padding="10">
             <ScrollView>
-            <VerticalStackLayout Padding="10" Spacing="10" Grid.ColumnSpan="4">
-                <Label 
-                    Text="Vessel Registration" 
-                    FontAttributes="Bold" 
-                    FontSize="20"/>
+                <VerticalStackLayout Padding="10" Spacing="10">
+                    <Label 
+                        Text="Vessel Registration" 
+                        FontAttributes="Bold" 
+                        FontSize="20"/>
 
-                <de:TextEdit
-                    x:Name="VesselName"
-                    IsLabelFloating="True"
-                    LabelText="Vessel name"
-                    Text="{Binding VesselModel.VesselName, Mode=TwoWay}"
-                    PlaceholderText="Vessel name"/>
+                    <de:TextEdit
+                        x:Name="OS"
+                        LabelText="OS"
+                        Text="{Binding VesselModel.Os, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                <de:TextEdit
-                    x:Name="Place"
-                    IsLabelFloating="True"
-                    LabelText="Place"
-                    Text="{Binding VesselModel.Place, Mode=TwoWay}"
-                    PlaceholderText="Place"/>
+                    <de:TextEdit
+                        x:Name="DockingLocation"
+                        LabelText="Docking Location"
+                        Text="{Binding VesselModel.DockingLocation, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                <de:ComboBoxEdit 
-                    x:Name="Flag"
-                    ItemsSource="{Binding Flags}"
-                    SelectedValue="{Binding FlagSelecionada, Mode=TwoWay}"
-                    SelectedItem="{Binding FlagSelecionada}"
-                    SelectionChangedCommand="{Binding ChangeFlagCommand}"
-                    IsFilterEnabled="True"
-                    FilterCondition="Contains"
-                    ClearIconVisibility="Auto"
-                    DisplayMember="CountryName"
-                    ValueMember="CountryName"
-                    LabelText="Flag"/>
+                    <de:TextEdit
+                        x:Name="VesselName"
+                        LabelText="Vessel name"
+                        Text="{Binding VesselModel.VesselName, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                <de:TextEdit
-                    x:Name="IMO"
-                    IsLabelFloating="True"
-                    LabelText="I.M.O"
-                    Text="{Binding VesselModel.IMO, Mode=TwoWay}"
-                    PlaceholderText="I.M.O"/>
+                    <de:TextEdit
+                        x:Name="IMO"
+                        LabelText="I.M.O"
+                        Text="{Binding VesselModel.Imo, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                <de:TextEdit
-                    x:Name="PortRegistry"
-                    IsLabelFloating="True"
-                    LabelText="Port Registry"
-                    Text="{Binding VesselModel.PortRegistry, Mode=TwoWay}"
-                    PlaceholderText="Port Registry"/>
+                    <de:ComboBoxEdit
+                        x:Name="Flag"
+                        LabelText="Flag"
+                        ItemsSource="{Binding Flags}"
+                        SelectedItem="{Binding FlagSelecionada, Mode=TwoWay}"
+                        DisplayMember="CountryName"
+                        DisplayItemTemplate="{StaticResource CountryItemTemplate}"
+                        ItemTemplate="{StaticResource CountryItemTemplate}"
+                        FilterTextChangedCommand="{Binding ChangeFlagNameCommand}"
+                        SelectionChangedCommand="{Binding ChangeFlagCommand}"
+                        IsFilterEnabled="True"
+                        ClearIconVisibility="Auto"
+                        IsEnabled="False"/>
 
-                <de:DateEdit 
-                    x:Name="ManufacturingDate"
-                    Date="{Binding VesselModel.ManufacturingDate, Mode=TwoWay}"/>
+                    <de:TextEdit
+                        x:Name="PortRegistry"
+                        LabelText="Port Registry"
+                        Text="{Binding VesselModel.PortRegistry, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                <de:ComboBoxEdit
-                    x:Name="VesselType"
-                    ItemsSource="{Binding VesselsType, Mode=TwoWay}"
-                    SelectedItem="{Binding VesselTypeSelecionado}"
-                    SelectedValue="{Binding VesselTypeSelecionado}"
-                    SelectionChangedCommand="{Binding ChangeVesselTypeCommand}"
-                    IsFilterEnabled="True"
-                    FilterCondition="Contains"
-                    ClearIconVisibility="Auto"
-                    DisplayMember="Valor"
-                    ValueMember="Chave"
-                    LabelText="Vessel Type"/>
+                    <dcc:DCDateEdit
+                        x:Name="DateOfBuilding"
+                        LabelText="Date of Building"
+                        PlaceholderText="Select date"
+                        Date="{Binding VesselModel.DateOfBuilding, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                <de:TextEdit 
-                    x:Name="Owner"
-                    IsLabelFloating="True"
-                    LabelText="Owner"
-                    Text="{Binding VesselModel.Operator, Mode=TwoWay}"
-                    PlaceholderText="Owner"/>
+                    <de:TextEdit 
+                        x:Name="ShippingAgent"
+                        LabelText="Shipping Agent"
+                        Text="{Binding VesselModel.ShippingAgent, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                <de:TextEdit 
-                    x:Name="Operator"
-                    IsLabelFloating="True"
-                    LabelText="Operator"
-                    Text="{Binding VesselModel.Owner, Mode=TwoWay}"
-                    PlaceholderText="Operator"/>
+                    <de:TextEdit 
+                        x:Name="Owner"
+                        LabelText="Owner"
+                        Text="{Binding VesselModel.Owner, Mode=TwoWay}"
+                        IsEnabled="False"/>
 
-                    <dx:DXButton
-                    ButtonType="Accent"
-                    Content="Generete Report"
-                    Command="{Binding GenerateReportCommand}"/>
-                
+                    <de:TextEdit 
+                        x:Name="Operator"
+                        LabelText="Operator"
+                        Text="{Binding VesselModel.VesselOperator, Mode=TwoWay}"
+                        IsEnabled="False"/>
+
+                    <toolkit:Expander Command="{Binding ExpandCommand}">
+                        <toolkit:Expander.Header>
+                            <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
+                                <Grid ColumnDefinitions="*,50">
+                                    <Label Grid.Column="0" Text="Last Cargos" VerticalOptions="Center"></Label>
+                                    <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
+                                    <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
+                                </Grid>
+                            </Frame>
+                        </toolkit:Expander.Header>
+                        <StackLayout>
+                            <de:TextEdit
+                                x:Name="LastCargo"
+                                LabelText="Last Cargo"
+                                Text="{Binding VesselModel.LastCargo, Mode=TwoWay}"
+                                IsEnabled="False"/>
+
+                            <de:TextEdit
+                                x:Name="SecondLastCargo"
+                                LabelText="Second Last Cargo"
+                                Text="{Binding VesselModel.SecondLastCargo, Mode=TwoWay}"
+                                IsEnabled="False"/>
+
+                            <de:TextEdit
+                                x:Name="ThirdLastCargo"
+                                LabelText="Third Last Cargo"
+                                Text="{Binding VesselModel.ThirdLastCargo, Mode=TwoWay}"
+                                IsEnabled="False"/>
+
+                            <de:TextEdit
+                                x:Name="FourthLastCargo"
+                                LabelText="Fourth Last Cargo"
+                                Text="{Binding VesselModel.FourthLastCargo, Mode=TwoWay}"
+                                IsEnabled="False"/>
+                        </StackLayout>
+
+                    </toolkit:Expander>
+
                     <dx:DXButton 
-                    ButtonType="Accent"
-                    Content="Add Vessel Image +"
-                    Command="{Binding AddVesselImageCommand}"/>
+                        ButtonType="Accent"
+                        Content="Add Vessel Image +"
+                        Command="{Binding AddVesselImageCommand}"/>
+
                     <toolkit:Expander Command="{Binding ExpandImagesCommand}" IsVisible="{Binding HasImages}">
                         <toolkit:Expander.Header>
                             <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >

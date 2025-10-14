@@ -10,17 +10,17 @@ using Aquasys.App.Core.Data;
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
     [QueryProperty(nameof(Id), nameof(Id))]
-    public partial class HoldImageViewModel : BaseViewModels
+    public partial class HoldInspectionImageViewModel : BaseViewModels
     {
-        private readonly ILocalRepository<HoldImage> _holdImageRepository;
+        private readonly ILocalRepository<HoldInspectionImage> _HoldInspectionImageRepository;
 
         [ObservableProperty]
-        private HoldImageModel _holdImageModel;
+        private HoldInspectionImageModel _HoldInspectionImageModel;
 
-        public HoldImageViewModel(ILocalRepository<HoldImage> holdImageRepository)
+        public HoldInspectionImageViewModel(ILocalRepository<HoldInspectionImage> HoldInspectionImageRepository)
         {
-            _holdImageRepository = holdImageRepository;
-            _holdImageModel = new();
+            _HoldInspectionImageRepository = HoldInspectionImageRepository;
+            _HoldInspectionImageModel = new();
         }
 
         public override async Task OnAppearing()
@@ -32,21 +32,21 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         {
             if (Id.IsNotNullOrEmpty())
             {
-                var holdImage = await _holdImageRepository.GetByIdAsync(Id.ToLong());
-                HoldImageModel = mapper.Map<HoldImageModel>(holdImage);
+                var HoldInspectionImage = await _HoldInspectionImageRepository.GetByIdAsync(Id.ToLong());
+                HoldInspectionImageModel = mapper.Map<HoldInspectionImageModel>(HoldInspectionImage);
             }
         }
 
         [RelayCommand]
-        private async Task SaveHoldImage()
+        private async Task SaveHoldInspectionImage()
         {
-            if (HoldImageModel.IDHoldImage != 0)
+            if (HoldInspectionImageModel.IDHoldInspectionImage != 0)
             {
-                var holdImage = await _holdImageRepository.GetByIdAsync(HoldImageModel.IDHoldImage);
-                if (holdImage is not null)
+                var HoldInspectionImage = await _HoldInspectionImageRepository.GetByIdAsync(HoldInspectionImageModel.IDHoldInspectionImage);
+                if (HoldInspectionImage is not null)
                 {
-                    holdImage = mapper.Map<HoldImage>(HoldImageModel);
-                    if (await _holdImageRepository.UpdateAsync(holdImage))
+                    HoldInspectionImage = mapper.Map<HoldInspectionImage>(HoldInspectionImageModel);
+                    if (await _HoldInspectionImageRepository.UpdateAsync(HoldInspectionImage))
                     {
                         await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                         await Shell.Current.GoToAsync("..", true);
@@ -55,8 +55,8 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             }
             else
             {
-                var holdImage = mapper.Map<HoldImage>(HoldImageModel);
-                if (await _holdImageRepository.InsertAsync(holdImage))
+                var HoldInspectionImage = mapper.Map<HoldInspectionImage>(HoldInspectionImageModel);
+                if (await _HoldInspectionImageRepository.InsertAsync(HoldInspectionImage))
                 {
                     await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                     await Shell.Current.GoToAsync("..", true);

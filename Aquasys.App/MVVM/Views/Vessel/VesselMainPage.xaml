@@ -4,39 +4,33 @@
              xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dcc="clr-namespace:Aquasys.App.Controls"
              xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
-             xmlns:view="clr-namespace:Aquasys.App.MVVM.Views.Vessel.Tabs"
-             x:Class="Aquasys.App.MVVM.Views.Vessel.VesselMainPage"
-             x:DataType="viewmodel:VesselMainViewModel">
+             xmlns:viewTabs="clr-namespace:Aquasys.App.MVVM.Views.Vessel.Tabs"
+             x:Class="Aquasys.App.MVVM.Views.Vessel.VesselMainPage">
 
-    <Grid>
-        <dxco:TabView SelectedItemIndex="{Binding SelectedTabIndex}" SwipeEnabled="False"
-            HeaderPanelIndent="0"
-            HeaderPanelShadowColor="{StaticResource Primary}" 
-            HeaderPanelShadowHeight="3">
-            <dxco:TabViewItem HeaderIcon="vesseltablist">
-                <dxco:TabViewItem.Content>
-                    <ScrollView>
-                        <ContentView Content="{Binding VesselRegistrationTabPage}" />
-                    </ScrollView>
-                </dxco:TabViewItem.Content>
-            </dxco:TabViewItem>
+    <Grid RowDefinitions="*">
+        <dcc:DCTabView
+            HeaderPanelItemSpacing="100"
+            HeaderPanelShadowColor="{StaticResource Primary500}" 
+            HeaderPanelShadowHeight="2"
+            HeaderPanelBackgroundColor="{StaticResource ColorWhite}"
+            SwipeEnabled="True"
+            ItemHeaderTappedCommand="{Binding AlterTabCommand}">
+            <dcc:DCTabViewItem HeaderIcon="vesseltablist">
+                <dcc:DCTabViewItem.Content>
+                    <viewTabs:VesselRegistrationTabPage 
+                        BindingContext="{Binding VesselRegistrationTabViewModel}"/>
+                </dcc:DCTabViewItem.Content>
+            </dcc:DCTabViewItem>
 
-            <dxco:TabViewItem HeaderIcon="cargotablist">
-                <dxco:TabViewItem.Content>
-                    <ScrollView>
-                        <ContentView Content="{Binding VesselHoldRegistrationTabPage}" />
-                    </ScrollView>
-                </dxco:TabViewItem.Content>
-            </dxco:TabViewItem>
-
-            <dxco:TabViewItem HeaderIcon="inspectiontablist">
-                <dxco:TabViewItem.Content>
-                    <ScrollView>
-                        <ContentView Content="{Binding VesselInspectionRegistrationTabPage}" />
-                    </ScrollView>
-                </dxco:TabViewItem.Content>
-            </dxco:TabViewItem>
-        </dxco:TabView>
+            <dcc:DCTabViewItem HeaderIcon="cargotablist">
+                <dcc:DCTabViewItem.Content>
+                    <viewTabs:VesselHoldRegistrationTabPage 
+                        BindingContext="{Binding VesselHoldRegistrationTabViewModel}"/>
+                </dcc:DCTabViewItem.Content>
+            </dcc:DCTabViewItem>
+        </dcc:DCTabView>
     </Grid>
 </local:BasePages>

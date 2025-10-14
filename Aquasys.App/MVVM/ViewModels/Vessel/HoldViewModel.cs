@@ -1,11 +1,9 @@
 ﻿using Aquasys.App.Core.Data;
-using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
@@ -15,18 +13,16 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
     {
         private readonly ILocalRepository<Hold> _holdRepository;
 
-        [ObservableProperty]
-        private HoldModel _holdModel;
-
-        [ObservableProperty]
-        private bool _expanded = true;
+        [ObservableProperty] private HoldModel holdModel;
+        [ObservableProperty] private bool expanded = true;
+        [ObservableProperty] private bool isNew = false;
 
         public long IDVessel { get; set; }
 
         public HoldViewModel(ILocalRepository<Hold> holdRepository)
         {
             _holdRepository = holdRepository;
-            _holdModel = new();
+            holdModel = new();
         }
 
         public override async Task OnAppearing()
@@ -41,6 +37,17 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
                 var hold = await _holdRepository.GetByIdAsync(Id.ToLong());
                 HoldModel = mapper.Map<HoldModel>(hold);
             }
+            else
+            {
+                IsNew = true;
+                HoldModel = new();
+            }
+        }
+
+        [RelayCommand]
+        private async Task Inspection()
+        {
+
         }
 
         [RelayCommand]
