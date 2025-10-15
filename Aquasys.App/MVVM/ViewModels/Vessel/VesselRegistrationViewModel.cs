@@ -154,9 +154,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             if (VesselModel?.IDVessel != null && VesselModel?.IDVessel != -1)
                 vesselEntity = await _vesselRepository.GetByIdAsync(VesselModel?.IDVessel ?? -1);
 
-            vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
-            vesselEntity.IDUserRegistration = ContextUtils.ContextUser.IDUser;
-
+            if (mostraMensagem)
+            {
+                vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
+                vesselEntity.IDUserRegistration = ContextUtils.ContextUser.IDUser;
+            }
+            
             await _vesselRepository.UpsertAsync(vesselEntity);
                 
             if (mostraMensagem)
@@ -164,9 +167,11 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
                 await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
                 await Shell.Current.GoToAsync("..", true);
             }
-
-            vesselEntity = await _vesselRepository.GetByIdAsync(VesselModel?.IDVessel ?? -1);
-            VesselModel = mapper.Map<VesselModel>(vesselEntity);
+            else
+            {
+                vesselEntity = await _vesselRepository.GetByIdAsync(VesselModel?.IDVessel ?? -1);
+                VesselModel = mapper.Map<VesselModel>(vesselEntity);
+            }
         }
 
         [RelayCommand]

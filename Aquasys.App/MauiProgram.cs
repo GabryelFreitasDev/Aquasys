@@ -82,9 +82,7 @@ namespace Aquasys.App
             builder.Services.AddSingleton<ILocalRepository<User>, LocalRepository<User>>();
             builder.Services.AddSingleton<ILocalRepository<Vessel>, LocalRepository<Vessel>>();
             builder.Services.AddSingleton<ILocalRepository<Hold>, LocalRepository<Hold>>();
-            builder.Services.AddSingleton<ILocalRepository<TypeVessel>, LocalRepository<TypeVessel>>();
             builder.Services.AddSingleton<ILocalRepository<HoldInspectionImage>, LocalRepository<HoldInspectionImage>>();
-            builder.Services.AddSingleton<ILocalRepository<HoldInspectionCondition>, LocalRepository<HoldInspectionCondition>>();
             builder.Services.AddSingleton<ILocalRepository<HoldInspection>, LocalRepository<HoldInspection>>();
             builder.Services.AddSingleton<ILocalRepository<VesselImage>, LocalRepository<VesselImage>>();
             builder.Services.AddSingleton<ReportGeneratorService>();
@@ -97,7 +95,7 @@ namespace Aquasys.App
             .AsImplementedInterfaces()
             .WithSingletonLifetime());
 
-            builder.Services.AddSingleton<Aquasys.Reports.Services.ReportGeneratorService>();
+            builder.Services.AddSingleton<ReportGeneratorService>();
 
             // Login
             builder.Services.AddTransient<LoginViewModel>();
@@ -131,7 +129,7 @@ namespace Aquasys.App
             builder.Services.AddTransient<VesselRegistrationPage>();
             builder.Services.AddTransient<VesselMainPage>();
             builder.Services.AddTransient<VesselListPage>();
-            builder.Services.AddTransient<HoldImagePage>();
+            builder.Services.AddTransient<HoldInspectionImagePage>();
             builder.Services.AddTransient<HoldInspectionPage>();
             builder.Services.AddTransient<HoldPage>();
             builder.Services.AddTransient<VesselImagePage>();

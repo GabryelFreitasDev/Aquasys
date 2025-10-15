@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
 {
+    [Table("holdinspectionimage")]
     public class HoldInspectionImage : SyncableEntity
     {
         [Key]
         [SQLite.PrimaryKey, SQLite.AutoIncrement]
-        [Column("idholdinspection", TypeName = "bigint")]
+        [Column("idholdinspectionimage", TypeName = "bigint")]
         public long IDHoldInspectionImage { get; set; }
 
         [Required]
@@ -27,11 +28,11 @@ namespace Aquasys.Core.Entities
         [Column("datacadastro", TypeName = "date")]
         public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
 
-        [Column("idhold", TypeName = "bigint")]
-        public long IDHold { get; set; }
+        [Column("idholdinspection", TypeName = "bigint")]
+        public long IDHoldInspection { get; set; }
 
         [SQLite.Ignore]
-        [ForeignKey(nameof(IDHold))]
-        public virtual Hold? HoldEntity { get; set; }
+        [ForeignKey(nameof(IDHoldInspection))]
+        public virtual HoldInspection? HoldInspectionEntity { get; set; }
     }
 }

@@ -1,10 +1,9 @@
-﻿using Aquasys.App.Core.Enums;
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
 {
+    [Table("vessel")]
     public class Vessel : SyncableEntity
     {
         [Key]

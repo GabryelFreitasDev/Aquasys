@@ -53,10 +53,18 @@
                 <dx:DXButton 
                     ButtonType="Accent"
                     Icon="setaparadireita.png"
+                    IconColorizationEnabled="True"
                     IconAspect="AspectFill"
+                    IconColor="{StaticResource ColorGray600}"
+                    IconIndent="10"
                     IconPlacement="Right"
-                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="{StaticResource ColorGray600}"
+                    BackgroundColor="{StaticResource White}"
+                    BorderColor="{StaticResource ColorGray600}"
+                    BorderThickness="2"
+                    HeightRequest="60"
                     Content="Inspection"
+                    IsVisible="{Binding IsNew, Converter={StaticResource ReverseBoolValueConverter}}"
                     Command="{Binding InspectionCommand}"/>
                 
                 <dx:DXButton 

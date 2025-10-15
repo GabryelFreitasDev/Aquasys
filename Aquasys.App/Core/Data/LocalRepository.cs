@@ -93,12 +93,10 @@ namespace Aquasys.App.Core.Data
                 await _database.UpdateAsync(item);
             }
         }
-
-        // A versão fortemente tipada do Upsert
         public async Task UpsertAsync(T item)
         {
             var existingItem = await _database.Table<T>().FirstOrDefaultAsync(x => x.GlobalId == item.GlobalId);
-            item.IsSynced = true;
+            item.IsSynced = false;
             if (existingItem != null)
             {
                 if (item.LastModifiedAt > existingItem.LastModifiedAt)

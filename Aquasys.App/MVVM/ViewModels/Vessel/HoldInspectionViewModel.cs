@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Aquasys.App.Core.Data;
+using Aquasys.App.Controls.Editors;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
@@ -17,17 +18,13 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
     public partial class HoldInspectionViewModel : BaseViewModels
     {
         private readonly ILocalRepository<HoldInspection> _holdInspectionRepository;
-        private readonly ILocalRepository<HoldInspectionCondition> _holdConditionRepository;
-        private readonly ILocalRepository<HoldInspectionImage> _holdImageRepository;
+        private readonly ILocalRepository<HoldInspectionImage> _holdInspectionImageRepository;
 
         [ObservableProperty]
         private HoldInspectionModel holdInspectionModel;
 
         [ObservableProperty]
-        private HoldInspectionConditionModel holdConditionModel;
-
-        [ObservableProperty]
-        private ObservableCollection<HoldInspectionImageModel> holdImages;
+        private ObservableCollection<HoldInspectionImageModel> holdInspectionImages;
 
         [ObservableProperty] private bool _expanded = true;
         [ObservableProperty] private bool _hasImages = false;
@@ -35,16 +32,13 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         public HoldInspectionViewModel(
             ILocalRepository<HoldInspection> holdInspectionRepository,
-            ILocalRepository<HoldInspectionCondition> holdConditionRepository,
-            ILocalRepository<HoldInspectionImage> holdImageRepository)
+            ILocalRepository<HoldInspectionImage> holdInspectionImageRepository)
         {
             _holdInspectionRepository = holdInspectionRepository;
-            _holdConditionRepository = holdConditionRepository;
-            _holdImageRepository = holdImageRepository;
+            _holdInspectionImageRepository = holdInspectionImageRepository;
 
             holdInspectionModel = new();
-            holdConditionModel = new();
-            holdImages = new();
+            holdInspectionImages = new();
         }
 
         public override async Task OnAppearing()
@@ -58,26 +52,29 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             {
                 var holdInspection = await _holdInspectionRepository.GetByIdAsync(Id.ToLong());
                 HoldInspectionModel = mapper.Map<HoldInspectionModel>(holdInspection);
+                HoldInspectionModel.InspectionDate = holdInspection.InspectionDateTime.Date;
+                HoldInspectionModel.InspectionTime = holdInspection.InspectionDateTime.TimeOfDay;
 
-                var holdConditionList = await _holdConditionRepository.GetFilteredAsync(x => x.IDHoldInspection == HoldInspectionModel.IDHoldInspection);
-                HoldConditionModel = mapper.Map<HoldInspectionConditionModel>(holdConditionList.FirstOrDefault()) ?? new();
-
-                var holdImagesList = await _holdImageRepository.GetFilteredAsync(x => x.IDHold == HoldInspectionModel.IDHold);
-                HoldImages = new ObservableCollection<HoldInspectionImageModel>(mapper.Map<List<HoldInspectionImageModel>>(holdImagesList));
-                HasImages = HoldImages.Any();
+                var holdInspectionImagesList = await _holdInspectionImageRepository.GetFilteredAsync(x => x.IDHoldInspection == HoldInspectionModel.IDHoldInspection);
+                HoldInspectionImages = new ObservableCollection<HoldInspectionImageModel>(mapper.Map<List<HoldInspectionImageModel>>(holdInspectionImagesList));
+                HasImages = HoldInspectionImages.Any();
             }
         }
 
         [RelayCommand]
+        private async Task Save() {
+            await SaveHoldInspection(true);
+        }
+
         private async Task SaveHoldInspection(bool mostraMensagem = true)
         {
-            // Lógica para salvar HoldInspection
             if (HoldInspectionModel.IDHoldInspection != -1)
             {
                 var holdInspection = await _holdInspectionRepository.GetByIdAsync(HoldInspectionModel.IDHoldInspection);
                 if (holdInspection != null)
                 {
                     holdInspection = mapper.Map<HoldInspection>(HoldInspectionModel);
+                    holdInspection.InspectionDateTime = GetInspectionDateTime();
                     await _holdInspectionRepository.UpdateAsync(holdInspection);
                 }
             }
@@ -85,25 +82,9 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             {
                 var holdInspection = mapper.Map<HoldInspection>(HoldInspectionModel);
                 holdInspection.IDHold = IDHold;
+                holdInspection.InspectionDateTime = GetInspectionDateTime();
                 await _holdInspectionRepository.InsertAsync(holdInspection);
                 HoldInspectionModel.IDHoldInspection = holdInspection.IDHoldInspection;
-            }
-
-            // Lógica para salvar HoldCondition
-            if (HoldConditionModel.IDHoldInspectionCondition != 0)
-            {
-                var holdCondition = await _holdConditionRepository.GetByIdAsync(HoldConditionModel.IDHoldInspectionCondition);
-                if (holdCondition != null)
-                {
-                    holdCondition = mapper.Map<HoldInspectionCondition>(HoldConditionModel);
-                    await _holdConditionRepository.UpdateAsync(holdCondition);
-                }
-            }
-            else
-            {
-                var holdCondition = mapper.Map<HoldInspectionCondition>(HoldConditionModel);
-                holdCondition.IDHoldInspection = HoldInspectionModel.IDHoldInspection;
-                await _holdConditionRepository.InsertAsync(holdCondition);
             }
 
             if (mostraMensagem)
@@ -113,7 +94,109 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             }
         }
 
-        // ... Outros RelayCommands como Add, Edit e Delete de imagens continuam aqui
-        // Lembre-se de substituir 'new HoldImageBO()' por '_holdImageRepository' neles.
+        private DateTime GetInspectionDateTime()
+        {
+            var date = HoldInspectionModel.InspectionDate.Date;
+            var time = HoldInspectionModel.InspectionTime;
+            return date + time;
+        }
+
+        [RelayCommand]
+        private async Task Expand()
+        {
+            if (Expanded == true)
+                Expanded = false;
+            else
+                Expanded = true;
+        }
+
+        [RelayCommand]
+        private async Task AddHoldInspectionImage()
+        {
+            try
+            {
+                if (IsProcessRunning)
+                    return;
+
+                await SaveHoldInspection(false);
+
+                IsProcessRunning = true;
+
+                var anexo = (await DCFileSelector.GetImagens(1)).FirstOrDefault();
+                if (anexo != null && anexo is DCImagem _anexo && (!_anexo.ImageSource?.IsEmpty ?? false))
+                {
+                    HoldInspectionImage holdInspectionImage = new HoldInspectionImage();
+                    holdInspectionImage.Image = anexo.Content;
+                    holdInspectionImage.IDHoldInspection = HoldInspectionModel.IDHoldInspection;
+
+                    await _holdInspectionImageRepository.UpsertAsync(holdInspectionImage);
+
+                    MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"{nameof(HoldInspectionImagePage)}?{nameof(Id)}={holdInspectionImage.IDHoldInspectionImage}"));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                IsProcessRunning = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task EditHoldInspectionImage(HoldInspectionImageModel holdInspectionImageModel)
+        {
+            try
+            {
+                if (IsProcessRunning || holdInspectionImageModel is null)
+                    return;
+
+                await SaveHoldInspection(false);
+
+                IsProcessRunning = true;
+
+                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"{nameof(HoldInspectionImagePage)}?{nameof(Id)}={holdInspectionImageModel.IDHoldInspectionImage}"));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                IsProcessRunning = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task DeleteHoldInspectionImage(HoldInspectionImageModel holdInspectionImageModel)
+        {
+            try
+            {
+                if (IsProcessRunning || holdInspectionImageModel is null)
+                    return;
+
+                await SaveHoldInspection(false);
+
+                IsProcessRunning = true;
+
+                var holdInspectionImage = mapper.Map<HoldInspectionImage>(holdInspectionImageModel);
+
+                if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
+                {
+                    await _holdInspectionImageRepository.DeleteAsync(holdInspectionImage);
+                    HoldInspectionImages.Remove(holdInspectionImageModel);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                IsProcessRunning = false;
+            }
+        }
     }
 }

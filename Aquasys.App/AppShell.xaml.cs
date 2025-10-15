@@ -30,7 +30,7 @@ public partial class AppShell : Shell
             //Routing.RegisterRoute(nameof(VesselHoldRegistrationTabPage), typeof(VesselHoldRegistrationTabPage));
             Routing.RegisterRoute(nameof(HoldPage), typeof(HoldPage));
             Routing.RegisterRoute(nameof(HoldInspectionPage), typeof(HoldInspectionPage));
-            Routing.RegisterRoute(nameof(HoldImagePage), typeof(HoldImagePage));
+            Routing.RegisterRoute(nameof(HoldInspectionImagePage), typeof(HoldInspectionImagePage));
         #endregion
 
         Routing.RegisterRoute(nameof(OptionsPage), typeof(OptionsPage));

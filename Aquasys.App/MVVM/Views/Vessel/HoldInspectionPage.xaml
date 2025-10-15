@@ -32,19 +32,17 @@
                         </Frame>
                     </toolkit:Expander.Header>
                     <StackLayout>
-                        <Grid ColumnDefinitions="60*,10*,30*">
+                        <Grid ColumnDefinitions="58*, 45*" ColumnSpacing="8">
                             <dcc:DCDateEdit Grid.Column="0"
                                 x:Name="InspectionDate"
                                 LabelText="Inspection Date"
-                                Date="{Binding VesselModel.InspectionDate, Mode=TwoWay}"
+                                Date="{Binding HoldInspectionModel.InspectionDate, Mode=TwoWay}"
                                 IsEnabled="True"/>
 
-                            <Label Text="at" Grid.Column="1"/>
-
-                            <de:TimeEdit Grid.Column="2"
+                            <dcc:DCTimeEdit Grid.Column="2"
                                 x:Name="InspectionTime"
                                 LabelText="Inspection Time"
-                                Time="{Binding VesselModel.InspectionTime, Mode=TwoWay}"
+                                TimeSpan="{Binding HoldInspectionModel.InspectionTime, Mode=TwoWay}"
                                 />
                         </Grid>
 
@@ -52,7 +50,7 @@
                              x:Name="LeadInspector"
                              IsLabelFloating="True"
                              LabelText="Lead Inspector"
-                             Text="{Binding InspectionModel.LeadInspector, Mode=TwoWay}"
+                             Text="{Binding HoldInspectionModel.LeadInspector, Mode=TwoWay}"
                              PlaceholderText="Lead Inspector"/>
                     </StackLayout>
 
@@ -63,47 +61,47 @@
                     HorizontalOptions="Start"
                     Text="Empty"
                     TextColor="Black"
-                    IsChecked="{Binding HoldConditionModel.Empty, Mode=TwoWay}"/>
+                    IsChecked="{Binding HoldInspectionModel.Empty, Mode=TwoWay}"/>
 
                 <input:CheckBox
                      x:Name="Clean"
                      HorizontalOptions="Start"
                      Text="Clean"
                      TextColor="Black"
-                     IsChecked="{Binding HoldConditionModel.Clean, Mode=TwoWay}"/>
+                     IsChecked="{Binding HoldInspectionModel.Clean, Mode=TwoWay}"/>
 
                 <input:CheckBox
                      x:Name="Dry"
                      HorizontalOptions="Start"
                      Text="Dry"
                      TextColor="Black"
-                     IsChecked="{Binding HoldConditionModel.Dry, Mode=TwoWay}"/>
+                     IsChecked="{Binding HoldInspectionModel.Dry, Mode=TwoWay}"/>
 
                 <input:CheckBox
                      x:Name="OdorFree"
                      HorizontalOptions="Start"
                      Text="Odor free"
                      TextColor="Black"
-                     IsChecked="{Binding HoldConditionModel.OdorFree, Mode=TwoWay}"/>
+                     IsChecked="{Binding HoldInspectionModel.OdorFree, Mode=TwoWay}"/>
 
                 <input:CheckBox
                      x:Name="Insects"
                      HorizontalOptions="Start"
                      Text="Insect free"
                      TextColor="Black"
-                     IsChecked="{Binding HoldConditionModel.Insects, Mode=TwoWay}"/>
+                     IsChecked="{Binding HoldInspectionModel.Insects, Mode=TwoWay}"/>
 
                 <input:CheckBox
                      x:Name="CargoResidue"
                      HorizontalOptions="Start"
                      Text="Free from residue from previous cargos"
                      TextColor="Black"
-                     IsChecked="{Binding HoldConditionModel.CargoResidue, Mode=TwoWay}"/>
+                     IsChecked="{Binding HoldInspectionModel.CargoResidue, Mode=TwoWay}"/>
 
                 <dx:DXButton 
                     ButtonType="Accent"
                     Content="Add Hold Image +"
-                    Command="{Binding AddHoldImageCommand}"/>
+                    Command="{Binding AddHoldInspectionImageCommand}"/>
 
                 <toolkit:Expander Command="{Binding ExpandCommand}" IsVisible="{Binding HasImages}">
                     <toolkit:Expander.Header>
@@ -115,13 +113,13 @@
                             </Grid>
                         </Frame>
                     </toolkit:Expander.Header>
-                    <dxcv:DXCollectionView ItemsSource="{Binding HoldImages}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
+                    <dxcv:DXCollectionView ItemsSource="{Binding HoldInspectionImages}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
                         <dxcv:DXCollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Frame CornerRadius="5" Padding="0" HasShadow="True">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer
-                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HoldInspectionViewModel }}, Path=EditHoldImageCommand}"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HoldInspectionViewModel }}, Path=EditHoldInspectionImageCommand}"
                                              CommandParameter="{Binding .}"/>
                                     </Frame.GestureRecognizers>
                                     <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
@@ -138,7 +136,7 @@
                                             Icon="lixeira"
                                             IconColor="Red"
                                             BackgroundColor="Transparent"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HoldInspectionViewModel }}, Path=DeleteHoldImageCommand}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HoldInspectionViewModel }}, Path=DeleteHoldInspectionImageCommand}"
                                             CommandParameter="{Binding .}"/>
                                     </Grid>
                                 </Frame>
@@ -151,7 +149,7 @@
                 <dx:DXButton 
                     ButtonType="Accent"
                     Content="Save"
-                    Command="{Binding SaveHoldInspectionCommand}"/>
+                    Command="{Binding SaveCommand}"/>
 
             </VerticalStackLayout>
         </ScrollView>

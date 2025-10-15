@@ -11,6 +11,6 @@ namespace Aquasys.App.MVVM.Models.Vessel
         public string? Description { get; set; }
         public string? Observation { get; set; }
         public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
-        [ForeignKey("IDHoldInspection")] public long IDHoldInspection { get; set; }
+        public long IDHoldInspection { get; set; }
     }
 }

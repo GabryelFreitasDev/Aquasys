@@ -130,6 +130,9 @@
 	  <Compile Update="MVVM\Views\MainPage\OptionsPage.xaml.cs">
 	    <DependentUpon>OptionsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="MVVM\Views\Vessel\HoldInspectionImagePage.xaml.cs">
+	    <DependentUpon>HoldInspectionImagePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="MVVM\Views\Vessel\Tabs\VesselHoldRegistrationTabPage.xaml.cs">
 	    <DependentUpon>VesselHoldRegistrationTabPage.xaml</DependentUpon>
 	  </Compile>

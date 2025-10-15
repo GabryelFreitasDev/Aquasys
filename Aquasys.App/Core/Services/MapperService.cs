@@ -28,9 +28,6 @@ namespace Aquasys.App.Core.Services
                 cfg.CreateMap<HoldModel, Hold>();
                 cfg.CreateMap<Hold, HoldModel>();
 
-                cfg.CreateMap<HoldInspectionConditionModel, HoldInspectionCondition>();
-                cfg.CreateMap<HoldInspectionCondition, HoldInspectionConditionModel>();
-
                 cfg.CreateMap<HoldInspectionModel, HoldInspection>();
                 cfg.CreateMap<HoldInspection, HoldInspectionModel>();
 

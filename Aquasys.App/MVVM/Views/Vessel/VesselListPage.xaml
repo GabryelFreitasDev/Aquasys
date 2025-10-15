@@ -25,7 +25,7 @@
     <Grid RowDefinitions="Auto, *">
 
         <Grid Grid.Row="0" 
-              Padding="20"
+              Padding="10"
               BackgroundColor="{StaticResource Primary}" >
             <de:TextEdit 
                 Grid.Row="0"
@@ -57,7 +57,7 @@
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselListViewModel }}, Path=DeleteVesselCommand}"
                                            CommandParameter="{Binding .}"/>
                             </SwipeView.RightItems>
-                            <Frame Grid.ColumnSpan="2" CornerRadius="0" Padding="0" HasShadow="True">
+                            <Frame Grid.ColumnSpan="2" CornerRadius="10" Padding="0" Margin="10,5" HasShadow="True">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselListViewModel }}, Path=EditVesselCommand}"
@@ -68,7 +68,7 @@
                                            Grid.Column="0"
                                            Aspect="AspectFill"
                                            HeightRequest="120"
-                                           WidthRequest="165"/>
+                                           WidthRequest="160"/>
 
                                     <dx:DXSeparator Grid.Column="1"
                                                     FlowDirection="MatchParent"

@@ -1,6 +1,7 @@
 ﻿using Aquasys.App.Core.Data;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
+using Aquasys.App.MVVM.Views.Vessel;
 using Aquasys.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,6 +13,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
     public partial class HoldViewModel : BaseViewModels
     {
         private readonly ILocalRepository<Hold> _holdRepository;
+        private readonly ILocalRepository<HoldInspection> _holdInspectionRepository;
 
         [ObservableProperty] private HoldModel holdModel;
         [ObservableProperty] private bool expanded = true;
@@ -19,9 +21,10 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         public long IDVessel { get; set; }
 
-        public HoldViewModel(ILocalRepository<Hold> holdRepository)
+        public HoldViewModel(ILocalRepository<Hold> holdRepository, ILocalRepository<HoldInspection> holdInspectionRepository)
         {
             _holdRepository = holdRepository;
+            _holdInspectionRepository = holdInspectionRepository;
             holdModel = new();
         }
 
@@ -47,17 +50,16 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         private async Task Inspection()
         {
-
+            var inspection = await _holdInspectionRepository.GetFilteredAsync(x => x.IDHold == HoldModel.IDHold);
+            if (inspection?.Any() ?? false)
+                await Shell.Current.GoToAsync($"{nameof(HoldInspectionPage)}?{nameof(Id)}={inspection.First().IDHoldInspection.ToString()}");
+            else
+                await Shell.Current.GoToAsync($"{nameof(HoldInspectionPage)}?IDHold={HoldModel.IDHold}");
         }
 
         [RelayCommand]
         private async Task SaveHold()
         {
-
-            //var a = await _holdRepository.GetFilteredAsync(x => x.IDVessel == 0);
-            //var b = a.FirstOrDefault();
-            //b.IDVessel = IDVessel;
-            //await _holdRepository.UpdateAsync(b);
             if (HoldModel.IDHold != 0)
             {
                 var hold = await _holdRepository.GetByIdAsync(HoldModel.IDHold);

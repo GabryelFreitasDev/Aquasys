@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
 {
+    [Table("hold")]
     public class Hold : SyncableEntity 
     {
         [Key]
