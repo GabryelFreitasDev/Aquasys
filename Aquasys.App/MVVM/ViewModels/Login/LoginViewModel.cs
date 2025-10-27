@@ -46,7 +46,8 @@ namespace Aquasys.App.MVVM.ViewModels.Login
             if (IsLoadedViewModel) return;
             IsLoadedViewModel = true;
 
-            await AutoLoginAsync();
+            Application.Current!.MainPage = new AppShell();
+            //await AutoLoginAsync();
         }
 
         private async Task AutoLoginAsync()
@@ -65,7 +66,7 @@ namespace Aquasys.App.MVVM.ViewModels.Login
         private async Task ValidateLogin()
         {
             Application.Current!.MainPage = new AppShell();
-            /*
+
             LoginModel.UserName = "inspector.joao";
             LoginModel.Password = "Password123!";
 
@@ -114,7 +115,7 @@ namespace Aquasys.App.MVVM.ViewModels.Login
             {
                 IsBusy = false;
                 StatusMessage = string.Empty;
-            }*/
+            }
         }
 
         private async Task AuthenticateAndSync(User? user)
@@ -129,7 +130,7 @@ namespace Aquasys.App.MVVM.ViewModels.Login
                 }
 
                 StatusMessage = "Sincronizando dados, por favor aguarde...";
-                await _syncService.SynchronizeAsync();
+                //await _syncService.SynchronizeAsync();
 
                 new ContextUtils(user);
                 Application.Current!.MainPage = new AppShell();

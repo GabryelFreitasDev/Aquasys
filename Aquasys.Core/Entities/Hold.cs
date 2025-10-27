@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
 {
+    [Table("hold")]
     public class Hold : SyncableEntity 
     {
         [Key]
@@ -12,8 +13,13 @@ namespace Aquasys.Core.Entities
 
         [Required]
         [StringLength(200)]
-        [Column("name")]
-        public string? Name { get; set; }
+        [Column("basementnumber")]
+        public string? BasementNumber { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        [Column("agent")]
+        public string? Agent { get; set; }
 
         [StringLength(100)] 
         [Column("cargo")]
@@ -28,22 +34,6 @@ namespace Aquasys.Core.Entities
 
         [Column("productweight", TypeName = "numeric(18,5)")]
         public decimal ProductWeight { get; set; }
-
-        [StringLength(100)] 
-        [Column("lastcargo")]
-        public string? LastCargo { get; set; }
-
-        [StringLength(100)]
-        [Column("secondlastcargo")]
-        public string? SecondLastCargo { get; set; }
-
-        [StringLength(100)]
-        [Column("thirdlastcargo")]
-        public string? ThirdLastCargo { get; set; }
-
-        [StringLength(100)] 
-        [Column("fourthlastcargo")]
-        public string? FourthLastCargo { get; set; }
 
         [Required]
         [Column("datacadastro", TypeName = "date")]

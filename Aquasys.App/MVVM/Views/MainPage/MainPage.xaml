@@ -15,7 +15,7 @@
             </Grid.Shadow>
 
             <HorizontalStackLayout Spacing="10" Padding="20" VerticalOptions="Start" HorizontalOptions="Start">
-                <Image Source="usermain.svg" WidthRequest="24" HeightRequest="24" />
+                <Image Source="user.png" WidthRequest="24" HeightRequest="24" />
                 <Label Text="{Binding UserName}"
                        TextColor="White"
                        FontSize="16"
@@ -23,9 +23,9 @@
                        FontAttributes="Bold"/>
             </HorizontalStackLayout>
 
-            <Image Source="aquasyslogomain.svg"
+            <Image Source="menuvessel.png"
                    Aspect="AspectFit"
-                   WidthRequest="200"
+                   WidthRequest="300"
                    HorizontalOptions="Center"
                    VerticalOptions="Center" />
         </Grid>
@@ -43,14 +43,15 @@
                        Padding="10"
                        CornerRadius="15"
                        HasShadow="True"
-                       BorderColor="LightGray">
+                       BorderColor="LightGray"
+                       BackgroundColor="{StaticResource Primary}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NavigateToVesselModuleCommand}" />
                     </Frame.GestureRecognizers>
 
                     <VerticalStackLayout Spacing="8" VerticalOptions="Center" HorizontalOptions="Center">
-                        <Image Source="vesselmain.svg" WidthRequest="60" HeightRequest="60" />
-                        <Label Text="Vessel" TextColor="{StaticResource Primary}" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Image Source="menuvesselicon.png" WidthRequest="60" HeightRequest="60" />
+                        <Label Text="Vessel" TextColor="{StaticResource ColorWhite}" FontAttributes="Bold" HorizontalOptions="Center" />
                     </VerticalStackLayout>
                 </Frame>
 

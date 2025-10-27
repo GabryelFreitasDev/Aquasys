@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePages
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:de="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
+             xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:dcc="clr-namespace:Aquasys.App.Controls"
+             xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+             xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+             xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
+             xmlns:local="clr-namespace:Aquasys.App.MVVM.Views"
+             xmlns:model="clr-namespace:Aquasys.App.MVVM.Models.Vessel"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
+             x:Class="Aquasys.App.MVVM.Views.Vessel.VesselRegistrationPage">
+
+    <local:BasePages.Resources>
+        <DataTemplate x:Key="CountryItemTemplate">
+            <HorizontalStackLayout VerticalOptions="Center">
+                <Label
+                Text="{Binding CountryFlag}"
+                VerticalOptions="Center"
+                FontSize="20" />
+
+                <Label
+                Text="{Binding CountryName}"
+                VerticalOptions="Center"
+                Margin="10,0,0,0" />
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </local:BasePages.Resources>
+
+    <Grid Padding="10">
+        <ScrollView>
+            <VerticalStackLayout Padding="10" Spacing="10">
+                <Label 
+                        Text="Vessel Registration" 
+                        FontAttributes="Bold" 
+                        FontSize="20"/>
+
+                <de:TextEdit
+                        x:Name="OS"
+                        LabelText="OS"
+                        Text="{Binding VesselModel.Os, Mode=TwoWay}"/>
+
+                <de:TextEdit
+                        x:Name="DockingLocation"
+                        LabelText="Docking Location"
+                        Text="{Binding VesselModel.DockingLocation, Mode=TwoWay}"/>
+
+                <de:TextEdit
+                        x:Name="VesselName"
+                        LabelText="Vessel name"
+                        Text="{Binding VesselModel.VesselName, Mode=TwoWay}"/>
+
+                <de:TextEdit
+                        x:Name="IMO"
+                        LabelText="I.M.O"
+                        Text="{Binding VesselModel.Imo, Mode=TwoWay}"/>
+
+                <de:ComboBoxEdit
+                        x:Name="Flag"
+                        LabelText="Flag"
+                        ItemsSource="{Binding Flags}"
+                        SelectedItem="{Binding FlagSelecionada, Mode=TwoWay}"
+                        DisplayMember="CountryName"
+                        DisplayItemTemplate="{StaticResource CountryItemTemplate}"
+                        ItemTemplate="{StaticResource CountryItemTemplate}"
+                        FilterTextChangedCommand="{Binding ChangeFlagNameCommand}"
+                        SelectionChangedCommand="{Binding ChangeFlagCommand}"
+                        IsFilterEnabled="True"
+                        ClearIconVisibility="Auto"/>
+
+                <de:TextEdit
+                        x:Name="PortRegistry"
+                        LabelText="Port Registry"
+                        Text="{Binding VesselModel.PortRegistry, Mode=TwoWay}" />
+
+                <dcc:DCDateEdit
+                        x:Name="DateOfBuilding"
+                        LabelText="Date of Building"
+                        PlaceholderText="Select date"
+                        Date="{Binding VesselModel.DateOfBuilding, Mode=TwoWay}"/>
+
+                <de:TextEdit 
+                        x:Name="ShippingAgent"
+                        LabelText="Shipping Agent"
+                        Text="{Binding VesselModel.ShippingAgent, Mode=TwoWay}"/>
+
+                <de:TextEdit 
+                        x:Name="Owner"
+                        LabelText="Owner"
+                        Text="{Binding VesselModel.Owner, Mode=TwoWay}" />
+
+                <de:TextEdit 
+                        x:Name="Operator"
+                        LabelText="Operator"
+                        Text="{Binding VesselModel.VesselOperator, Mode=TwoWay}"/>
+
+                <toolkit:Expander Command="{Binding ExpandCommand}">
+                    <toolkit:Expander.Header>
+                        <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
+                            <Grid ColumnDefinitions="*,50">
+                                <Label Grid.Column="0" Text="Last Cargos" VerticalOptions="Center"></Label>
+                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
+                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
+                            </Grid>
+                        </Frame>
+                    </toolkit:Expander.Header>
+                    <StackLayout>
+                        <de:TextEdit
+                                x:Name="LastCargo"
+                                LabelText="Last Cargo"
+                                Text="{Binding VesselModel.LastCargo, Mode=TwoWay}"/>
+
+                        <de:TextEdit
+                                x:Name="SecondLastCargo"
+                                LabelText="Second Last Cargo"
+                                Text="{Binding VesselModel.SecondLastCargo, Mode=TwoWay}"/>
+
+                        <de:TextEdit
+                                x:Name="ThirdLastCargo"
+                                LabelText="Third Last Cargo"
+                                Text="{Binding VesselModel.ThirdLastCargo, Mode=TwoWay}"/>
+
+                        <de:TextEdit
+                                x:Name="FourthLastCargo"
+                                LabelText="Fourth Last Cargo"
+                                Text="{Binding VesselModel.FourthLastCargo, Mode=TwoWay}"/>
+                    </StackLayout>
+
+                </toolkit:Expander>
+
+                <dx:DXButton 
+                        ButtonType="Accent"
+                        Content="Add Vessel Image +"
+                        Command="{Binding AddVesselImageCommand}"/>
+
+               <toolkit:Expander Command="{Binding ExpandImagesCommand}" IsVisible="{Binding HasImages}">
+                    <toolkit:Expander.Header>
+                        <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
+                            <Grid ColumnDefinitions="*,50">
+                                <Label Grid.Column="0" Text="Vessel Images" VerticalOptions="Center"></Label>
+                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
+                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
+                            </Grid>
+                        </Frame>
+                    </toolkit:Expander.Header>
+                    <dxcv:DXCollectionView ItemsSource="{Binding Images}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
+                        <dxcv:DXCollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame CornerRadius="5" Padding="0" HasShadow="True">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselRegistrationViewModel }}, Path=EditVesselImageCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
+                                        <Image Grid.Column="0" Source="{Binding Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="100" WidthRequest="100"></Image>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="5" VerticalOptions="Center">
+                                            <HorizontalStackLayout Spacing="5">
+                                                <Label Text="Name:" FontAttributes="Bold"></Label>
+                                                <Label Text="{Binding Name}"></Label>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <dx:DXButton 
+                                            Grid.Column="2"
+                                            ButtonType="ToolButton"
+                                            Icon="lixeira"
+                                            IconColor="Red"
+                                            BackgroundColor="Transparent"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselRegistrationViewModel }}, Path=DeleteVesselImageCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </dxcv:DXCollectionView.ItemTemplate>
+                    </dxcv:DXCollectionView>
+                </toolkit:Expander>
+
+                <dx:DXButton
+                        ButtonType="Accent"
+                        Content="Salvar"
+                        Command="{Binding BtnSalvarClickCommand}"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+    
+</local:BasePages>

@@ -117,7 +117,7 @@ namespace Aquasys.WebApi.Controllers
                     // 6. SALVAR EM ETAPAS: Salva as mudanças deste lote de entidades (ex: todos os Vessels).
                     // Isso gera os IDs numéricos para os pais.
                     await _context.SaveChangesAsync();
-
+                    await transaction.CommitAsync();
                     // 7. POPULAR O MAPA: Após salvar, guardamos os novos IDs gerados.
                     foreach (var newItem in toAdd)
                     {

@@ -31,6 +31,18 @@ namespace Aquasys.WebApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDHold"));
 
+                    b.Property<string>("Agent")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("agent");
+
+                    b.Property<string>("BasementNumber")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("basementnumber");
+
                     b.Property<decimal>("Capacity")
                         .HasColumnType("numeric(18,5)")
                         .HasColumnName("capacity");
@@ -39,11 +51,6 @@ namespace Aquasys.WebApi.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("cargo");
-
-                    b.Property<string>("FourthLastCargo")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("fourthlastcargo");
 
                     b.Property<Guid>("GlobalId")
                         .HasColumnType("uuid");
@@ -55,23 +62,12 @@ namespace Aquasys.WebApi.Migrations
                     b.Property<bool>("IsSynced")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("LastCargo")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("lastcargo");
-
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("LoadPlan")
                         .HasColumnType("numeric(18,5)")
                         .HasColumnName("loadplan");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("name");
 
                     b.Property<decimal>("ProductWeight")
                         .HasColumnType("numeric(18,5)")
@@ -81,19 +77,6 @@ namespace Aquasys.WebApi.Migrations
                         .HasColumnType("date")
                         .HasColumnName("datacadastro");
 
-                    b.Property<string>("SecondLastCargo")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("secondlastcargo");
-
-                    b.Property<string>("ThirdLastCargo")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("thirdlastcargo");
-
-                    b.Property<Guid>("VesselGlobalId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("IDHold");
 
                     b.HasIndex("GlobalId")
@@ -101,65 +84,17 @@ namespace Aquasys.WebApi.Migrations
 
                     b.HasIndex("IDVessel");
 
-                    b.ToTable("Holds");
+                    b.ToTable("hold");
                 });
 
-            modelBuilder.Entity("Aquasys.Core.Entities.HoldCargo", b =>
+            modelBuilder.Entity("Aquasys.Core.Entities.HoldInspection", b =>
                 {
-                    b.Property<long>("IDHoldCargo")
+                    b.Property<long>("IDHoldInspection")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("idholdcargo");
+                        .HasColumnName("idholdinspection");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDHoldCargo"));
-
-                    b.Property<string>("Cargo")
-                        .HasMaxLength(60)
-                        .HasColumnType("character varying(60)")
-                        .HasColumnName("cargo");
-
-                    b.Property<Guid>("GlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("HoldGlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("IDHold")
-                        .HasColumnType("bigint")
-                        .HasColumnName("idhold");
-
-                    b.Property<bool>("IsSynced")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("integer")
-                        .HasColumnName("order");
-
-                    b.Property<DateTime>("RegistrationDateTime")
-                        .HasColumnType("date")
-                        .HasColumnName("datacadastro");
-
-                    b.HasKey("IDHoldCargo");
-
-                    b.HasIndex("GlobalId")
-                        .IsUnique();
-
-                    b.HasIndex("IDHold");
-
-                    b.ToTable("HoldCargos");
-                });
-
-            modelBuilder.Entity("Aquasys.Core.Entities.HoldCondition", b =>
-                {
-                    b.Property<long>("IDHoldCondition")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("idholdcondition");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDHoldCondition"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDHoldInspection"));
 
                     b.Property<int>("CargoResidue")
                         .HasColumnType("integer")
@@ -185,16 +120,17 @@ namespace Aquasys.WebApi.Migrations
                     b.Property<Guid>("GlobalId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("HoldInspectionGlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("IDHoldInspection")
+                    b.Property<long>("IDHold")
                         .HasColumnType("bigint")
-                        .HasColumnName("idholdinspection");
+                        .HasColumnName("idhold");
 
                     b.Property<int>("Insects")
                         .HasColumnType("integer")
                         .HasColumnName("insects");
+
+                    b.Property<DateTime>("InspectionDateTime")
+                        .HasColumnType("date")
+                        .HasColumnName("inspectiondatetime");
 
                     b.Property<bool>("IsSynced")
                         .HasColumnType("boolean");
@@ -202,32 +138,37 @@ namespace Aquasys.WebApi.Migrations
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("LeadInspector")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)")
+                        .HasColumnName("leadinspector");
+
                     b.Property<int>("OdorFree")
                         .HasColumnType("integer")
                         .HasColumnName("odorfree");
 
                     b.Property<DateTime>("RegistrationDateTime")
                         .HasColumnType("date")
-                        .HasColumnName("datacadastro");
+                        .HasColumnName("registrationdatetime");
 
-                    b.HasKey("IDHoldCondition");
+                    b.HasKey("IDHoldInspection");
 
                     b.HasIndex("GlobalId")
                         .IsUnique();
 
-                    b.HasIndex("IDHoldInspection");
+                    b.HasIndex("IDHold");
 
-                    b.ToTable("HoldConditions");
+                    b.ToTable("holdinspection");
                 });
 
-            modelBuilder.Entity("Aquasys.Core.Entities.HoldImage", b =>
+            modelBuilder.Entity("Aquasys.Core.Entities.HoldInspectionImage", b =>
                 {
-                    b.Property<long>("IDHoldImage")
+                    b.Property<long>("IDHoldInspectionImage")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("idholdimage");
+                        .HasColumnName("idholdinspectionimage");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDHoldImage"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDHoldInspectionImage"));
 
                     b.Property<string>("Description")
                         .HasMaxLength(60)
@@ -237,12 +178,9 @@ namespace Aquasys.WebApi.Migrations
                     b.Property<Guid>("GlobalId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("HoldGlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("IDHold")
+                    b.Property<long>("IDHoldInspection")
                         .HasColumnType("bigint")
-                        .HasColumnName("idhold");
+                        .HasColumnName("idholdinspection");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
@@ -264,161 +202,14 @@ namespace Aquasys.WebApi.Migrations
                         .HasColumnType("date")
                         .HasColumnName("datacadastro");
 
-                    b.HasKey("IDHoldImage");
+                    b.HasKey("IDHoldInspectionImage");
 
                     b.HasIndex("GlobalId")
                         .IsUnique();
 
-                    b.HasIndex("IDHold");
+                    b.HasIndex("IDHoldInspection");
 
-                    b.ToTable("HoldImages");
-                });
-
-            modelBuilder.Entity("Aquasys.Core.Entities.HoldInspection", b =>
-                {
-                    b.Property<long>("IDHoldInspection")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("idholdinspection");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDHoldInspection"));
-
-                    b.Property<Guid>("GlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("HoldGlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("IDHold")
-                        .HasColumnType("bigint")
-                        .HasColumnName("idhold");
-
-                    b.Property<long>("IDInspection")
-                        .HasColumnType("bigint")
-                        .HasColumnName("idinspection");
-
-                    b.Property<Guid>("InspectionGlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsSynced")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("RegistrationDateTime")
-                        .HasColumnType("date")
-                        .HasColumnName("datacadastro");
-
-                    b.HasKey("IDHoldInspection");
-
-                    b.HasIndex("GlobalId")
-                        .IsUnique();
-
-                    b.HasIndex("IDHold");
-
-                    b.HasIndex("IDInspection");
-
-                    b.ToTable("HoldInspections");
-                });
-
-            modelBuilder.Entity("Aquasys.Core.Entities.Inspection", b =>
-                {
-                    b.Property<long>("IDInspection")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("idinspection");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDInspection"));
-
-                    b.Property<DateTime>("EndDateTime")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("enddatetime");
-
-                    b.Property<Guid>("GlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("IDVessel")
-                        .HasColumnType("bigint")
-                        .HasColumnName("idvessel");
-
-                    b.Property<bool>("IsSynced")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LeadInspector")
-                        .HasMaxLength(60)
-                        .HasColumnType("character varying(60)")
-                        .HasColumnName("leadinspector");
-
-                    b.Property<string>("OS")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("os");
-
-                    b.Property<DateTime>("RegistrationDateTime")
-                        .HasColumnType("date")
-                        .HasColumnName("datacadastro");
-
-                    b.Property<string>("ShippingAgent")
-                        .HasMaxLength(60)
-                        .HasColumnType("character varying(60)")
-                        .HasColumnName("shippingagent");
-
-                    b.Property<DateTime>("StartDateTime")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("startdatetime");
-
-                    b.Property<Guid>("VesselGlobalId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("IDInspection");
-
-                    b.HasIndex("GlobalId")
-                        .IsUnique();
-
-                    b.HasIndex("IDVessel");
-
-                    b.ToTable("Inspections");
-                });
-
-            modelBuilder.Entity("Aquasys.Core.Entities.TypeVessel", b =>
-                {
-                    b.Property<long>("IDTypeVessel")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("idtypevessel");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDTypeVessel"));
-
-                    b.Property<Guid>("GlobalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsSynced")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
-                    b.Property<DateTime>("RegistrationDateTime")
-                        .HasColumnType("date")
-                        .HasColumnName("datacadastro");
-
-                    b.HasKey("IDTypeVessel");
-
-                    b.HasIndex("GlobalId")
-                        .IsUnique();
-
-                    b.ToTable("TypeVessels");
+                    b.ToTable("holdinspectionimage");
                 });
 
             modelBuilder.Entity("Aquasys.Core.Entities.User", b =>
@@ -465,7 +256,7 @@ namespace Aquasys.WebApi.Migrations
                     b.HasIndex("GlobalId")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("user");
                 });
 
             modelBuilder.Entity("Aquasys.Core.Entities.Vessel", b =>
@@ -477,10 +268,25 @@ namespace Aquasys.WebApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("IDVessel"));
 
+                    b.Property<DateTime?>("DateOfBuilding")
+                        .HasColumnType("date")
+                        .HasColumnName("dateofbuilding");
+
+                    b.Property<string>("DockingLocation")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("dockinglocation");
+
                     b.Property<string>("Flag")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("flag");
+
+                    b.Property<string>("FourthLastCargo")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("fourthlastcargo");
 
                     b.Property<Guid>("GlobalId")
                         .HasColumnType("uuid");
@@ -498,30 +304,25 @@ namespace Aquasys.WebApi.Migrations
                     b.Property<bool>("IsSynced")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("LastCargo")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("lastcargo");
+
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("ManufacturingDate")
-                        .HasColumnType("date")
-                        .HasColumnName("manufacturingdate");
-
-                    b.Property<string>("Operator")
+                    b.Property<string>("OS")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
-                        .HasColumnName("operator");
+                        .HasColumnName("os");
 
                     b.Property<string>("Owner")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
                         .HasColumnName("owner");
-
-                    b.Property<string>("Place")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("place");
 
                     b.Property<string>("PortRegistry")
                         .IsRequired()
@@ -533,8 +334,20 @@ namespace Aquasys.WebApi.Migrations
                         .HasColumnType("date")
                         .HasColumnName("datacadastro");
 
-                    b.Property<Guid>("UserGlobalId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("SecondLastCargo")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("secondlastcargo");
+
+                    b.Property<string>("ShippingAgent")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("shippingagent");
+
+                    b.Property<string>("ThirdLastCargo")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("thirdlastcargo");
 
                     b.Property<string>("VesselName")
                         .IsRequired()
@@ -542,9 +355,11 @@ namespace Aquasys.WebApi.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("vesselname");
 
-                    b.Property<int>("VesselType")
-                        .HasColumnType("integer")
-                        .HasColumnName("vesseltype");
+                    b.Property<string>("VesselOperator")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("vesseloperator");
 
                     b.HasKey("IDVessel");
 
@@ -553,7 +368,7 @@ namespace Aquasys.WebApi.Migrations
 
                     b.HasIndex("IDUserRegistration");
 
-                    b.ToTable("Vessels");
+                    b.ToTable("vessel");
                 });
 
             modelBuilder.Entity("Aquasys.Core.Entities.VesselImage", b =>
@@ -597,9 +412,6 @@ namespace Aquasys.WebApi.Migrations
                         .HasColumnType("date")
                         .HasColumnName("datacadastro");
 
-                    b.Property<Guid>("VesselGlobalId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("IDVesselImage");
 
                     b.HasIndex("GlobalId")
@@ -607,7 +419,7 @@ namespace Aquasys.WebApi.Migrations
 
                     b.HasIndex("IDVessel");
 
-                    b.ToTable("VesselImages");
+                    b.ToTable("vesselimage");
                 });
 
             modelBuilder.Entity("Aquasys.Core.Entities.Hold", b =>
@@ -621,39 +433,6 @@ namespace Aquasys.WebApi.Migrations
                     b.Navigation("VesselEntity");
                 });
 
-            modelBuilder.Entity("Aquasys.Core.Entities.HoldCargo", b =>
-                {
-                    b.HasOne("Aquasys.Core.Entities.Hold", "HoldEntity")
-                        .WithMany()
-                        .HasForeignKey("IDHold")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HoldEntity");
-                });
-
-            modelBuilder.Entity("Aquasys.Core.Entities.HoldCondition", b =>
-                {
-                    b.HasOne("Aquasys.Core.Entities.HoldInspection", "HoldInspectionEntity")
-                        .WithMany()
-                        .HasForeignKey("IDHoldInspection")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HoldInspectionEntity");
-                });
-
-            modelBuilder.Entity("Aquasys.Core.Entities.HoldImage", b =>
-                {
-                    b.HasOne("Aquasys.Core.Entities.Hold", "HoldEntity")
-                        .WithMany()
-                        .HasForeignKey("IDHold")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HoldEntity");
-                });
-
             modelBuilder.Entity("Aquasys.Core.Entities.HoldInspection", b =>
                 {
                     b.HasOne("Aquasys.Core.Entities.Hold", "HoldEntity")
@@ -662,26 +441,18 @@ namespace Aquasys.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Aquasys.Core.Entities.Inspection", "InspectionEntity")
-                        .WithMany()
-                        .HasForeignKey("IDInspection")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("HoldEntity");
-
-                    b.Navigation("InspectionEntity");
                 });
 
-            modelBuilder.Entity("Aquasys.Core.Entities.Inspection", b =>
+            modelBuilder.Entity("Aquasys.Core.Entities.HoldInspectionImage", b =>
                 {
-                    b.HasOne("Aquasys.Core.Entities.Vessel", "VesselEntity")
+                    b.HasOne("Aquasys.Core.Entities.HoldInspection", "HoldInspectionEntity")
                         .WithMany()
-                        .HasForeignKey("IDVessel")
+                        .HasForeignKey("IDHoldInspection")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("VesselEntity");
+                    b.Navigation("HoldInspectionEntity");
                 });
 
             modelBuilder.Entity("Aquasys.Core.Entities.Vessel", b =>

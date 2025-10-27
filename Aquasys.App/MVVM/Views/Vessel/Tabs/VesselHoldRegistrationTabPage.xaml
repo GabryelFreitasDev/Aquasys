@@ -7,6 +7,7 @@
              xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
              xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
              xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+             xmlns:edit="clr-namespace:Aquasys.App.Controls.Editors"
              xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel.Tabs"
              xmlns:local="clr-namespace:Aquasys.App.MVVM.Views"
              xmlns:model="clr-namespace:Aquasys.App.MVVM.Models.Vessel"
@@ -16,17 +17,12 @@
              x:Class="Aquasys.App.MVVM.Views.Vessel.Tabs.VesselHoldRegistrationTabPage">
 
     <ContentView.Content>
-        <Grid Padding="10">
-            <VerticalStackLayout Padding="10" Spacing="10" Grid.ColumnSpan="4">
+        <Grid Padding="10" RowDefinitions="*, Auto">
+            <VerticalStackLayout Grid.Row="0" Padding="10" Spacing="10" Grid.ColumnSpan="4">
                 <Label 
                     Text="Vessel Hold Registration" 
                     FontAttributes="Bold" 
                     FontSize="20"/>
-
-                <dx:DXButton 
-                    ButtonType="Accent"
-                    Content="Add Hold +"
-                    Command="{Binding AddHoldCommand}"/>
 
                 <dxcv:DXCollectionView ItemsSource="{Binding Holds}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
                     <dxcv:DXCollectionView.ItemTemplate>
@@ -40,8 +36,8 @@
                                 <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
                                     <VerticalStackLayout Grid.Column="0" Spacing="5" Padding="5" VerticalOptions="Center">
                                         <HorizontalStackLayout Spacing="5">
-                                            <Label Text="Name:" FontAttributes="Bold"></Label>
-                                            <Label Text="{Binding Name}"></Label>
+                                            <Label Text="Basement Number:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding BasementNumber}"></Label>
                                         </HorizontalStackLayout>
                                         <HorizontalStackLayout Spacing="5">
                                             <Label Text="Cargo:" FontAttributes="Bold"></Label>
@@ -52,12 +48,12 @@
                                             <Label Text="{Binding Capacity}"></Label>
                                         </HorizontalStackLayout>
                                         <HorizontalStackLayout Spacing="5">
-                                            <Label Text="Load Plan:" FontAttributes="Bold"></Label>
-                                            <Label Text="{Binding LoadPlan}"></Label>
-                                        </HorizontalStackLayout>
-                                        <HorizontalStackLayout Spacing="5">
                                             <Label Text="Product Weight:" FontAttributes="Bold"></Label>
                                             <Label Text="{Binding ProductWeight}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label Text="Status:" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding Inspectioned}"></Label>
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
                                     <dx:DXButton 
@@ -73,11 +69,17 @@
                         </DataTemplate>
                     </dxcv:DXCollectionView.ItemTemplate>
                 </dxcv:DXCollectionView>
-                <dx:DXButton 
-                    ButtonType="Accent"
-                    Content="Save"
-                    Command="{Binding BtnSalvarClickCommand}"/>
             </VerticalStackLayout>
+
+            <edit:DCFloatingMenu Grid.Row="1"
+                   HeightRequest="50" 
+                   WidthRequest="50"
+                   HorizontalOptions="End"
+                   VerticalOptions="End"
+                   Margin="0,0,0,40"
+                   MainButtonBackgroundColor="{StaticResource Primary}"
+                   MainButtonIcon="icon_plus.png"
+                   Command="{Binding AddHoldCommand}"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

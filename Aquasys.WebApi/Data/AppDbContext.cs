@@ -12,11 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<Vessel> Vessels { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Hold> Holds { get; set; }
-    public DbSet<Inspection> Inspections { get; set; }
-    public DbSet<TypeVessel> TypeVessels { get; set; }
-    public DbSet<HoldCargo> HoldCargos { get; set; }
-    public DbSet<HoldImage> HoldImages { get; set; }
-    public DbSet<HoldCondition> HoldConditions { get; set; }
+    public DbSet<HoldInspectionImage> HoldImages { get; set; }
     public DbSet<HoldInspection> HoldInspections { get; set; }
     public DbSet<VesselImage> VesselImages { get; set; }
 

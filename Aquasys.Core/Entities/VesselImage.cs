@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aquasys.Core.Entities
 {
+    [Table("vesselimage")]
     public class VesselImage : SyncableEntity
     {
         [Key]
@@ -12,7 +13,7 @@ namespace Aquasys.Core.Entities
         public long IDVesselImage { get; set; }
 
         [Required]
-        [Column("image", TypeName = "bytea")] // TypeName para PostgreSQL
+        [Column("image", TypeName = "bytea")] 
         public byte[] Image { get; set; }
 
         [StringLength(200)]
@@ -27,7 +28,6 @@ namespace Aquasys.Core.Entities
         [Column("datacadastro", TypeName = "date")]
         public DateTime RegistrationDateTime { get; set; } = DateTime.Now;
 
-        // Chave Estrangeira
         [Column("idvessel", TypeName = "bigint")]
         public long IDVessel { get; set; }
 
