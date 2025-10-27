@@ -5,6 +5,7 @@
     xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
     xmlns:dc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
     xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+    xmlns:dcc="clr-namespace:Aquasys.App.Controls"
     xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui">
 
@@ -188,14 +189,14 @@
     </Style>
 
     <Style TargetType="Label" x:Key="Headline">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
         <Setter Property="FontSize" Value="32" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
 
     <Style TargetType="Label" x:Key="SubHeadline">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
         <Setter Property="FontSize" Value="24" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -409,8 +410,8 @@
         <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray200}}" />
         <Setter Property="Shell.NavBarHasShadow" Value="False" />
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource White}}" />
         <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
     </Style>
 
@@ -422,7 +423,7 @@
 
     <Style TargetType="TabbedPage">
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource White}}" />
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
@@ -485,6 +486,150 @@
         <Setter Property="PickerBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
         <Setter Property="LabelColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
         <Setter Property="IsLabelFloating" Value="True"/>
+    </Style>
+
+    <Style x:Key="DefaultViewStyle"
+       TargetType="View">
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VerticalOptions" Value="Fill" />
+    </Style>
+
+    <Style x:Key="DefaultFormStyle"
+       BasedOn="{StaticResource DefaultViewStyle}"
+       TargetType="de:EditBase">
+        <Setter Property="TextFontFamily" Value="OpenSansRegular" />
+        <Setter Property="TextFontSize" Value="16" />
+        <Setter Property="ClearIconVisibility" Value="Never" />
+        <Setter Property="FocusedLabelColor" Value="{StaticResource Primary}" />
+        <Setter Property="FocusedBorderColor" Value="{StaticResource PrimaryDarkText}" />
+        <Setter Property="CursorColor" Value="{StaticResource PrimaryDark}" />
+        <Setter Property="LabelFontSize" Value="12" />
+        <Setter Property="TextColor" Value="{StaticResource ColorBlack}" />
+        <Setter Property="TextFontSize" Value="16" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource ColorGray100}" />
+        <Setter Property="LabelColor" Value="{StaticResource ColorGray400}" />
+        <Setter Property="BorderColor" Value="{StaticResource ColorGray400}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BoxHeight" Value="48" />
+        <Setter Property="BoxPadding" Value="15" />
+        <Setter Property="DisabledBackgroundColor" Value="{StaticResource ColorGray100}" />
+        <Setter Property="DisabledBorderColor" Value="{StaticResource ColorGray300}" />
+        <Setter Property="DisabledTextColor" Value="{StaticResource ColorGray500}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Transparent}" />
+        <Setter Property="BottomTextFontFamily" Value="OpenSansRegular" />
+        <Setter Property="BottomTextFontSize" Value="12" />
+        <Setter Property="ErrorColor" Value="{StaticResource ColorRed500}" />
+        <Setter Property="TextVerticalAlignment" Value="Center" />
+        <Setter Property="IconVerticalAlignment" Value="Center" />
+        <Setter Property="CornerRadius" Value="4" />
+    </Style>
+
+    <Style x:Key="FloatButton"
+        TargetType="dcc:DCButtonForm">
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Margin" Value="6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="End" />
+        <Setter Property="BorderThickness" Value="0.75" />
+        <Setter Property="Padding" Value="20,12" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="Opacity" Value="0" />
+        <Setter Property="CornerMode" Value="Round" />
+        <Setter Property="CornerRadius" Value="25" />
+        <Setter Property="IconIndent" Value="12" />
+        <Setter Property="IconColor" Value="{StaticResource ColorWhite}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="PressedBackgroundColor" Value="{StaticResource PrimaryDark}" />
+        <Setter Property="TextColor" Value="{StaticResource ColorWhite}" />
+        <Setter Property="PressedTextColor" Value="{StaticResource ColorWhite}" />
+        <Setter Property="BorderColor" Value="{StaticResource ColorGray300}" />
+    </Style>
+
+    <Style x:Key="FloatButtonItem"
+        TargetType="dcc:DCButtonForm">
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Margin" Value="6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="End" />
+        <Setter Property="BorderThickness" Value="0.75" />
+        <Setter Property="Padding" Value="20,12" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="CornerMode" Value="Round" />
+        <Setter Property="CornerRadius" Value="25" />
+        <Setter Property="IconIndent" Value="12" />
+        <Setter Property="IconColor" Value="{StaticResource ColorGray500}" />
+        <Setter Property="PressedIconColor" Value="{StaticResource ColorGray500}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource ColorWhite}" />
+        <Setter Property="PressedBackgroundColor" Value="{StaticResource ColorGray50}" />
+        <Setter Property="TextColor" Value="{StaticResource ColorGray500}" />
+        <Setter Property="PressedTextColor" Value="{StaticResource ColorGray500}" />
+        <Setter Property="BorderColor" Value="{StaticResource ColorGray300}" />
+        <Setter Property="PressedBorderColor" Value="{StaticResource ColorGray300}" />
+    </Style>
+
+    <Style TargetType="dcc:DCTimeEdit"
+       BasedOn="{StaticResource DefaultFormStyle}">
+        <Setter Property="ClearIcon" Value="icon_fechar.png" />
+        <Setter Property="ClearIconColor" Value="{StaticResource ColorGray400}" />
+        <Setter Property="TimeIconColor" Value="{StaticResource ColorGray400}" />
+        <Setter Property="TimeFormatMode" Value="HourFormat24" />
+        <Setter Property="FocusedBorderThickness" Value="1" />
+        <Setter Property="BoxHeight" Value="54" />
+        <Setter Property="FocusedLabelColor" Value="{StaticResource ColorGray500}" />
+        <Setter Property="FocusedBorderColor" Value="{StaticResource ColorGray500}" />
+    </Style>
+
+    <Style TargetType="dcc:DCDateEdit"
+       BasedOn="{StaticResource DefaultFormStyle}">
+        <Setter Property="DisplayFormat" Value="dd/MM/yyyy" />
+        <Setter Property="FocusedBorderThickness" Value="1" />
+        <Setter Property="ClearIcon" Value="icon_fechar.png" />
+        <Setter Property="ClearIconColor" Value="{StaticResource ColorGray400}" />
+        <Setter Property="DateIconColor" Value="{StaticResource ColorGray400}" />
+        <Setter Property="BoxHeight" Value="54" />
+        <Setter Property="FocusedLabelColor" Value="{StaticResource ColorGray500}" />
+        <Setter Property="FocusedBorderColor" Value="{StaticResource ColorGray500}" />
+    </Style>
+
+    <Style x:Key="DCTabViewTitleLabelStyle"
+       TargetType="Label">
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="VerticalOptions" Value="FillAndExpand" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="TextColor" Value="{StaticResource ColorGray700}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style x:Key="DefaultLabelStyle"
+       TargetType="Label"
+       BasedOn="{StaticResource DefaultViewStyle}">
+        <Setter Property="FontFamily" Value="Quicksand500Font" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource ColorBlack}" />
+    </Style>
+
+    <Style x:Key="labelDescricaoStyle"
+       TargetType="Label"
+       BasedOn="{StaticResource DefaultLabelStyle}">
+        <Setter Property="TextColor" Value="{StaticResource ColorGray500}" />
+    </Style>
+
+    <Style x:Key="PopupButtonStyle"
+       TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource ColorWhite}" />
+        <Setter Property="BorderColor" Value="{StaticResource ColorGray100}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontFamily" Value="Quicksand700Font" />
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="Margin" Value="-1" />
+        <Setter Property="TextColor" Value="{StaticResource Primary500}" />
+        <Setter Property="TextTransform" Value="None" />
     </Style>
 
 </ResourceDictionary>

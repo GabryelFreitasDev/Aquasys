@@ -4,19 +4,26 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
-
     <Color x:Key="Primary">#001E3E</Color>
+    <Color x:Key="Primary50">
+        #0D2F55
+    </Color>
+    <Color x:Key="Primary300">
+        #154C88
+    </Color>
+    <Color x:Key="Primary500">
+        #1E65B8
+    </Color>
+    <Color x:Key="Primary600">
+        #184F8F
+    </Color>
     <Color x:Key="PrimaryDark">#384F77</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="SecondaryDarkText">#384F77</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
-    <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
@@ -28,13 +35,194 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
-    <Color x:Key="ColorBlackTransparent50">#80000000</Color>
-
-        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
-    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
-    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
-    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
-    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
+    <!--  Cores  -->
+    <Color x:Key="Transparent">
+        Transparent
+    </Color>
+    <!--  White  -->
+    <Color x:Key="ColorWhite">
+        #ffffff
+    </Color>
+    <Color x:Key="ColorWhiteTransparent95">
+        #F2FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent90">
+        #E6FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent85">
+        #D9FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent80">
+        #CCFFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent75">
+        #BFFFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent70">
+        #B3FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent65">
+        #A6FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent60">
+        #99FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent55">
+        #8CFFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent50">
+        #80FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent45">
+        #73FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent40">
+        #66FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent35">
+        #59FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent30">
+        #4DFFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent25">
+        #40FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent20">
+        #33FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent15">
+        #26FFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent10">
+        #1AFFFFFF
+    </Color>
+    <Color x:Key="ColorWhiteTransparent5">
+        #0DFFFFFF
+    </Color>
+    <!--  Black  -->
+    <Color x:Key="ColorBlack">
+        #000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent95">
+        #F2000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent90">
+        #E6000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent85">
+        #D9000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent80">
+        #CC000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent75">
+        #B000000F
+    </Color>
+    <Color x:Key="ColorBlackTransparent70">
+        #B3000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent65">
+        #A6000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent60">
+        #99000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent55">
+        #8C000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent50">
+        #80000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent45">
+        #73000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent40">
+        #66000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent35">
+        #59000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent30">
+        #4D000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent25">
+        #40000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent20">
+        #33000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent15">
+        #26000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent10">
+        #1A000000
+    </Color>
+    <Color x:Key="ColorBlackTransparent5">
+        #0D000000
+    </Color>
+    <!--  Gray  -->
+    <Color x:Key="ColorGray50">
+        #F9FAFB
+    </Color>
+    <Color x:Key="ColorGray100">
+        #F3F4F6
+    </Color>
+    <Color x:Key="ColorGray200">
+        #E5E7EB
+    </Color>
+    <Color x:Key="ColorGray300">
+        #D1D5DB
+    </Color>
+    <Color x:Key="ColorGray400">
+        #9CA3AF
+    </Color>
+    <Color x:Key="ColorGray500">
+        #6B7280
+    </Color>
+    <Color x:Key="ColorGray600">
+        #4B5563
+    </Color>
+    <Color x:Key="ColorGray700">
+        #374151
+    </Color>
+    <Color x:Key="ColorGray800">
+        #1F2937
+    </Color>
+    <Color x:Key="ColorGray900">
+        #111827
+    </Color>
+    <!--  Red  -->
+    <Color x:Key="ColorRed50">
+        #FEF2F2
+    </Color>
+    <Color x:Key="ColorRed100">
+        #FEE2E2
+    </Color>
+    <Color x:Key="ColorRed200">
+        #FECACA
+    </Color>
+    <Color x:Key="ColorRed300">
+        #FCA5A5
+    </Color>
+    <Color x:Key="ColorRed400">
+        #F87171
+    </Color>
+    <Color x:Key="ColorRed500">
+        #EF4444
+    </Color>
+    <Color x:Key="ColorRed600">
+        #DC2626
+    </Color>
+    <Color x:Key="ColorRed700">
+        #B91C1C
+    </Color>
+    <Color x:Key="ColorRed800">
+        #991B1B
+    </Color>
+    <Color x:Key="ColorRed900">
+        #7F1D1D
+    </Color>
 
     <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
     <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>

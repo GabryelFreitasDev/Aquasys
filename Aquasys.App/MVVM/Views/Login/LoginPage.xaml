@@ -12,6 +12,11 @@
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False">
 
+    <local:BasePages.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource White}"
+                               StatusBarStyle="LightContent" />
+    </local:BasePages.Behaviors>
+
     <VerticalStackLayout Padding="5" Spacing="5" VerticalOptions="Center">
         <Image 
             Aspect="Fill" 

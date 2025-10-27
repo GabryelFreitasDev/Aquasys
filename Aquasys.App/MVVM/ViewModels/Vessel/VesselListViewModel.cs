@@ -3,9 +3,11 @@ using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.App.MVVM.Views.Vessel;
+using Aquasys.App.MVVM.Views.Vessel.Tabs;
 using Aquasys.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CountryData.Standard;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +17,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
     public partial class VesselListViewModel : BaseViewModels
     {
         private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
-        private readonly ILocalRepository<Aquasys.Core.Entities.VesselImage> _vesselImageRepository;
+        private readonly ILocalRepository<VesselImage> _vesselImageRepository;
 
         [ObservableProperty]
         private ObservableCollection<VesselModel> _vessels = new();
@@ -31,7 +33,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         public VesselListViewModel(
             ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
-            ILocalRepository<Aquasys.Core.Entities.VesselImage> vesselImageRepository)
+            ILocalRepository<VesselImage> vesselImageRepository)
         {
             _vesselRepository = vesselRepository;
             _vesselImageRepository = vesselImageRepository;
@@ -40,7 +42,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         private async Task AddVessel()
         {
-            await Shell.Current.GoToAsync(nameof(VesselMainPage));
+            await Shell.Current.GoToAsync(nameof(VesselRegistrationPage));
         }
 
         [RelayCommand]
@@ -77,14 +79,14 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         {
             var orderedVessels = Enumerable.Empty<Aquasys.Core.Entities.Vessel>();
 
-            if (string.IsNullOrWhiteSpace(searchVesselName))
+            if (string.IsNullOrWhiteSpace(SearchVesselName))
             {
                 var vesselsData = await _vesselRepository.GetAllAsync();
                 orderedVessels = vesselsData.OrderBy(x => x.VesselName);
             }
             else
             {
-                string searchTextLower = searchVesselName.ToLower();
+                string searchTextLower = SearchVesselName.ToLower();
                 var vesselsData = await _vesselRepository.GetFilteredAsync(
                     v => v.VesselName.ToLower().Contains(searchTextLower)
                 );
@@ -94,14 +96,16 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             Vessels.Clear();
             if (orderedVessels.Any())
             {
+                var countries = new CountryHelper().GetCountryData().ToList();
                 foreach (var vessel in orderedVessels)
                 {
                     var vesselModel = mapper.Map<VesselModel>(vessel);
                     var vesselImages = await _vesselImageRepository.GetFilteredAsync(x => x.IDVessel == vesselModel.IDVessel);
                     vesselModel.FirstImage = vesselImages?.FirstOrDefault()?.Image ?? (byte[])ResourceUtils.GetResourceValue("aquasyslogo");
+                    vesselModel.FlagIcon = countries.FirstOrDefault(x => x.CountryName == vesselModel.Flag)?.CountryFlag ?? "";
                     Vessels.Add(vesselModel);
                 }
-            }
+            }   
         }
     }
 }

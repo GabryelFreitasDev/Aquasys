@@ -105,7 +105,7 @@ namespace Aquasys.App.Controls
                 TextTransform = TextTransform.None,
                 BackgroundColor = (Color)ResourceUtils.GetResourceValue("Primary"),
                 Text = optionLabel,
-                FontFamily = "Quicksand600Font"
+                FontFamily = "OpenSansRegular"
             };
 
             optionButton.Clicked += (object sender, EventArgs e) =>

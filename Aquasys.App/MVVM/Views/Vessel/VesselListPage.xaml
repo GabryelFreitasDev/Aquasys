@@ -14,13 +14,24 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Aquasys.App.MVVM.Views.Vessel.VesselListPage">
 
+    <local:BasePages.ToolbarItems>
+        <ToolbarItem 
+            IconImageSource="filter.png"
+            Priority="0"
+            Order="Primary"
+            Command="{Binding OpenFilterCommand}" />
+    </local:BasePages.ToolbarItems>
+    
     <Grid RowDefinitions="Auto, *">
 
         <Grid Grid.Row="0" 
-              Padding="20"
+              Padding="10"
               BackgroundColor="{StaticResource Primary}" >
             <de:TextEdit 
                 Grid.Row="0"
+                StartIcon="search.png"
+                CursorColor="{StaticResource White}"
+                StartIconColor="{StaticResource White}"
                 PlaceholderText="Search"
                 BorderThickness="0.8"
                 FocusedBorderThickness="1"
@@ -46,37 +57,52 @@
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselListViewModel }}, Path=DeleteVesselCommand}"
                                            CommandParameter="{Binding .}"/>
                             </SwipeView.RightItems>
-                            <Frame Grid.ColumnSpan="2" CornerRadius="0" Padding="0" HasShadow="True">
+                            <Frame Grid.ColumnSpan="2" CornerRadius="10" Padding="0" Margin="10,5" HasShadow="True">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselListViewModel }}, Path=EditVesselCommand}"
                                         CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
                                 <Grid Grid.Row="2" ColumnDefinitions="45*,1*,60*">
+                                    <Image Source="{Binding FirstImage, Converter={toolkit:ByteArrayToImageSourceConverter}}"
+                                           Grid.Column="0"
+                                           Aspect="AspectFill"
+                                           HeightRequest="120"
+                                           WidthRequest="160"/>
 
-                                    <Image Source="{Binding FirstImage, Converter={toolkit:ByteArrayToImageSourceConverter}}" Grid.Column="0" Aspect="AspectFill" HeightRequest="120" WidthRequest="165"/>
-                                    <dx:DXSeparator Grid.Column="1" FlowDirection="MatchParent" Orientation="Vertical"></dx:DXSeparator>
-                                    <VerticalStackLayout Grid.Column="2" Spacing="1" Padding="5">
-                                        <HorizontalStackLayout Spacing="5">
-                                            <Label Text="{Binding VesselName}" FontAttributes="Bold" FontSize="Medium" TextColor="{StaticResource Primary}"></Label>
-                                        </HorizontalStackLayout>
-                                        <!--<HorizontalStackLayout Spacing="5">
-                                            <Label Text="Flag:" FontAttributes="Bold"></Label>
-                                            <Label Text="{Binding Flag}"></Label>
-                                        </HorizontalStackLayout>-->
-                                        <HorizontalStackLayout Spacing="5">
-                                            <Label Text="I.M.O:" FontAttributes="Bold"></Label>
-                                            <Label Text="{Binding IMO}"></Label>
-                                        </HorizontalStackLayout>
-                                        <HorizontalStackLayout Spacing="5">
-                                            <Label Text="Port Registry:" FontAttributes="Bold"></Label>
-                                            <Label Text="{Binding PortRegistry}"></Label>
-                                        </HorizontalStackLayout>
-                                        <HorizontalStackLayout Spacing="5">
-                                            <Label Text="Owner:" FontAttributes="Bold"></Label>
-                                            <Label Text="{Binding Owner}"></Label>
-                                        </HorizontalStackLayout>
-                                    </VerticalStackLayout>
+                                    <dx:DXSeparator Grid.Column="1"
+                                                    FlowDirection="MatchParent"
+                                                    Orientation="Vertical" />
+
+                                    <Grid Grid.Column="2" RowDefinitions="Auto, *" RowSpacing="10" Padding="5">
+                                        <FlexLayout Direction="Row"
+                                                    AlignItems="Center"
+                                                    JustifyContent="Start"
+                                                    Margin="0,0,0,5">
+                                            <Label Text="{Binding FlagIcon}"
+                                                   FontSize="Medium"/>
+                                            <Label Text="{Binding VesselName}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="Medium"
+                                                   Margin="5,0,0,0"
+                                                   TextColor="{StaticResource Primary}"/>
+                                        </FlexLayout>
+
+                                        <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
+                                            <Grid ColumnDefinitions="Auto,*" Grid.Row="0" Margin="0,1" ColumnSpacing="3">
+                                                <Label Text="I.M.O:" FontAttributes="Bold"/>
+                                                <Label Text="{Binding Imo}" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid ColumnDefinitions="Auto,*" Grid.Row="1" Margin="0,1" ColumnSpacing="3">
+                                                <Label Text="Port Registry:" FontAttributes="Bold"/>
+                                                <Label Text="{Binding PortRegistry}" Grid.Column="1"/>
+                                            </Grid>
+                                            <Grid ColumnDefinitions="Auto,*" Grid.Row="2" Margin="0,1" ColumnSpacing="3">
+                                                <Label Text="Owner:" FontAttributes="Bold"/>
+                                                <Label Text="{Binding Owner}" Grid.Column="1"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                             </Frame>
                         </SwipeView>
@@ -86,7 +112,8 @@
         </ScrollView>
 
         <edit:DCFloatingMenu Grid.Row="1"
-                   HeightRequest="50" WidthRequest="50"
+                   HeightRequest="50" 
+                   WidthRequest="50"
                    HorizontalOptions="End"
                    VerticalOptions="End"
                    Margin="0,0,0,40"

@@ -9,21 +9,21 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel"
              xmlns:view="clr-namespace:Aquasys.App.MVVM.Views.Vessel.Tabs"
-             x:Class="Aquasys.App.MVVM.Views.Vessel.HoldImagePage">
+             x:Class="Aquasys.App.MVVM.Views.Vessel.HoldInspectionImagePage">
 
     <Grid RowDefinitions="*,*">
-        <Image Source="{Binding HoldImageModel.Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" ></Image>
+        <Image Source="{Binding HoldInspectionImageModel.Image, Converter={toolkit:ByteArrayToImageSourceConverter}}" Aspect="AspectFill" ></Image>
 
         <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="10">
             <de:TextEdit
                 x:Name="Name"
                 IsLabelFloating="True"
                 LabelText="Name"
-                Text="{Binding HoldImageModel.Description, Mode=TwoWay}"
+                Text="{Binding HoldInspectionImageModel.Description, Mode=TwoWay}"
                 PlaceholderText="Name"/>
             <de:MultilineEdit
                 x:Name="Description"
-                Text="{Binding HoldImageModel.Observation, Mode=TwoWay}"
+                Text="{Binding HoldInspectionImageModel.Observation, Mode=TwoWay}"
                 IsLabelFloating="True"
                 LabelText="Description"
                 PlaceholderText="Description"
@@ -31,7 +31,7 @@
             <dx:DXButton 
                 ButtonType="Accent"
                 Content="Save"
-                Command="{Binding SaveHoldImageCommand}"/>
+                Command="{Binding SaveHoldInspectionImageCommand}"/>
 
         </VerticalStackLayout>
     </Grid>
