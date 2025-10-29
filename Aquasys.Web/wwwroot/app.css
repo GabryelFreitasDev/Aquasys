@@ -1,0 +1,191 @@
+/* Em wwwroot/css/app.css ou similar */
+
+.search-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre a busca e o filtro */
+    background-color: #f8f9fa; /* Fundo levemente cinza */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-container {
+    position: relative;
+    flex-grow: 1; /* Faz a busca ocupar o espaço disponível */
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.search-input {
+    padding-left: 35px; /* Espaço para o ícone */
+    border-radius: 20px; /* Bordas arredondadas */
+}
+
+.filter-icon {
+    font-size: 1.5rem; /* Tamanho do ícone de filtro */
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.vessel-list-item {
+    cursor: pointer; /* Indica que o item é clicável */
+    margin-bottom: 10px; /* Espaço entre os itens */
+    border: 1px solid #dee2e6; /* Borda sutil */
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out; /* Efeito suave ao passar o mouse */
+}
+
+    .vessel-list-item:hover {
+        background-color: #e9ecef; /* Cor de fundo ao passar o mouse */
+    }
+
+.vessel-name {
+    color: #0d6efd; /* Cor azul para o nome */
+    font-weight: bold;
+}
+
+.vessel-info {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.vessel-owner {
+    font-size: 0.8em;
+    color: #adb5bd;
+}
+
+.arrow-icon {
+    color: #adb5bd;
+    font-size: 1.2rem;
+    align-self: center; /* Centraliza a seta verticalmente */
+}
+
+
+/* Estilos para o NavMenu.razor */
+
+.navmenu {
+    background-color: #0a192f; /* Azul escuro principal */
+    color: #ccd6f6; /* Cor de texto clara */
+    height: 100vh; /* Ocupa toda a altura */
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+}
+
+.navmenu-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff; /* Branco */
+    padding: 0 1rem 1rem 1rem; /* Espaçamento interno (sem padding superior aqui) */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Linha divisória sutil */
+    margin-bottom: 1rem;
+}
+
+.navmenu .nav-item {
+    font-size: 0.9rem;
+}
+
+.navmenu .nav-link {
+    color: #8892b0; /* Cinza azulado claro para links normais */
+    border-radius: 0; /* Remove cantos arredondados padrão */
+    padding: 0.75rem 1rem;
+    border-left: 3px solid transparent; /* Borda esquerda para indicar item ativo */
+    transition: background-color 0.2s ease-in-out, border-left-color 0.2s ease-in-out;
+}
+
+    .navmenu .nav-link:hover {
+        background-color: rgba(100, 255, 218, 0.1); /* Verde claro sutil no hover */
+        color: #ccd6f6; /* Texto mais claro no hover */
+    }
+
+    /* Estilo para o link ativo */
+    .navmenu .nav-link.active {
+        color: #ffffff; /* Branco */
+        background-color: rgba(100, 255, 218, 0.1); /* Verde claro sutil */
+        border-left-color: #64ffda; /* Verde claro na borda esquerda */
+    }
+
+    .navmenu .nav-link span[class^="bi-"] {
+        font-size: 1.1rem;
+        margin-right: 0.5rem;
+        vertical-align: middle;
+    }
+
+.nav-arrow {
+    font-size: 0.7rem;
+    color: #8892b0; /* Cor das setas */
+}
+
+/* Seção do perfil do usuário */
+.user-profile-section {
+    /* margin-top: auto; */ /* <-- REMOVA OU COMENTE ESTA LINHA */
+    margin-top: 2rem; /* <-- ADICIONE ESTA LINHA (ajuste o valor 2rem conforme necessário) */
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(10, 25, 47, 0.5);
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Torna a imagem redonda */
+    object-fit: cover; /* Garante que a imagem preencha o espaço */
+}
+
+.user-name {
+    color: #ccd6f6; /* Texto claro */
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.user-settings {
+    color: #8892b0; /* Cinza azulado */
+    font-size: 0.75rem;
+}
+
+
+/* Estilos para UserList.razor */
+.user-list-page .page-title {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.user-list-page .action-bar {
+    margin-bottom: 1.5rem;
+}
+
+.user-list-page .search-container .search-input {
+    border-radius: 20px; /* Bordas arredondadas para a busca */
+}
+
+.user-list-page .add-button {
+    min-width: 120px; /* Largura mínima para o botão Add */
+}
+
+.user-list-page .user-grid {
+    border: 1px solid #dee2e6; /* Borda sutil na grid */
+    border-radius: 8px; /* Cantos arredondados */
+    overflow: hidden; /* Garante que os cantos arredondados funcionem */
+}
+
+.user-list-page .action-icons span {
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 1.1rem;
+}
+
+.user-list-page .action-icons .edit-icon {
+    color: #0d6efd; /* Azul */
+}
+
+.user-list-page .action-icons .delete-icon {
+    color: #dc3545; /* Vermelho */
+}

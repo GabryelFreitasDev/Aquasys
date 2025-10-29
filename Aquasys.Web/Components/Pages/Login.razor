@@ -1,0 +1,115 @@
+﻿@page "/login" 
+@layout EmptyLayout // Usa um layout sem o menu lateral (criaremos a seguir)
+@using Aquasys.Core.Entities
+@using System.ComponentModel.DataAnnotations
+@using Aquasys.Web.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider // Para atualizar o estado de login
+
+<PageTitle>Login</PageTitle>
+
+<div class="login-container">
+    <div class="card shadow-sm login-card">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Aquasys Login</h3>
+
+            <EditForm Model="@loginModel" OnValidSubmit="HandleLoginAsync">
+                <DataAnnotationsValidator /> @* Opcional, se usar validação no LoginModel *@
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuário:</label>
+                    <InputText id="username" class="form-control" @bind-Value="loginModel.Username" />
+                    <ValidationMessage For="@(() => loginModel.Username)" />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Senha:</label>
+                    <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" />
+                    <ValidationMessage For="@(() => loginModel.Password)" />
+                </div>
+
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @errorMessage
+                    </div>
+                }
+
+                <div class="d-grid">
+                    @* Botão de largura total *@
+                    <button type="submit" class="btn btn-primary" disabled="@isProcessing">
+                        @if (isProcessing)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span> Entrando...</span>
+                        }
+                        else
+                        {
+                            <span>Entrar</span>
+                        }
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginInputModel loginModel = new();
+    private string? errorMessage;
+    private bool isProcessing = false;
+
+    // Classe simples para o formulário de login
+    public class LoginInputModel
+    {
+        [Required(ErrorMessage = "Usuário é obrigatório")]
+        public string Username { get; set; } = "";
+        [Required(ErrorMessage = "Senha é obrigatória")]
+        public string Password { get; set; } = "";
+    }
+
+    private async Task HandleLoginAsync()
+    {
+        isProcessing = true;
+        errorMessage = null;
+        var httpClient = HttpClientFactory.CreateClient("WebApi");
+
+        try
+        {
+            // O objeto que a API espera
+            var apiLoginRequest = new { Username = loginModel.Username, Password = loginModel.Password };
+            var response = await httpClient.PostAsJsonAsync("api/Auth/login", apiLoginRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var loggedInUser = await response.Content.ReadFromJsonAsync<User>();
+                if (loggedInUser != null)
+                {
+                    // Chama nosso provedor customizado para marcar o usuário como logado
+                    var customAuthStateProvider = (CustomAuthStateProvider)AuthenticationStateProvider;
+                    await customAuthStateProvider.MarkUserAsAuthenticated(loggedInUser);
+
+                    // Redireciona para a página principal (ou a última acessada)
+                    NavigationManager.NavigateTo("/vessels", forceLoad: true); // forceLoad força recarregamento
+                }
+                else
+                {
+                    errorMessage = "Erro ao processar dados do usuário.";
+                }
+            }
+            else
+            {
+                errorMessage = "Usuário ou senha inválidos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Erro de conexão: {ex.Message}";
+        }
+        finally
+        {
+            isProcessing = false;
+        }
+    }
+}

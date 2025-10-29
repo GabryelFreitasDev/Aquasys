@@ -1,0 +1,173 @@
+﻿@page "/users"
+@using Aquasys.Core.Entities
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Gestão de Usuários</PageTitle>
+
+<div class="container-fluid user-list-page">
+
+    <h1 class="page-title">Gestão de usuários</h1>
+
+    @* Barra de Busca e Botão Adicionar *@
+    <div class="row align-items-center mb-3 action-bar">
+        <div class="col-md-9 search-container">
+            <div class="input-group">
+                <span class="input-group-text"><span class="oi oi-magnifying-glass"></span></span>
+                <input type="text" class="form-control" placeholder="Buscar por Nome ou Email" @bind="SearchText" @bind:event="oninput" />
+            </div>
+        </div>
+        <div class="col-md-3 text-end">
+            <button class="btn btn-primary add-button" @onclick="NavigateToAddUser">
+                <span class="oi oi-plus me-1"></span> Add user
+            </button>
+        </div>
+    </div>
+
+    @* Tabela de Usuários *@
+    @if (filteredUsers == null && isLoading)
+    {
+        <p><em>Carregando usuários...</em></p>
+    }
+    else if (filteredUsers == null || !filteredUsers.Any())
+    {
+        <p>Nenhum usuário encontrado.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            @* Torna a tabela rolável em telas pequenas *@
+            <table class="table table-striped table-hover user-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Perfil</th>
+                        <th>Status</th>
+                        <th class="text-center">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in filteredUsers)
+                    {
+                        <tr>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>Administrador</td> @* Placeholder *@
+                            <td>Ativo</td> @* Placeholder *@
+                            <td class="text-center action-icons">
+                                <span class="oi oi-pencil action-icon edit-icon" @onclick="@(() => NavigateToEditUser(user))" title="Editar">a</span>
+                                <span class="oi oi-trash action-icon delete-icon" @onclick="@(() => DeleteUser(user))" title="Excluir">b</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @* TODO: Adicionar paginação se necessário *@
+    }
+</div>
+
+@code {
+    private List<User> allUsers = new();
+    private IEnumerable<User>? filteredUsers;
+    private bool isLoading = true;
+
+    private string _searchText = string.Empty;
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            if (_searchText != value)
+            {
+                _searchText = value;
+                FilterUsers();
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var httpClient = HttpClientFactory.CreateClient("WebApi");
+        try
+        {
+            var result = await httpClient.GetFromJsonAsync<List<User>>("api/Users");
+            allUsers = result ?? new List<User>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao buscar usuários da API: {ex.Message}");
+            allUsers = new List<User>();
+        }
+        finally
+        {
+            isLoading = false;
+            FilterUsers();
+        }
+    }
+
+    private void FilterUsers()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            filteredUsers = allUsers.OrderBy(u => u.UserName);
+        }
+        else
+        {
+            string searchTextLower = SearchText.ToLowerInvariant();
+            filteredUsers = allUsers.Where(u =>
+                (u.UserName != null && u.UserName.ToLowerInvariant().Contains(searchTextLower)) ||
+                (u.Email != null && u.Email.ToLowerInvariant().Contains(searchTextLower))
+            ).OrderBy(u => u.UserName);
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void NavigateToAddUser()
+    {
+        NavigationManager.NavigateTo("/user/add");
+    }
+
+    private void NavigateToEditUser(User? user)
+    {
+        if (user != null)
+        {
+            NavigationManager.NavigateTo($"/user/edit/{user.GlobalId}");
+        }
+    }
+
+    private async Task DeleteUser(User? user)
+    {
+        if (user != null)
+        {
+            // TODO: Adicionar confirmação visual (ex: Modal)
+            var confirmed = true; // Simular confirmação
+            if (confirmed)
+            {
+                var httpClient = HttpClientFactory.CreateClient("WebApi");
+                try
+                {
+                    var response = await httpClient.DeleteAsync($"api/Users/{user.GlobalId}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        allUsers.Remove(user); // Remove da lista local
+                        FilterUsers(); // Atualiza a exibição
+                        // TODO: Mostrar mensagem de sucesso (ex: Toast)
+                    }
+                    else
+                    {
+                        // TODO: Mostrar mensagem de erro da API
+                        Console.WriteLine($"Erro ao deletar usuário: {response.ReasonPhrase}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao deletar usuário: {ex.Message}");
+                    // TODO: Mostrar mensagem de erro genérica
+                }
+            }
+        }
+    }
+}

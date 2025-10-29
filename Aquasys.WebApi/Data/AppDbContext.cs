@@ -21,6 +21,11 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         // Configura um índice no GlobalId para todas as entidades para otimizar a busca.
         // Isso é crucial para a performance do endpoint de Push.
+        modelBuilder.Entity<Vessel>()             // Para a entidade Vessel...
+                    .HasMany(v => v.Holds)                // ...ela tem muitos Holds...
+                    .WithOne(h => h.VesselEntity)         // ...onde cada Hold tem um VesselEntity...
+                    .HasForeignKey(h => h.IDVessel);
+
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             if (typeof(SyncableEntity).IsAssignableFrom(entityType.ClrType))

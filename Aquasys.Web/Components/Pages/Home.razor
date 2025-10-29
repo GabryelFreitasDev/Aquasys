@@ -1,0 +1,10 @@
+﻿@page "/"
+@* @inject NavigationManager NavigationManager
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Redireciona imediatamente para a página de vessels assim que a Home é acessada
+        NavigationManager.NavigateTo("/vessels", forceLoad: false);
+    }
+} *@

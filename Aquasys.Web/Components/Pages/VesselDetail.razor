@@ -1,0 +1,154 @@
+﻿@page "/vessel/{VesselId:guid}" // Rota que aceita um GUID como parâmetro
+@using Aquasys.Core.Entities
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalhes da Embarcação</PageTitle>
+
+@if (vessel == null && isLoading)
+{
+    <p><em>Carregando detalhes...</em></p>
+}
+else if (vessel == null && !isLoading)
+{
+    <p class="text-danger">Não foi possível carregar os dados da embarcação.</p>
+}
+else if (vessel != null)
+{
+    <div class="vessel-detail-container p-3">
+
+        @* --- Seção Vessel Records --- *@
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>Vessel Records</h4>
+            <button class="btn btn-primary" disabled>Report</button> @* Botão Report (funcionalidade futura) *@
+        </div>
+
+        <div class="record-section card mb-4">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">OS:</label>
+                        <input type="text" class="form-control" value="@vessel.OS" readonly /> @* Assumindo que OS vem de Inspection *@
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Docking location:</label>
+                        <input type="text" class="form-control" value="@vessel.DockingLocation" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Vessel Name:</label>
+                        <input type="text" class="form-control" value="@vessel.VesselName" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">I.M.O:</label>
+                        <input type="text" class="form-control" value="@vessel.IMO" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Flag:</label>
+                        <input type="text" class="form-control" value="@vessel.Flag" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Port Registry:</label>
+                        <input type="text" class="form-control" value="@vessel.PortRegistry" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Date of Building:</label>
+                        <input type="text" class="form-control" value="@vessel.DateOfBuilding?.ToString("dd/MM/yyyy")" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Shipping agent:</label>
+                        <input type="text" class="form-control" value="@vessel.ShippingAgent" readonly /> @* Assumindo que ShippingAgent vem de Inspection *@
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Owner:</label>
+                        <input type="text" class="form-control" value="@vessel.Owner" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Operator:</label>
+                        <input type="text" class="form-control" value="@vessel.VesselOperator" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* --- Seção Last Cargos (Expansível) --- *@
+        <details class="record-section card mb-4" open>
+            <summary class="card-header fw-bold">Last Cargos</summary>
+            <div class="card-body">
+                <div class="mb-2">
+                    <label class="form-label">1st Last Cargo:</label>
+                    <input type="text" class="form-control" value="@vessel.LastCargo" readonly />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">2nd Last Cargo:</label>
+                    <input type="text" class="form-control" value="@vessel.SecondLastCargo" readonly />
+                </div>
+                <div>
+                    <label class="form-label">3rd Last Cargo:</label>
+                    <input type="text" class="form-control" value="@vessel.ThirdLastCargo" readonly />
+                </div>
+                @* Assumindo que LastCargo vem do primeiro Hold relacionado *@
+            </div>
+        </details>
+
+        @* --- Seção Vessel Hold --- *@
+        <h4 class="mt-4">Vessel Hold</h4>
+        @if (vessel.Holds?.Any() == true)
+        {
+            <div class="row">
+                @foreach (var hold in vessel.Holds)
+                {
+                    <div class="col-md-6 mb-3">
+                        <div class="card hold-card">
+                            <div class="card-header fw-bold">
+                                Basement Number: @hold.BasementNumber
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text mb-1"><span class="fw-bold">Cargo:</span> @hold.Cargo</p>
+                                <p class="card-text mb-1"><span class="fw-bold">Capacity:</span> @hold.Capacity</p>
+                                <p class="card-text mb-1"><span class="fw-bold">Product Weight:</span> @hold.ProductWeight</p>
+                                <p class="card-text mb-1"><span class="fw-bold">Status:</span> @(hold.Inspectioned ? "Inspected" : "Not Inspected")</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>Nenhum porão registrado para esta embarcação.</p>
+        }
+
+    </div>
+}
+
+@code {
+    [Parameter] // Recebe o GlobalId da URL
+    public Guid VesselId { get; set; }
+
+    private Vessel? vessel; // Armazena os dados da embarcação
+    private bool isLoading = true; // Controla a mensagem de "Carregando..."
+
+    // Método executado quando os parâmetros da URL são definidos (incluindo na primeira carga)
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+        vessel = null; // Limpa os dados anteriores
+        var httpClient = HttpClientFactory.CreateClient("WebApi");
+        try
+        {
+            // Busca os detalhes do Vessel na API, incluindo os Holds relacionados
+            // Sua API precisa suportar a inclusão de Holds neste endpoint
+            vessel = await httpClient.GetFromJsonAsync<Vessel>($"api/Vessels/{VesselId}?includeHolds=true");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao buscar detalhes da embarcação {VesselId}: {ex.Message}");
+            vessel = null; // Garante que a mensagem de erro seja exibida
+            // TODO: Exibir mensagem de erro mais amigável
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

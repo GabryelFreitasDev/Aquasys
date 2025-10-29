@@ -45,5 +45,8 @@ namespace Aquasys.Core.Entities
         [SQLite.Ignore]
         [ForeignKey(nameof(IDVessel))]
         public virtual Vessel? VesselEntity { get; set; }
+
+        [NotMapped]
+        public bool Inspectioned { get; set; } = false; 
     }
 }

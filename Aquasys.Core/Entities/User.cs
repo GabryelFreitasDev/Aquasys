@@ -24,7 +24,7 @@ namespace Aquasys.Core.Entities
 
         [StringLength(200)]
         [Column("email")]
-        public string? Email { get; set; }
+        public string? Email { get; set; } 
 
         [Column("rememberme", TypeName = "boolean")]
         public bool RememberMe { get; set; } = false;

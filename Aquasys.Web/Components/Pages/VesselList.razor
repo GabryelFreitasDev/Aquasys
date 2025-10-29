@@ -1,0 +1,121 @@
+﻿@page "/vessels"
+@using Aquasys.Core.Entities 
+@inject IHttpClientFactory HttpClientFactory 
+@inject NavigationManager NavigationManager 
+
+<PageTitle>Embarcações</PageTitle>
+
+<h1 lang="pt-br">Listagem de Embarcações</h1>
+
+@* Barra de Busca e Filtro (Apenas visual por enquanto) *@
+<div class="search-filter-bar mb-3">
+    <div class="search-container">
+        <span class="oi oi-magnifying-glass search-icon"></span> @* Ícone de Lupa *@
+        <input type="text" class="form-control search-input" placeholder="Search" @bind="SearchText" @bind:event="oninput" />
+    </div>
+    <span class="oi oi-filter filter-icon"></span> @* Ícone de Filtro *@
+</div>
+
+
+@* Verifica se os dados já foram carregados *@
+@if (filteredVessels == null)
+{
+    <p><em>Carregando...</em></p> @* Mensagem de loading *@
+}
+else if (!filteredVessels.Any())
+{
+    <p>Nenhuma embarcação encontrada.</p> @* Mensagem se a lista estiver vazia *@
+}
+else
+{
+    @* Lista simples para exibir as embarcações *@
+    <div class="list-group">
+        @foreach (var vessel in filteredVessels)
+        {
+            @* Item clicável na lista *@
+            <div class="list-group-item list-group-item-action vessel-list-item"
+                @onclick="() => OpenVesselDetails(vessel.GlobalId)">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 vessel-name">@vessel.VesselName</h5>
+                    <span class="oi oi-chevron-right arrow-icon"></span> @* Ícone de Seta *@
+                </div>
+                <p class="mb-1 vessel-info">I.M.O.: @vessel.IMO</p>
+                <p class="mb-1 vessel-info">Port Registry: @vessel.PortRegistry</p>
+                <small class="vessel-owner">Owner: @vessel.Owner</small>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Vessel> allVessels = new List<Vessel>(); // Lista original vinda da API
+    private IEnumerable<Vessel>? filteredVessels; // Lista a ser exibida (pode ser null durante o loading)
+
+    private string _searchText = string.Empty;
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            _searchText = value;
+            FilterVessels(); // Filtra a lista sempre que o texto de busca mudar
+        }
+    }
+
+    // Método executado quando a página é inicializada
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("WebApi"); // Pega o HttpClient configurado
+        try
+        {
+            // Busca a lista de Vessels na sua API (verifique se o endpoint está correto)
+            var result = await httpClient.GetFromJsonAsync<List<Vessel>>("api/Vessels");
+
+            if (result != null)
+            {
+                allVessels = result; // Guarda a lista completa
+            }
+            else
+            {
+                allVessels = new List<Vessel>(); // Garante que a lista não seja nula se a API falhar
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao buscar embarcações da API: {ex.Message}");
+            allVessels = new List<Vessel>(); // Garante lista vazia em caso de erro
+            // TODO: Exibir uma mensagem de erro mais amigável para o usuário
+        }
+        finally
+        {
+            FilterVessels(); // Aplica o filtro inicial (ou exibe tudo se a busca estiver vazia)
+        }
+    }
+
+    // Método para filtrar a lista de embarcações com base no SearchText
+    private void FilterVessels()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            filteredVessels = allVessels.OrderBy(v => v.VesselName); // Exibe todos, ordenados por nome
+        }
+        else
+        {
+            string searchTextLower = SearchText.ToLowerInvariant();
+            filteredVessels = allVessels.Where(v =>
+                (v.VesselName != null && v.VesselName.ToLowerInvariant().Contains(searchTextLower)) ||
+                (v.IMO != null && v.IMO.ToLowerInvariant().Contains(searchTextLower)) ||
+                (v.PortRegistry != null && v.PortRegistry.ToLowerInvariant().Contains(searchTextLower)) ||
+                (v.Owner != null && v.Owner.ToLowerInvariant().Contains(searchTextLower))
+            ).OrderBy(v => v.VesselName);
+        }
+        // StateHasChanged(); // Em Blazor Server, geralmente não é necessário chamar StateHasChanged aqui
+    }
+
+    // Método para navegar para a página de detalhes (ainda não criada)
+    private void OpenVesselDetails(Guid vesselId)
+    {
+        // Navega para uma URL como "/vessel/GUID_DA_EMBARCACAO"
+        NavigationManager.NavigateTo($"/vessel/{vesselId}");
+    }
+}
