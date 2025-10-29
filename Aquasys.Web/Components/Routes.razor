@@ -1,6 +1,51 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@inject NavigationManager Navigation
+
+@* Adiciona renderização por streaming, pode ajudar com a inicialização *@
+@attribute [StreamRendering(true)]
+
+<Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+
+            @* Conteúdo a ser exibido enquanto a autorização está sendo verificada *@
+            <Authorizing>
+                <p>A verificar o seu acesso...</p>
+            </Authorizing>
+
+            @* Conteúdo exibido se o utilizador NÃO estiver autenticado *@
+            <NotAuthorized>
+                @{
+                    // Verifica se já estamos na página de login para evitar loop
+                    // Usamos UriPartial.Path para comparar apenas o caminho da URL
+                    var currentPath = new Uri(Navigation.Uri).GetComponents(UriComponents.Path, UriFormat.Unescaped);
+
+                    if (!string.Equals(currentPath, "login", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Força o redirecionamento para a página de login
+                        // forceLoad: true pode ser importante para garantir que o estado seja limpo
+                        Navigation.NavigateTo("/login", forceLoad: true);
+                    }
+                    else
+                    {
+                        // Se já estamos na página /login, permite que ela seja renderizada
+                        // (Não colocar nada aqui ou colocar uma mensagem simples se desejar)
+                    }
+                }
+            </NotAuthorized>
+
+            @* Se autorizado, a página solicitada será renderizada (comportamento padrão) *@
+
+        </AuthorizeRouteView>
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
+    <NotFound>
+        <PageTitle>Não Encontrado</PageTitle>
+        <LayoutView Layout="typeof(Layout.MainLayout)">
+            <p role="alert">Desculpe, não há nada neste endereço.</p>
+        </LayoutView>
+    </NotFound>
 </Router>
+
+@* Bloco @code removido daqui, a injeção do NavigationManager já está no topo *@

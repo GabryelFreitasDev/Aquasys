@@ -1,30 +1,62 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Aquasys.Web</a>
+﻿@inject NavigationManager NavigationManager
+
+<div class="navmenu">
+    <div class="navmenu-header">
+        Aquasys
     </div>
-</div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <div>
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Dashboard
+            </div>
+            <span class="bi bi-chevron-down nav-arrow"></span> 
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="vessels">
+                <span class="bi bi-boat-fill-nav-menu" aria-hidden="true"></span> Vessel
+            </NavLink>
+        </div>
+
+       
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="#">
+                <span class="bi bi-file-earmark-text-fill-nav-menu" aria-hidden="true"></span> Reports
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link d-flex justify-content-between align-items-center" href="users">
+                <div>
+                    <span class="bi bi-people-fill-nav-menu" aria-hidden="true"></span> Users
+                </div>
+                <span class="bi bi-chevron-right nav-arrow"></span>
             </NavLink>
         </div>
     </nav>
+
+    <div class="user-profile-section">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                @* <img src="/user-avatar.png" class="user-avatar me-2" alt="User Avatar" />  *@
+                <div>
+                    <div class="user-name">John Carter</div>
+                    <div class="user-settings">Account settings</div> 
+                </div>
+            </div>
+            <span class="bi bi-chevron-right nav-arrow"></span>
+        </div>
+    </div>
 </div>
 
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

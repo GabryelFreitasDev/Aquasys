@@ -81,5 +81,9 @@ namespace Aquasys.Core.Entities
         [SQLite.Ignore]
         [ForeignKey(nameof(IDUserRegistration))]
         public virtual User? UserRegistrationEntity { get; set; }
+
+        [NotMapped]
+        [InverseProperty(nameof(Hold.VesselEntity))]
+        public List<Hold> Holds = new List<Hold>();
     }
 }

@@ -1,0 +1,164 @@
+﻿@page "/user/add"
+@page "/user/edit/{UserId:guid}"
+
+@using Aquasys.Core.Entities
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>@(IsEditMode ? "Editar Usuário" : "Adicionar Usuário")</PageTitle>
+
+<h1>@(IsEditMode ? "Editar Usuário" : "Adicionar Novo Usuário")</h1>
+
+@* 1. Indicador de Carregamento *@
+@if (isLoading)
+{
+    <p><em>Carregando...</em></p>
+}
+@* 2. Mensagem de Erro ou Usuário Não Encontrado *@
+else if (user == null && IsEditMode)
+{
+    <p class="text-danger">Usuário não encontrado.</p>
+}
+else if (user == null && !IsEditMode) // Garante que o user para Add foi criado
+{
+    <p class="text-danger">Erro ao inicializar novo usuário.</p>
+}
+@* 3. SÓ RENDERIZA O FORMULÁRIO QUANDO user NÃO FOR NULL *@
+else
+{
+    @* --- MUDANÇA PRINCIPAL: Adicionado @key="user" --- *@
+    @* Isso força o Blazor a recriar o EditForm e seus filhos quando 'user' muda de null para um objeto *@
+    <EditForm Model="@user" OnValidSubmit="HandleValidSubmitAsync" @key="user">
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nome:</label>
+                    <InputText id="username" class="form-control" @bind-Value="user.UserName" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <InputText id="email" type="email" class="form-control" @bind-Value="user.Email" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">@(IsEditMode ? "Nova Senha (deixe em branco para não alterar)" : "Senha:")</label>
+                    <InputText id="password" type="password" class="form-control" @bind-Value="user.Password" />
+                </div>
+
+                @* Campos Placeholder (sem bind-Value) *@
+                <div class="mb-3">
+                    <label for="profile" class="form-label">Perfil:</label>
+                    <input id="profile" class="form-control" placeholder="Administrador" disabled />
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status:</label>
+                    <input id="status" class="form-control" placeholder="Ativo" disabled />
+                </div>
+            </div>
+
+            <div class="card-footer bg-light">
+                <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                    @if (isSaving)
+                    {
+                        <span class="spinner-border spinner-border-sm"></span>
+                        <span> Salvando...</span>
+     }
+                    else
+                    {
+                        <span>Salvar</span>
+                    }
+                </button>
+                <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancelar</button>
+            </div>
+        </div>
+
+        @* Exibição da mensagem de erro da validação manual/API *@
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                <span style="white-space: pre-line;">@errorMessage</span>
+            </div>
+        }
+    </EditForm>
+}
+
+
+@code {
+    [Parameter]
+    public Guid? UserId { get; set; }
+
+    // Voltamos a inicializar user como null
+    private User? user = null;
+    private bool isLoading = true;
+    private bool isSaving = false;
+    private string? errorMessage;
+
+    private bool IsEditMode => UserId.HasValue && UserId.Value != Guid.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+        // Não criamos 'user' aqui ainda
+
+        User? loadedUser = null;
+
+        if (IsEditMode)
+        {
+            var httpClient = HttpClientFactory.CreateClient("WebApi");
+            try
+            {
+                loadedUser = await httpClient.GetFromJsonAsync<User>($"api/Users/{UserId.Value}");
+                if (loadedUser != null) loadedUser.Password = string.Empty;
+            }
+            catch (Exception ex) { errorMessage = $"Erro ao carregar: {ex.Message}"; }
+        }
+        else // Modo Add
+        {
+            loadedUser = new User();
+        }
+
+        // --- MUDANÇA: Apenas atribuímos o objeto carregado/criado à variável 'user' ---
+        user = loadedUser;
+
+        isLoading = false;
+        // StateHasChanged(); // Geralmente não é necessário aqui, mas pode forçar a re-renderização se precisar
+    }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        // A validação agora usa 'user' diretamente
+        if (user == null)
+        {
+            errorMessage = "Erro: Objeto usuário não inicializado.";
+            return;
+        }
+
+        isSaving = true;
+        errorMessage = null;
+
+        // Validação Manual (usando user)
+        var validationErrors = new List<string>();
+        if (string.IsNullOrWhiteSpace(user.UserName)) { validationErrors.Add("Nome obrigatório."); }
+        // ... (outras validações) ...
+        if (validationErrors.Any()) { /* ... */ }
+
+        // Lógica para chamar API (usando user)
+        var httpClient = HttpClientFactory.CreateClient("WebApi");
+        try
+        {
+            HttpResponseMessage response;
+            if (IsEditMode) { response = await httpClient.PutAsJsonAsync($"api/Users/{UserId.Value}", user); }
+            else { response = await httpClient.PostAsJsonAsync("api/Users", user); }
+
+            if (response.IsSuccessStatusCode) { NavigationManager.NavigateTo("/users"); }
+            else { errorMessage = $"Erro ao salvar: {response.ReasonPhrase} - {await response.Content.ReadAsStringAsync()}"; }
+        }
+        catch (Exception ex) { errorMessage = $"Erro: {ex.Message}"; }
+        finally { isSaving = false; }
+    }
+
+    private void Cancel() { NavigationManager.NavigateTo("/users"); }
+}

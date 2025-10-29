@@ -16,6 +16,55 @@ public class VesselsController : ControllerBase
         _context = context;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Vessel>>> GetVessels()
+    {
+        try
+        {
+            // Busca todas as embarcações no banco de dados
+            var vessels = await _context.Vessels.ToListAsync();
+            return Ok(vessels); // Retorna a lista com status 200 OK
+        }
+        catch (Exception ex)
+        {
+            // Em caso de erro no banco, retorna um erro 500
+            Console.WriteLine($"Erro ao buscar Vessels: {ex}");
+            return StatusCode(500, "Erro interno ao buscar dados das embarcações.");
+        }
+    }
+
+    [HttpGet("{id:guid}")] // Rota: GET /api/Vessels/GUID_DA_EMBARCACAO
+    public async Task<ActionResult<Vessel>> GetVesselById(Guid id, [FromQuery] bool includeHolds = false)
+    {
+        try
+        {
+            // Prepara a consulta para buscar o Vessel pelo GlobalId
+            var query = _context.Vessels.Where(v => v.GlobalId == id);
+
+            // Se o parâmetro 'includeHolds' for verdadeiro, inclui os Holds na consulta
+            if (includeHolds)
+            {
+                query = query.Include(v => v.Holds); // Inclui a lista de Holds relacionada
+            }
+
+            // Executa a consulta
+            var vessel = await query.FirstOrDefaultAsync();
+
+            if (vessel == null)
+            {
+                return NotFound($"Embarcação com GlobalId {id} não encontrada.");
+            }
+
+            // Retorna o objeto Vessel (com ou sem os Holds, dependendo do parâmetro)
+            return Ok(vessel);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao buscar detalhes do Vessel {id}: {ex}");
+            return StatusCode(500, "Erro interno ao buscar dados da embarcação.");
+        }
+    }
+
     // Método para receber os dados do celular e sincronizar
     [HttpPost("sync")] // Rota: POST /api/vessels/sync
     public async Task<IActionResult> SyncVessels([FromBody] List<Vessel> vesselsFromApp)
