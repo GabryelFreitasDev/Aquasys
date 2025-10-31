@@ -147,6 +147,10 @@
                         </StackLayout>
 
                     </toolkit:Expander>
+                    <dx:DXButton
+                    ButtonType="Accent"
+                    Content="Generete Report"
+                    Command="{Binding GenerateReportCommand}"/>
 
                     <dx:DXButton 
                         ButtonType="Accent"

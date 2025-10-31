@@ -582,16 +582,31 @@
         <Setter Property="FocusedBorderColor" Value="{StaticResource ColorGray500}" />
     </Style>
 
-    <Style TargetType="dcc:DCDateEdit"
-       BasedOn="{StaticResource DefaultFormStyle}">
-        <Setter Property="DisplayFormat" Value="dd/MM/yyyy" />
-        <Setter Property="FocusedBorderThickness" Value="1" />
-        <Setter Property="ClearIcon" Value="icon_fechar.png" />
-        <Setter Property="ClearIconColor" Value="{StaticResource ColorGray400}" />
-        <Setter Property="DateIconColor" Value="{StaticResource ColorGray400}" />
-        <Setter Property="BoxHeight" Value="54" />
-        <Setter Property="FocusedLabelColor" Value="{StaticResource ColorGray500}" />
-        <Setter Property="FocusedBorderColor" Value="{StaticResource ColorGray500}" />
+    <Style TargetType="dcc:DCDateEdit">
+        <Setter Property="CursorColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+        <Setter Property="FocusedBorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
+        <Setter Property="FocusedLabelColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="ClearIconVisibility" Value="Never"/>
+        <Setter Property="IsLabelFloating" Value="True"/>
+    </Style>
+
+    <Style TargetType="de:NumericEdit">
+        <Setter Property="CursorColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+        <Setter Property="FocusedBorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
+        <Setter Property="FocusedLabelColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="ClearIconVisibility" Value="Never"/>
+        <Setter Property="IsLabelFloating" Value="True"/>
+    </Style>
+
+    <Style TargetType="de:MultilineEdit">
+        <Setter Property="CursorColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+        <Setter Property="FocusedBorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
+        <Setter Property="FocusedLabelColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="ClearIconVisibility" Value="Never"/>
+        <Setter Property="IsLabelFloating" Value="True"/>
     </Style>
 
     <Style x:Key="DCTabViewTitleLabelStyle"
