@@ -9,6 +9,7 @@ using System.IO;
 using System.Collections;
 using System.Globalization;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Aquasys.Reports.Templates
 {
@@ -26,6 +27,7 @@ namespace Aquasys.Reports.Templates
 
             var fontTitle = new PdfStandardFont(PdfFontFamily.Helvetica, 20, PdfFontStyle.Bold);
             var fontHeader = new PdfStandardFont(PdfFontFamily.Helvetica, 14, PdfFontStyle.Bold);
+            var fontSection = new PdfStandardFont(PdfFontFamily.Helvetica, 12, PdfFontStyle.Bold);
             var font = new PdfStandardFont(PdfFontFamily.Helvetica, 12);
 
             float margin = 40;
@@ -44,14 +46,14 @@ namespace Aquasys.Reports.Templates
                 }
             }
 
-            // Helper to read property/field/candidate
             object? GetProp(object obj, params string[] candidates)
             {
                 if (obj == null) return null;
                 var t = obj.GetType();
+
                 foreach (var name in candidates)
                 {
-                    var p = t.GetProperty(name);
+                    var p = t.GetProperty(name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase);
                     if (p != null) return p.GetValue(obj);
                 }
                 foreach (var p in t.GetProperties())
@@ -61,7 +63,7 @@ namespace Aquasys.Reports.Templates
                 }
                 foreach (var name in candidates)
                 {
-                    var f = t.GetField(name);
+                    var f = t.GetField(name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase);
                     if (f != null) return f.GetValue(obj);
                 }
                 foreach (var f in t.GetFields())
@@ -104,6 +106,9 @@ namespace Aquasys.Reports.Templates
                 if (int.TryParse(v?.ToString(), out var parsed)) return parsed;
                 return null;
             }
+
+            // Exibe 1/0 como True/False
+            string ToBoolStr(int? val) => (val.HasValue && val.Value == 1) ? "True" : "False";
 
             // Title
             page.Graphics.DrawString(
@@ -160,6 +165,7 @@ namespace Aquasys.Reports.Templates
                 foreach (var hold in holdsObj)
                 {
                     EnsureSpace(lineHeight * 10);
+                    // Destaque para cada porão - título maior
                     page.Graphics.DrawString($"Hold #{holdIndex}", fontHeader, PdfBrushes.Black, new PointF(margin + 10, y));
                     y += lineHeight;
 
@@ -174,34 +180,59 @@ namespace Aquasys.Reports.Templates
                     var holdReg = GetDate(hold, "RegistrationDateTime", "RegistrationDate", "RegisteredAt");
                     if (holdReg.HasValue) DrawLine("Hold Registration Date", holdReg.Value.ToString("MM/dd/yyyy"));
 
-                    // Inspection
-                    var inspectionObj = GetProp(hold, "HoldInspection", "Inspection", "HoldInspections", "InspectionModel");
-                    if (inspectionObj != null)
+                    // Inspection (garante lista também)
+                    object inspectionObj = GetProp(hold, "HoldInspection", "Inspections", "HoldInspections", "InspectionModel");
+                    if (inspectionObj is IList list && list.Count > 0)
+                        inspectionObj = list[0];
+                    else if (inspectionObj is IEnumerable enumerable && inspectionObj.GetType().IsGenericType)
+                        inspectionObj = enumerable.Cast<object>().FirstOrDefault();
+
+                    if (inspectionObj is Aquasys.Core.Entities.HoldInspection insp)
                     {
                         EnsureSpace(lineHeight * 8);
-                        page.Graphics.DrawString("Hold Inspection", font, PdfBrushes.Black, new PointF(margin + 20, y));
+                        // TÍTULO EM DESTAQUE para inspeção
+                        page.Graphics.DrawString("Hold Inspection", fontHeader, PdfBrushes.Black, new PointF(margin + 30, y));
+                        y += lineHeight;
+
+                        DrawLine("Inspection Date", insp.InspectionDateTime.ToString("MM/dd/yyyy"));
+                        DrawLine("Inspection Time", insp.InspectionDateTime.ToString("HH:mm"));
+                        DrawLine("Lead Inspector", insp.LeadInspector ?? string.Empty);
+                        DrawLine("Empty", ToBoolStr(insp.Empty));
+                        DrawLine("Clean", ToBoolStr(insp.Clean));
+                        DrawLine("Dry", ToBoolStr(insp.Dry));
+                        DrawLine("Odor Free", ToBoolStr(insp.OdorFree));
+                        DrawLine("Cargo Residue", ToBoolStr(insp.CargoResidue));
+                        DrawLine("Insects", ToBoolStr(insp.Insects));
+                        DrawLine("Cleaning Method", insp.CleaningMethod ?? string.Empty);
+                        DrawLine("Inspection Registration Date", insp.RegistrationDateTime.ToString("MM/dd/yyyy"));
+                    }
+                    else if (inspectionObj != null)
+                    {
+                        EnsureSpace(lineHeight * 8);
+                        page.Graphics.DrawString("Hold Inspection", fontHeader, PdfBrushes.Black, new PointF(margin + 30, y));
                         y += lineHeight;
 
                         var inspDate = GetDate(inspectionObj, "InspectionDate", "inspectionDate", "inspectionDateTime", "inspectionDate");
                         var inspTimeObj = GetProp(inspectionObj, "InspectionTime", "inspectionTime", "Time");
                         string inspTime = inspTimeObj?.ToString() ?? string.Empty;
-
                         if (inspDate.HasValue) DrawLine("Inspection Date", inspDate.Value.ToString("MM/dd/yyyy"));
                         if (!string.IsNullOrEmpty(inspTime)) DrawLine("Inspection Time", inspTime);
                         DrawLine("Lead Inspector", GetString(inspectionObj, "LeadInspector", "leadInspector", "Lead_Inspector"));
-                        DrawLine("Empty", GetInt(inspectionObj, "Empty", "empty")?.ToString() ?? string.Empty);
-                        DrawLine("Clean", GetInt(inspectionObj, "Clean", "clean")?.ToString() ?? string.Empty);
-                        DrawLine("Dry", GetInt(inspectionObj, "Dry", "dry")?.ToString() ?? string.Empty);
-                        DrawLine("Odor Free", GetInt(inspectionObj, "OdorFree", "odorFree")?.ToString() ?? string.Empty);
-                        DrawLine("Cargo Residue", GetInt(inspectionObj, "CargoResidue", "cargoResidue")?.ToString() ?? string.Empty);
-                        DrawLine("Insects", GetInt(inspectionObj, "Insects", "insects")?.ToString() ?? string.Empty);
+                        DrawLine("Empty", ToBoolStr(GetInt(inspectionObj, "Empty", "empty")));
+                        DrawLine("Clean", ToBoolStr(GetInt(inspectionObj, "Clean", "clean")));
+                        DrawLine("Dry", ToBoolStr(GetInt(inspectionObj, "Dry", "dry")));
+                        DrawLine("Odor Free", ToBoolStr(GetInt(inspectionObj, "OdorFree", "odorFree")));
+                        DrawLine("Cargo Residue", ToBoolStr(GetInt(inspectionObj, "CargoResidue", "cargoResidue")));
+                        DrawLine("Insects", ToBoolStr(GetInt(inspectionObj, "Insects", "insects")));
                         DrawLine("Cleaning Method", GetString(inspectionObj, "CleaningMethod", "cleaningMethod"));
                         var inspReg = GetDate(inspectionObj, "RegistrationDateTime", "RegistrationDate", "registrationDateTime");
                         if (inspReg.HasValue) DrawLine("Inspection Registration Date", inspReg.Value.ToString("MM/dd/yyyy"));
                     }
                     else
                     {
-                        DrawLine("Hold Inspection", "Hold not inspected");
+                        page.Graphics.DrawString("Hold Inspection", fontHeader, PdfBrushes.Black, new PointF(margin + 30, y));
+                        y += lineHeight;
+                        DrawLine("", "Hold not inspected");
                     }
 
                     y += lineHeight / 2;

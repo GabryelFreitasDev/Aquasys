@@ -26,5 +26,6 @@ namespace Aquasys.App.MVVM.Models.Vessel
 
         [ObservableProperty]
         public bool inspectioned = false;
+        public HoldInspectionModel? HoldInspection { get; set; }
     }
 }

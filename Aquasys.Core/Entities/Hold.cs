@@ -47,6 +47,10 @@ namespace Aquasys.Core.Entities
         public virtual Vessel? VesselEntity { get; set; }
 
         [NotMapped]
-        public bool Inspectioned { get; set; } = false; 
+        public bool Inspectioned { get; set; } = false;
+
+        [NotMapped]
+        [InverseProperty(nameof(HoldInspection.HoldEntity))]
+        public List<HoldInspection> Inspections = new List<HoldInspection>();
     }
 }

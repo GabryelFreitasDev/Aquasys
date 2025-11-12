@@ -41,7 +41,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             ILocalRepository<Hold> holdRepository,
             ReportGeneratorService reportService,
             ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
-            ILocalRepository<Aquasys.Core.Entities.HoldInspection> holdInspectionRepository)
+            ILocalRepository<HoldInspection> holdInspectionRepository)
         {
             _holdRepository = holdRepository;
             holds = new();
@@ -104,7 +104,6 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             var vesselData = await _vesselRepository.GetByIdAsync(IDVessel);
             var holdsData = await _holdRepository.GetFilteredAsync(x => x.IDVessel == IDVessel);
 
-            // Get inspections related to the holds
             var holdIDs = holdsData.Select(h => h.IDHold).ToList();
             var inspectionsData = await _holdInspectionRepository.GetFilteredAsync(i => holdIDs.Contains(i.IDHold));
 
@@ -116,18 +115,22 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 
             try
             {
-                var vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
-                var holds = VesselModel.Holds.Select(hm => mapper.Map<Hold>(hm)).ToList();
+                // Mapeie os Holds para Entity
+                var mappedEntityHolds = VesselModel.Holds.Select(hm => mapper.Map<Aquasys.Core.Entities.Hold>(hm)).ToList();
 
-                // Attach the inspection entity to each hold
-                foreach (var hold in holds)
+                // Preencha a lista Inspections de cada Hold entity — ESSENCIAL!
+                foreach (var entityHold in mappedEntityHolds)
                 {
-                    var inspection = inspectionsData.FirstOrDefault(i => i.IDHold == hold.IDHold);
-                    // Checa tipo antes de tentar mapear
+                    var inspections = inspectionsData.Where(i => i.IDHold == entityHold.IDHold).ToList();
+                    // Pode ser 0, 1 ou mais inspeções — normalmente será só 1!
+                    entityHold.Inspections = inspections;
                 }
 
-                vesselEntity.Holds = holds;
+                // Prepare a entidade principal para o relatório
+                var vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
+                vesselEntity.Holds = mappedEntityHolds;
 
+                // Gere o PDF
                 var pdfBytes = await _reportService.GenerateAsync(ReportType.Vessel, vesselEntity);
 
                 var fileName = $"Report_{VesselModel.VesselName}.pdf";
