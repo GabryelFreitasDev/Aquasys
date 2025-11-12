@@ -51,7 +51,7 @@ namespace Aquasys.App.MVVM.Models.Vessel
 
         [ObservableProperty]
         private string fourthLastCargo;
-
+        public List<HoldModel> Holds { get; set; } = new();
         public string FlagIcon { get; set; }
 
         public byte[] FirstImage { get; set; }

@@ -69,8 +69,12 @@
                         </DataTemplate>
                     </dxcv:DXCollectionView.ItemTemplate>
                 </dxcv:DXCollectionView>
+                <dx:DXButton
+                    ButtonType="Accent"
+                    Content="Generete Report"
+                    Command="{Binding GenerateReportCommand}"/>
             </VerticalStackLayout>
-
+            
             <edit:DCFloatingMenu Grid.Row="1"
                    HeightRequest="50" 
                    WidthRequest="50"

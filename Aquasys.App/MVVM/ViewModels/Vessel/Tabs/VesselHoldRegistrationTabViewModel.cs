@@ -1,30 +1,53 @@
-﻿using Aquasys.App.Core.Intefaces;
-using Aquasys.Core.Entities;
+﻿using Aquasys.App.Core.Data;
+using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.App.MVVM.Views.Vessel;
+using Aquasys.Core.Entities;
+using Aquasys.Reports.Enums;
+using Aquasys.Reports.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Aquasys.App.Core.Data;
+using System.Linq;
+using System.IO;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 {
     [QueryProperty(nameof(Id), nameof(Id))]
     public partial class VesselHoldRegistrationTabViewModel : BaseViewModels
     {
+        private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
         private readonly ILocalRepository<Hold> _holdRepository;
+        private readonly ILocalRepository<HoldInspection> _holdInspectionRepository;
+        private readonly ReportGeneratorService _reportService;
+
+        [ObservableProperty]
+        private VesselModel vesselModel;
+
+        [ObservableProperty]
+        private HoldModel holdModel;
+
+        [ObservableProperty]
+        private HoldInspectionModel holdInspectionModel;
 
         public long IDVessel { get; set; }
 
         [ObservableProperty]
         private ObservableCollection<HoldModel> holds;
 
-        public VesselHoldRegistrationTabViewModel(ILocalRepository<Hold> holdRepository)
+        public VesselHoldRegistrationTabViewModel(
+            ILocalRepository<Hold> holdRepository,
+            ReportGeneratorService reportService,
+            ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
+            ILocalRepository<Aquasys.Core.Entities.HoldInspection> holdInspectionRepository)
         {
             _holdRepository = holdRepository;
             holds = new();
+            _reportService = reportService;
+            _vesselRepository = vesselRepository;
+            _holdInspectionRepository = holdInspectionRepository;
         }
 
         public override async Task OnAppearing()
@@ -62,7 +85,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             try
             {
                 IsProcessRunning = true;
-                if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
+                if (await Shell.Current.DisplayAlert("Warning", "Are you sure you want to delete?", "Yes", "Cancel"))
                 {
                     var hold = await _holdRepository.GetByIdAsync(holdModel.IDHold);
                     await _holdRepository.DeleteAsync(hold);
@@ -72,6 +95,54 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             finally
             {
                 IsProcessRunning = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task GenerateReport()
+        {
+            var vesselData = await _vesselRepository.GetByIdAsync(IDVessel);
+            var holdsData = await _holdRepository.GetFilteredAsync(x => x.IDVessel == IDVessel);
+
+            // Get inspections related to the holds
+            var holdIDs = holdsData.Select(h => h.IDHold).ToList();
+            var inspectionsData = await _holdInspectionRepository.GetFilteredAsync(i => holdIDs.Contains(i.IDHold));
+
+            if (vesselData != null)
+            {
+                VesselModel = mapper.Map<VesselModel>(vesselData);
+                VesselModel.Holds = mapper.Map<List<HoldModel>>(holdsData);
+            }
+
+            try
+            {
+                var vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
+                var holds = VesselModel.Holds.Select(hm => mapper.Map<Hold>(hm)).ToList();
+
+                // Attach the inspection entity to each hold
+                foreach (var hold in holds)
+                {
+                    var inspection = inspectionsData.FirstOrDefault(i => i.IDHold == hold.IDHold);
+                    // Checa tipo antes de tentar mapear
+                }
+
+                vesselEntity.Holds = holds;
+
+                var pdfBytes = await _reportService.GenerateAsync(ReportType.Vessel, vesselEntity);
+
+                var fileName = $"Report_{VesselModel.VesselName}.pdf";
+                var filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
+                File.WriteAllBytes(filePath, pdfBytes);
+
+                await Share.Default.RequestAsync(new ShareFileRequest
+                {
+                    Title = "Open/Share Report",
+                    File = new ShareFile(filePath)
+                });
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error generating report", ex.Message, "OK");
             }
         }
     }

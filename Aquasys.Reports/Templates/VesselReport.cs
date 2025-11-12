@@ -19,7 +19,7 @@ namespace Aquasys.Reports.Templates
         public byte[] Generate(object model)
         {
             var vessel = model as Vessel
-                ?? throw new ArgumentException("Modelo inválido para VesselReport");
+                ?? throw new ArgumentException("Invalid model for VesselReport");
 
             using var document = new PdfDocument();
             var page = document.Pages.Add();
@@ -44,7 +44,7 @@ namespace Aquasys.Reports.Templates
                 }
             }
 
-            // Helpers to read properties by several possible names (case / small variations tolerant)
+            // Helper to read property/field/candidate
             object? GetProp(object obj, params string[] candidates)
             {
                 if (obj == null) return null;
@@ -54,11 +54,20 @@ namespace Aquasys.Reports.Templates
                     var p = t.GetProperty(name);
                     if (p != null) return p.GetValue(obj);
                 }
-                // try case-insensitive search
                 foreach (var p in t.GetProperties())
                 {
                     if (candidates.Any(c => string.Equals(p.Name, c, StringComparison.OrdinalIgnoreCase)))
                         return p.GetValue(obj);
+                }
+                foreach (var name in candidates)
+                {
+                    var f = t.GetField(name);
+                    if (f != null) return f.GetValue(obj);
+                }
+                foreach (var f in t.GetFields())
+                {
+                    if (candidates.Any(c => string.Equals(f.Name, c, StringComparison.OrdinalIgnoreCase)))
+                        return f.GetValue(obj);
                 }
                 return null;
             }
@@ -98,7 +107,7 @@ namespace Aquasys.Reports.Templates
 
             // Title
             page.Graphics.DrawString(
-                $"Relatório do Navio: {GetString(vessel, "VesselName", "Name", "vesselName")}",
+                $"Vessel Report: {GetString(vessel, "VesselName", "Name", "vesselName")}",
                 fontTitle,
                 PdfBrushes.Black,
                 new PointF(margin, y)
@@ -108,7 +117,7 @@ namespace Aquasys.Reports.Templates
 
             // Vessel basic info
             EnsureSpace(lineHeight * 7);
-            page.Graphics.DrawString("Informações do Navio", fontHeader, PdfBrushes.Black, new PointF(margin, y));
+            page.Graphics.DrawString("Vessel Information", fontHeader, PdfBrushes.Black, new PointF(margin, y));
             y += lineHeight;
 
             void DrawLine(string label, string value)
@@ -117,34 +126,34 @@ namespace Aquasys.Reports.Templates
                 y += lineHeight;
             }
 
-            DrawLine("OS", GetString(vessel, "OS", "Os", "os"));
-            DrawLine("Local de Docagem", GetString(vessel, "DockingLocation", "DockLocation", "DockingLocation"));
+            DrawLine("Work Order (OS)", GetString(vessel, "OS", "Os", "os"));
+            DrawLine("Docking Location", GetString(vessel, "DockingLocation", "DockLocation", "DockingLocation"));
             DrawLine("IMO", GetString(vessel, "IMO", "Imo"));
-            DrawLine("Porto de Registro", GetString(vessel, "PortRegistry", "PortOfRegistry", "Port"));
-            DrawLine("Bandeira", GetString(vessel, "Flag", "flag")); // only name as requested
-            DrawLine("Proprietário", GetString(vessel, "Owner", "Proprietary", "owner"));
-            DrawLine("Operador", GetString(vessel, "VesselOperator", "Operator", "VesselOperator"));
-            DrawLine("Agente de Embarque", GetString(vessel, "ShippingAgent", "Shipping_Agent", "ShippingAgent"));
+            DrawLine("Port of Registry", GetString(vessel, "PortRegistry", "PortOfRegistry", "Port"));
+            DrawLine("Flag", GetString(vessel, "Flag", "flag"));
+            DrawLine("Owner", GetString(vessel, "Owner", "Proprietary", "owner"));
+            DrawLine("Operator", GetString(vessel, "VesselOperator", "Operator", "VesselOperator"));
+            DrawLine("Shipping Agent", GetString(vessel, "ShippingAgent", "Shipping_Agent", "ShippingAgent"));
             var dob = GetDate(vessel, "DateOfBuilding", "DateOfBuilt", "DateBuilt");
-            if (dob.HasValue) DrawLine("Data Fabricação", dob.Value.ToString("dd/MM/yyyy"));
+            if (dob.HasValue) DrawLine("Build Date", dob.Value.ToString("MM/dd/yyyy"));
             var reg = GetDate(vessel, "RegistrationDateTime", "RegistrationDate", "RegisteredAt");
-            if (reg.HasValue) DrawLine("Data Cadastro", reg.Value.ToString("dd/MM/yyyy"));
+            if (reg.HasValue) DrawLine("Registration Date", reg.Value.ToString("MM/dd/yyyy"));
 
             // Last cargos
             EnsureSpace(lineHeight * 6);
-            page.Graphics.DrawString("Últimos Cargas", fontHeader, PdfBrushes.Black, new PointF(margin, y));
+            page.Graphics.DrawString("Last Cargos", fontHeader, PdfBrushes.Black, new PointF(margin, y));
             y += lineHeight;
-            DrawLine("Última Carga", GetString(vessel, "LastCargo", "LastCargoDescription", "lastCargo"));
-            DrawLine("2ª Última Carga", GetString(vessel, "SecondLastCargo", "SecondLastCargoDescription", "secondLastCargo"));
-            DrawLine("3ª Última Carga", GetString(vessel, "ThirdLastCargo", "ThirdLastCargoDescription", "thirdLastCargo"));
-            DrawLine("4ª Última Carga", GetString(vessel, "FourthLastCargo", "FourthLastCargoDescription", "fourthLastCargo"));
+            DrawLine("Last Cargo", GetString(vessel, "LastCargo", "LastCargoDescription", "lastCargo"));
+            DrawLine("Second Last Cargo", GetString(vessel, "SecondLastCargo", "SecondLastCargoDescription", "secondLastCargo"));
+            DrawLine("Third Last Cargo", GetString(vessel, "ThirdLastCargo", "ThirdLastCargoDescription", "thirdLastCargo"));
+            DrawLine("Fourth Last Cargo", GetString(vessel, "FourthLastCargo", "FourthLastCargoDescription", "fourthLastCargo"));
 
             // Holds and inspections
             var holdsObj = GetProp(vessel, "Holds", "HoldList", "hold", "HoldsList") as IEnumerable;
             if (holdsObj != null)
             {
                 EnsureSpace(lineHeight * 2);
-                page.Graphics.DrawString("Holds / Porões", fontHeader, PdfBrushes.Black, new PointF(margin, y));
+                page.Graphics.DrawString("Holds", fontHeader, PdfBrushes.Black, new PointF(margin, y));
                 y += lineHeight;
 
                 int holdIndex = 1;
@@ -154,60 +163,45 @@ namespace Aquasys.Reports.Templates
                     page.Graphics.DrawString($"Hold #{holdIndex}", fontHeader, PdfBrushes.Black, new PointF(margin + 10, y));
                     y += lineHeight;
 
-                    DrawLine("Número do Porão", GetString(hold, "BasementNumber", "Basement", "basementNumber", "BasementNumber"));
-                    DrawLine("Agente", GetString(hold, "Agent", "agent"));
-                    DrawLine("Carga", GetString(hold, "Cargo", "cargo"));
+                    DrawLine("Hold Number", GetString(hold, "BasementNumber", "Basement", "basementNumber", "BasementNumber"));
+                    DrawLine("Agent", GetString(hold, "Agent", "agent"));
+                    DrawLine("Cargo", GetString(hold, "Cargo", "cargo"));
                     var cap = GetDecimal(hold, "Capacity", "capacity");
-                    DrawLine("Capacidade", cap.HasValue ? cap.Value.ToString("N2", CultureInfo.CurrentCulture) : string.Empty);
+                    DrawLine("Capacity", cap.HasValue ? cap.Value.ToString("N2", CultureInfo.InvariantCulture) : string.Empty);
                     var pw = GetDecimal(hold, "ProductWeight", "productWeight", "Product_Weight");
-                    DrawLine("Peso do Produto", pw.HasValue ? pw.Value.ToString("N2", CultureInfo.CurrentCulture) : string.Empty);
-                    DrawLine("Plano de Carga", GetString(hold, "LoadPlan", "loadPlan"));
+                    DrawLine("Product Weight", pw.HasValue ? pw.Value.ToString("N2", CultureInfo.InvariantCulture) : string.Empty);
+                    DrawLine("Load Plan", GetString(hold, "LoadPlan", "loadPlan"));
                     var holdReg = GetDate(hold, "RegistrationDateTime", "RegistrationDate", "RegisteredAt");
-                    if (holdReg.HasValue) DrawLine("Data Registro Hold", holdReg.Value.ToString("dd/MM/yyyy"));
-                    DrawLine("Inspecionado", GetString(hold, "Inspectioned", "inspectioned", "Inspectioned"));
+                    if (holdReg.HasValue) DrawLine("Hold Registration Date", holdReg.Value.ToString("MM/dd/yyyy"));
 
-                    // Inspection (each hold may have one inspection object)
+                    // Inspection
                     var inspectionObj = GetProp(hold, "HoldInspection", "Inspection", "HoldInspections", "InspectionModel");
-                    // If property is a collection, take the most recent (if enumerable)
-                    if (inspectionObj is IEnumerable inspectionEnum && !(inspectionObj is string))
-                    {
-                        // try to pick last by RegistrationDateTime or inspectionDate
-                        object? selected = null;
-                        DateTime last = DateTime.MinValue;
-                        foreach (var it in inspectionEnum)
-                        {
-                            var itDate = GetDate(it, "InspectionDate", "inspectionDate", "inspectionDateTime", "RegistrationDateTime", "registrationDateTime");
-                            if (itDate.HasValue && itDate.Value > last)
-                            {
-                                last = itDate.Value;
-                                selected = it;
-                            }
-                        }
-                        inspectionObj = selected;
-                    }
-
                     if (inspectionObj != null)
                     {
                         EnsureSpace(lineHeight * 8);
-                        page.Graphics.DrawString("Inspeção do Hold", font, PdfBrushes.Black, new PointF(margin + 20, y));
+                        page.Graphics.DrawString("Hold Inspection", font, PdfBrushes.Black, new PointF(margin + 20, y));
                         y += lineHeight;
 
                         var inspDate = GetDate(inspectionObj, "InspectionDate", "inspectionDate", "inspectionDateTime", "inspectionDate");
                         var inspTimeObj = GetProp(inspectionObj, "InspectionTime", "inspectionTime", "Time");
                         string inspTime = inspTimeObj?.ToString() ?? string.Empty;
 
-                        if (inspDate.HasValue) DrawLine("Data Inspeção", inspDate.Value.ToString("dd/MM/yyyy"));
-                        if (!string.IsNullOrEmpty(inspTime)) DrawLine("Hora Inspeção", inspTime);
-                        DrawLine("Inspetor Líder", GetString(inspectionObj, "LeadInspector", "leadInspector", "Lead_Inspector"));
+                        if (inspDate.HasValue) DrawLine("Inspection Date", inspDate.Value.ToString("MM/dd/yyyy"));
+                        if (!string.IsNullOrEmpty(inspTime)) DrawLine("Inspection Time", inspTime);
+                        DrawLine("Lead Inspector", GetString(inspectionObj, "LeadInspector", "leadInspector", "Lead_Inspector"));
                         DrawLine("Empty", GetInt(inspectionObj, "Empty", "empty")?.ToString() ?? string.Empty);
                         DrawLine("Clean", GetInt(inspectionObj, "Clean", "clean")?.ToString() ?? string.Empty);
                         DrawLine("Dry", GetInt(inspectionObj, "Dry", "dry")?.ToString() ?? string.Empty);
                         DrawLine("Odor Free", GetInt(inspectionObj, "OdorFree", "odorFree")?.ToString() ?? string.Empty);
                         DrawLine("Cargo Residue", GetInt(inspectionObj, "CargoResidue", "cargoResidue")?.ToString() ?? string.Empty);
                         DrawLine("Insects", GetInt(inspectionObj, "Insects", "insects")?.ToString() ?? string.Empty);
-                        DrawLine("Método de Limpeza", GetString(inspectionObj, "CleaningMethod", "cleaningMethod"));
+                        DrawLine("Cleaning Method", GetString(inspectionObj, "CleaningMethod", "cleaningMethod"));
                         var inspReg = GetDate(inspectionObj, "RegistrationDateTime", "RegistrationDate", "registrationDateTime");
-                        if (inspReg.HasValue) DrawLine("Data Registro Inspeção", inspReg.Value.ToString("dd/MM/yyyy"));
+                        if (inspReg.HasValue) DrawLine("Inspection Registration Date", inspReg.Value.ToString("MM/dd/yyyy"));
+                    }
+                    else
+                    {
+                        DrawLine("Hold Inspection", "Hold not inspected");
                     }
 
                     y += lineHeight / 2;
@@ -217,7 +211,7 @@ namespace Aquasys.Reports.Templates
             else
             {
                 EnsureSpace(lineHeight);
-                page.Graphics.DrawString("Nenhum hold encontrado para este navio.", font, PdfBrushes.Black, new PointF(margin, y));
+                page.Graphics.DrawString("No holds found for this vessel.", font, PdfBrushes.Black, new PointF(margin, y));
                 y += lineHeight;
             }
 

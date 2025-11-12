@@ -25,15 +25,11 @@ namespace Aquasys.App.Core.Services
                 cfg.CreateMap<HoldModel, Hold>();
                 cfg.CreateMap<Hold, HoldModel>();
 
-                cfg.CreateMap<HoldModel, Hold>();
-                cfg.CreateMap<Hold, HoldModel>();
-
                 cfg.CreateMap<HoldInspectionModel, HoldInspection>();
                 cfg.CreateMap<HoldInspection, HoldInspectionModel>();
 
                 cfg.CreateMap<HoldInspectionImageModel, HoldInspectionImage>();
                 cfg.CreateMap<HoldInspectionImage, HoldInspectionImageModel>();
-
             });
 
             iMapper = mapperConfiguration.CreateMapper();
@@ -42,4 +38,3 @@ namespace Aquasys.App.Core.Services
         }
     }
 }
-
