@@ -53,12 +53,6 @@
                 BackgroundColor="Transparent"
                 Content="Create Account"
                 Command="{Binding CreateNewAccountCommand}"/>
-
-            <!--<Entry Text="{Binding LoginModel.UserName}" Placeholder="Usuário" />
-
-            <Entry Text="{Binding LoginModel.Password}" Placeholder="Senha" IsPassword="True" />
-
-            <Button Text="Entrar" Command="{Binding ValidateLoginCommand}" />-->
         </VerticalStackLayout>
                 
     </VerticalStackLayout>

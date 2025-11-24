@@ -4,7 +4,6 @@ using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 using Aquasys.App.Core.Data;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
@@ -40,27 +39,26 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         private async Task SaveVesselImage()
         {
-            if (VesselImageModel.IDVesselImage != 0)
+            if (IsProcessRunning)
+                return;
+
+            try
             {
-                var vesselImage = await _vesselImageRepository.GetByIdAsync(VesselImageModel.IDVesselImage);
-                if (vesselImage is not null)
-                {
-                    vesselImage = mapper.Map<VesselImage>(VesselImageModel);
-                    if (await _vesselImageRepository.UpdateAsync(vesselImage))
-                    {
-                        await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
-                        await Shell.Current.GoToAsync("..", true);
-                    }
-                }
-            }
-            else
-            {
+                IsProcessRunning = true;
+
                 var vesselImage = mapper.Map<VesselImage>(VesselImageModel);
-                if (await _vesselImageRepository.InsertAsync(vesselImage))
-                {
-                    await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
-                    await Shell.Current.GoToAsync("..", true);
-                }
+                await _vesselImageRepository.UpsertAsync(vesselImage);
+
+                await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
+                await Shell.Current.GoToAsync("..", true);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Erro", $"Erro ao salvar imagem: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsProcessRunning = false;
             }
         }
     }

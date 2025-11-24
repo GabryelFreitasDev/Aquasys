@@ -1,10 +1,16 @@
-﻿namespace Aquasys.App.MVVM.Models.Login
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace Aquasys.App.MVVM.Models.Login
 {
-    public class LoginModel
+    public partial class LoginModel : BaseModels
     {
-        public string UserName { get; set; }
-        public string? Email { get; set; }
-        public string Password { get; set; }
-        public bool RememberMe { get; set; }
+        [ObservableProperty]
+        public string userName;
+        [ObservableProperty]
+        public string? email;
+        [ObservableProperty]
+        public string password;
+        [ObservableProperty]
+        public bool rememberMe = true;
     }
 }

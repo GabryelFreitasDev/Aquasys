@@ -1,5 +1,4 @@
 ﻿using Aquasys.App.Core.Data;
-using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Services;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Login;
@@ -8,8 +7,6 @@ using Aquasys.Core.Entities;
 using Aquasys.Core.Sync;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Aquasys.App.MVVM.ViewModels.Login
 {
@@ -46,29 +43,31 @@ namespace Aquasys.App.MVVM.ViewModels.Login
             if (IsLoadedViewModel) return;
             IsLoadedViewModel = true;
 
-            Application.Current!.MainPage = new AppShell();
-            //await AutoLoginAsync();
+            await AutoLoginAsync();
         }
 
         private async Task AutoLoginAsync()
         {
-            var userRememberList = await _userRepository.GetFilteredAsync(x => x.RememberMe == true);
-            var userRemember = userRememberList.FirstOrDefault();
-
-            if (userRemember != null)
+            try
             {
-                // Dispara o processo de login e sincronização para o usuário "lembrado"
-                await AuthenticateAndSync(userRemember);
+                var userRememberList = await _userRepository.GetFilteredAsync(x => x.RememberMe == true);
+                var userRemember = userRememberList.FirstOrDefault();
+
+                if (userRemember != null)
+                    await AuthenticateAndSync(userRemember);
+            }
+            catch {
+                return;
             }
         }
 
         [RelayCommand(CanExecute = nameof(CanExecuteCommands))]
         private async Task ValidateLogin()
         {
-            LoginModel.UserName = "inspector.joao";
-            LoginModel.Password = "Password123!";
+            //LoginModel.UserName = "inspector.joao";
+            //LoginModel.Password = "Password123!";
 
-            if (string.IsNullOrEmpty(LoginModel.UserName) || string.IsNullOrEmpty(LoginModel.Password))
+            if (string.IsNullOrEmpty(LoginModel.userName) || string.IsNullOrEmpty(LoginModel.Password))
             {
                 await Application.Current!.MainPage!.DisplayAlert("Alerta", "Preencha os campos corretamente.", "OK");
                 return;
@@ -83,26 +82,16 @@ namespace Aquasys.App.MVVM.ViewModels.Login
 
                 User? authenticatedUser = null;
 
-                // 1. Tenta autenticar online primeiro
                 if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
                 {
                     authenticatedUser = await _authService.LoginAsync(LoginModel.UserName, LoginModel.Password);
                     if (authenticatedUser != null)
                     {
-                        // Se conseguiu logar online, salva o usuário localmente!
-                        // Upsert garante que ele seja inserido ou atualizado.
+                        authenticatedUser.RememberMe = LoginModel.RememberMe;
                         await _userRepository.UpsertAsync(authenticatedUser);
                     }
                 }
 
-                // 2. Se não conseguiu online (ou estava offline), tenta localmente
-                if (authenticatedUser == null)
-                {
-                    var localUserList = await _userRepository.GetFilteredAsync(x => x.UserName == LoginModel.UserName && x.Password == LoginModel.Password);
-                    authenticatedUser = localUserList.FirstOrDefault();
-                }
-
-                // 3. Procede para a sincronização se um usuário foi autenticado de qualquer forma
                 await AuthenticateAndSync(authenticatedUser);
             }
             catch (Exception ex)
@@ -120,7 +109,6 @@ namespace Aquasys.App.MVVM.ViewModels.Login
         {
             if (user != null)
             {
-                // Lógica para atualizar o 'RememberMe'
                 if (user.RememberMe != LoginModel.RememberMe)
                 {
                     user.RememberMe = LoginModel.RememberMe;
@@ -128,14 +116,18 @@ namespace Aquasys.App.MVVM.ViewModels.Login
                 }
 
                 StatusMessage = "Sincronizando dados, por favor aguarde...";
-                //await _syncService.SynchronizeAsync();
+                var progress = new Progress<string>(msg => StatusMessage = msg);
+                await _syncService.SynchronizeAsync();
 
                 new ContextUtils(user);
                 Application.Current!.MainPage = new AppShell();
             }
             else
             {
-                await Application.Current!.MainPage!.DisplayAlert("Alerta", "Usuário ou senha incorretos, tente novamente.", "OK");
+                if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                    await Application.Current!.MainPage!.DisplayAlert("Alerta", "Usuário ou senha incorretos, tente novamente.", "OK");
+                else
+                    await Application.Current!.MainPage!.DisplayAlert("Alerta", "Conecte-se á internet", "OK");
             }
         }
 

@@ -120,7 +120,7 @@ namespace Aquasys.Core.Sync
                         var typedItem = (JsonConvert.DeserializeObject(item.ToString(), entityType) as SyncableEntity);
                         if (typedItem != null)
                         {
-                            await repo.UpsertAsync(typedItem);
+                            await repo.UpsertAsync(typedItem, true);
                         }
                     }
                 }

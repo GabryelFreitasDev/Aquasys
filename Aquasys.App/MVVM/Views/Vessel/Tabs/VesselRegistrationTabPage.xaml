@@ -8,13 +8,13 @@
              xmlns:dx="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
              xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
              xmlns:dcc="clr-namespace:Aquasys.App.Controls"
-             xmlns:s="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel.Tabs"
              xmlns:local="clr-namespace:Aquasys.App.MVVM.Views"
              xmlns:model="clr-namespace:Aquasys.App.MVVM.Models.Vessel"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:Aquasys.App.MVVM.ViewModels.Vessel.Tabs"
-             x:Class="Aquasys.App.MVVM.Views.Vessel.Tabs.VesselRegistrationTabPage">
+             x:Class="Aquasys.App.MVVM.Views.Vessel.Tabs.VesselRegistrationTabPage"
+             x:Name="RootView">
 
     <ContentView.Resources>
         <DataTemplate x:Key="CountryItemTemplate">
@@ -55,7 +55,7 @@
 
                     <de:TextEdit
                         x:Name="VesselName"
-                        LabelText="Vessel name"
+                        LabelText="Vessel Name"
                         Text="{Binding VesselModel.VesselName, Mode=TwoWay}"
                         IsEnabled="False"/>
 
@@ -169,7 +169,7 @@
                                     <Frame CornerRadius="5" Padding="0" HasShadow="True">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselRegistrationTabViewModel }}, Path=EditVesselImageCommand}"
+                                            Command="{Binding Source={x:Reference RootView}, Path=BindingContext.EditVesselImageCommand}"
                                             CommandParameter="{Binding .}"/>
                                         </Frame.GestureRecognizers>
                                         <Grid ColumnDefinitions="30*,50*,25*" ColumnSpacing="10">
@@ -181,13 +181,13 @@
                                                 </HorizontalStackLayout>
                                             </VerticalStackLayout>
                                             <dx:DXButton 
-                                            Grid.Column="2"
-                                            ButtonType="ToolButton"
-                                            Icon="lixeira"
-                                            IconColor="Red"
-                                            BackgroundColor="Transparent"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:VesselRegistrationTabViewModel }}, Path=DeleteVesselImageCommand}"
-                                            CommandParameter="{Binding .}"/>
+                                                Grid.Column="2"
+                                                ButtonType="ToolButton"
+                                                Icon="lixeira"
+                                                IconColor="Red"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding Source={x:Reference RootView}, Path=BindingContext.DeleteVesselImageCommand}"
+                                                CommandParameter="{Binding .}"/>
                                         </Grid>
                                     </Frame>
                                 </DataTemplate>

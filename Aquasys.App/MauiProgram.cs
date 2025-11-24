@@ -110,7 +110,7 @@ namespace Aquasys.App
             builder.Services.AddTransient<VesselMainViewModel>();
             builder.Services.AddTransient<VesselListViewModel>();
             builder.Services.AddTransient<VesselHoldRegistrationTabViewModel>();
-            builder.Services.AddTransient<VesselRegistrationViewModel>();
+            builder.Services.AddTransient<VesselRegistrationTabViewModel>();
             builder.Services.AddTransient<HoldInspectionImageViewModel>();
             builder.Services.AddTransient<HoldInspectionViewModel>();
             builder.Services.AddTransient<HoldViewModel>();
