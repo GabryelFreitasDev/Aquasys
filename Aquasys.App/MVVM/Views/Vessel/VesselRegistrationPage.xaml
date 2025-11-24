@@ -52,12 +52,12 @@
 
                 <de:TextEdit
                         x:Name="VesselName"
-                        LabelText="Vessel name"
+                        LabelText="Vessel name *"
                         Text="{Binding VesselModel.VesselName, Mode=TwoWay}"/>
 
                 <de:TextEdit
                         x:Name="IMO"
-                        LabelText="I.M.O"
+                        LabelText="I.M.O *"
                         Text="{Binding VesselModel.Imo, Mode=TwoWay}"/>
 
                 <de:ComboBoxEdit
@@ -75,7 +75,7 @@
 
                 <de:TextEdit
                         x:Name="PortRegistry"
-                        LabelText="Port Registry"
+                        LabelText="Port Registry *"
                         Text="{Binding VesselModel.PortRegistry, Mode=TwoWay}" />
 
                 <dcc:DCDateEdit
@@ -91,12 +91,12 @@
 
                 <de:TextEdit 
                         x:Name="Owner"
-                        LabelText="Owner"
+                        LabelText="Owner *"
                         Text="{Binding VesselModel.Owner, Mode=TwoWay}" />
 
                 <de:TextEdit 
                         x:Name="Operator"
-                        LabelText="Operator"
+                        LabelText="Operator *"
                         Text="{Binding VesselModel.VesselOperator, Mode=TwoWay}"/>
 
                 <toolkit:Expander Command="{Binding ExpandCommand}">

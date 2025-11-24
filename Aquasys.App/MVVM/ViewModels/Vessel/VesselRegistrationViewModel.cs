@@ -154,6 +154,18 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         public async Task SaveOrUpdateVessel(bool mostraMensagem = true)
         {
+            // Verifique se VesselModel não é null antes de validar
+            if (VesselModel == null ||
+                string.IsNullOrWhiteSpace(VesselModel.VesselName) ||
+                string.IsNullOrWhiteSpace(VesselModel.Imo) ||
+                string.IsNullOrWhiteSpace(VesselModel.PortRegistry) ||
+                string.IsNullOrWhiteSpace(VesselModel.Owner) ||
+                string.IsNullOrWhiteSpace(VesselModel.VesselOperator))
+            {
+                await Application.Current!.MainPage!.DisplayAlert("Alert", "Please fill the required fields.", "OK");
+                return;
+            }
+
             Aquasys.Core.Entities.Vessel vesselEntity = new Aquasys.Core.Entities.Vessel();
 
             if (VesselModel?.IDVessel != null && VesselModel?.IDVessel != -1)
@@ -164,12 +176,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
                 vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
                 vesselEntity.IDUserRegistration = ContextUtils.ContextUser.IDUser;
             }
-            
+
             await _vesselRepository.UpsertAsync(vesselEntity);
-                
+
             if (mostraMensagem)
             {
-                await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
+                await Shell.Current.DisplayAlert("Alert", "Saved successfully", "OK");
                 await Shell.Current.GoToAsync("..", true);
             }
             else

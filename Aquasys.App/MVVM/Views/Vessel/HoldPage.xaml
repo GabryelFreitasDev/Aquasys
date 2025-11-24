@@ -22,12 +22,12 @@
 
                 <de:TextEdit
                     x:Name="BasementNumber"
-                    LabelText="Name"
+                    LabelText="Name *"
                     Text="{Binding HoldModel.BasementNumber, Mode=TwoWay}"/>
 
                 <de:TextEdit
                     x:Name="Agent"
-                    LabelText="Agent"
+                    LabelText="Agent *"
                     Text="{Binding HoldModel.Agent, Mode=TwoWay}"/>
 
                 <de:TextEdit
@@ -36,7 +36,7 @@
                     Text="{Binding HoldModel.Cargo, Mode=TwoWay}"/>
 
                 <de:NumericEdit
-                    x:Name="Capacity"
+                    x:Name="Capacity *"
                     Value="{Binding HoldModel.Capacity, Mode=TwoWay}"
                     LabelText="Capacity"/>
 

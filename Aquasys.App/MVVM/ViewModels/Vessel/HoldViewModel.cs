@@ -60,6 +60,15 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         [RelayCommand]
         private async Task SaveHold()
         {
+            if (HoldModel == null ||
+                HoldModel.Capacity != 0 ||
+                string.IsNullOrWhiteSpace(HoldModel.Agent) ||
+                string.IsNullOrWhiteSpace(HoldModel.BasementNumber?.ToString())) 
+            {
+                await Shell.Current.DisplayAlert("Alert", "Please fill the required fields.", "OK");
+                return;
+            }
+
             if (HoldModel.IDHold != 0)
             {
                 var hold = await _holdRepository.GetByIdAsync(HoldModel.IDHold);
@@ -69,7 +78,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
                     hold = mapper.Map<Hold>(HoldModel);
                     if (await _holdRepository.UpdateAsync(hold))
                     {
-                        await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
+                        await Shell.Current.DisplayAlert("Alert", "Saved successfully", "OK");
                         await Shell.Current.GoToAsync("..", true);
                     }
                 }
@@ -80,7 +89,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
                 hold.IDVessel = IDVessel;
                 if (await _holdRepository.InsertAsync(hold))
                 {
-                    await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
+                    await Shell.Current.DisplayAlert("Alert", "Saved successfully", "OK");
                     await Shell.Current.GoToAsync("..", true);
                 }
             }

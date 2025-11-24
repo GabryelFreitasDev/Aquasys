@@ -65,8 +65,6 @@ namespace Aquasys.App.MVVM.ViewModels.Login
         [RelayCommand(CanExecute = nameof(CanExecuteCommands))]
         private async Task ValidateLogin()
         {
-            Application.Current!.MainPage = new AppShell();
-
             LoginModel.UserName = "inspector.joao";
             LoginModel.Password = "Password123!";
 
