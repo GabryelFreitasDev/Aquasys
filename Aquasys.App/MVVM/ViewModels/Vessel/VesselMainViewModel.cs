@@ -9,7 +9,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
     {
 
         [ObservableProperty]
-        public VesselRegistrationViewModel vesselRegistrationTabViewModel;
+        public VesselRegistrationTabViewModel vesselRegistrationTabViewModel;
 
         [ObservableProperty]
         public VesselHoldRegistrationTabViewModel vesselHoldRegistrationTabViewModel;
@@ -17,7 +17,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         private int tabSelecionada = 0;
 
         public VesselMainViewModel(
-            VesselRegistrationViewModel vesselRegistrationTabViewModel,
+            VesselRegistrationTabViewModel vesselRegistrationTabViewModel,
             VesselHoldRegistrationTabViewModel vesselHoldRegistrationTabViewModel)
         {
 

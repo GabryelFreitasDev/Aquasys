@@ -68,7 +68,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         private async Task SaveHoldInspection(bool mostraMensagem = true)
         {
-            if (HoldInspectionModel.IDHoldInspection != -1)
+            if (HoldInspectionModel.IDHoldInspection != 0)
             {
                 var holdInspection = await _holdInspectionRepository.GetByIdAsync(HoldInspectionModel.IDHoldInspection);
                 if (holdInspection != null)

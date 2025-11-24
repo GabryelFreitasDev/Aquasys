@@ -11,7 +11,7 @@ namespace Aquasys.App.MVVM.Models.Vessel
     {
         public HoldInspectionModel() {}
 
-        public long IDHoldInspection { get; set; } = -1;
+        public long IDHoldInspection { get; set; }
         [ObservableProperty]
         public DateTime inspectionDate = DateTime.Now;
         [ObservableProperty]

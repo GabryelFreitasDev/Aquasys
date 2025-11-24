@@ -17,13 +17,11 @@
         <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="10">
             <de:TextEdit
                 x:Name="Name"
-                IsLabelFloating="True"
                 LabelText="Name"
                 Text="{Binding HoldInspectionImageModel.Description, Mode=TwoWay}"/>
             <de:MultilineEdit
                 x:Name="Description"
                 Text="{Binding HoldInspectionImageModel.Observation, Mode=TwoWay}"
-                IsLabelFloating="True"
                 LabelText="Description"
                 MinLineCount="5"/>
             <dx:DXButton 

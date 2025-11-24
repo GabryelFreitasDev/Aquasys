@@ -1,6 +1,5 @@
 ﻿using Aquasys.App.Controls.Editors;
 using Aquasys.App.Core.Data;
-using Aquasys.App.Core.Enums;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.App.MVVM.Views.Vessel;
@@ -20,18 +19,32 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         private readonly ILocalRepository<Aquasys.Core.Entities.Vessel> _vesselRepository;
         private readonly ILocalRepository<VesselImage> _vesselImageRepository;
         private readonly ReportGeneratorService _reportService;
+        private readonly CountryHelper _countryHelper = new();
+
+        // ------------- Propriedades ligadas à tela -------------
 
         [ObservableProperty]
-        private VesselModel vesselModel;
+        private VesselModel vesselModel = new();
 
-        [ObservableProperty] private List<Country> flags;
-        [ObservableProperty] private Country? flagSelecionada;
-        [ObservableProperty] private ObservableCollection<VesselImageModel> images;
-        [ObservableProperty] private bool expanded = true;
-        [ObservableProperty] private bool hasImages = false;
-        [ObservableProperty] private bool isEnabled = false;
+        [ObservableProperty]
+        private List<Country> flags = new();
 
-        private List<Country> allFlags =  new List<Country>();
+        [ObservableProperty]
+        private Country? selectedFlag;
+
+        [ObservableProperty]
+        private ObservableCollection<VesselImageModel> images = new();
+
+        [ObservableProperty]
+        private bool expanded = true;
+
+        [ObservableProperty]
+        private bool hasImages;
+
+        [ObservableProperty]
+        private bool isEnabled; // se for usar depois para habilitar/desabilitar campos
+
+        private List<Country> AllFlags = new();
 
         public VesselRegistrationTabViewModel(
             ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
@@ -41,189 +54,110 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
             _vesselRepository = vesselRepository;
             _vesselImageRepository = vesselImageRepository;
             _reportService = reportService;
-
-            vesselModel = new();
-            flags = new();
-            flagSelecionada = null;
-            images = new();
         }
 
         public override async Task OnAppearing()
         {
-            await CarregaDados();
+            if (IsLoadedViewModel)
+                return;
+
+            IsLoadedViewModel = true;
+            await LoadDataAsync();
         }
 
-        private async Task CarregaDados()
+        private async Task LoadDataAsync()
         {
-            if (!string.IsNullOrEmpty(Id) && long.TryParse(Id, out long idVessel) && idVessel != 0)
-            {
-                var vesselData = await _vesselRepository.GetByIdAsync(idVessel);
-                if (vesselData != null)
+            await LoadVesselAsync();
+            await LoadImagesAsync();
+            LoadFlags();
+        }
+
+        private async Task LoadVesselAsync()
+        {
+            if (string.IsNullOrWhiteSpace(Id) || !long.TryParse(Id, out var vesselId) || vesselId == 0)
+                return;
+
+            var vesselData = await _vesselRepository.GetByIdAsync(vesselId);
+            if (vesselData is null)
+                return;
+
+            VesselModel = mapper.Map<VesselModel>(vesselData);
+        }
+
+        private async Task LoadImagesAsync()
+        {
+            Images.Clear();
+            HasImages = false;
+
+            if (VesselModel?.IDVessel is null or 0)
+                return;
+
+            var vesselImages = await _vesselImageRepository
+                .GetFilteredAsync(x => x.IDVessel == VesselModel.IDVessel);
+
+            foreach (var image in vesselImages)
+                Images.Add(mapper.Map<VesselImageModel>(image));
+
+            HasImages = Images.Any();
+        }
+
+        private void LoadFlags()
+        {
+            AllFlags = _countryHelper.GetCountryData()
+                .Select(x => new Country
                 {
-                    VesselModel = mapper.Map<VesselModel>(vesselData);
-                    await CarregaImages();
-                }
-            }
+                    CountryName = x.CountryName,
+                    CountryFlag = x.CountryFlag
+                })
+                .ToList();
 
-            CarregaFlag();
-        }
+            Flags = AllFlags.Take(30).ToList();
 
-        private void CarregaFlag()
-        {
-            allFlags = new CountryHelper().GetCountryData().Select(x => new Country { CountryName = x.CountryName, CountryFlag = x.CountryFlag }).ToList();
-
-            Flags = allFlags.Take(30).ToList();
-
-            if (!string.IsNullOrEmpty(VesselModel.Flag))
-                FlagSelecionada = allFlags.Where(x => x.CountryName == VesselModel.Flag).First();
-        }
-
-        private async Task CarregaImages()
-        {
-            if (VesselModel?.IDVessel != null && VesselModel?.IDVessel != 0)
+            if (!string.IsNullOrWhiteSpace(VesselModel.Flag))
             {
-                var vesselImages = await _vesselImageRepository.GetFilteredAsync(x => x.IDVessel == VesselModel!.IDVessel);
-                ObservableCollection<VesselImageModel> vesselImagesModel = new();
-
-                vesselImages.ForEach(image => vesselImagesModel.Add(mapper.Map<VesselImageModel>(image)));
-
-                Images = vesselImagesModel;
-
-                if (Images.Any())
-                    HasImages = true;
+                SelectedFlag = AllFlags
+                    .FirstOrDefault(x => x.CountryName == VesselModel.Flag);
             }
-        }
-
-        //[RelayCommand]
-        //private void ChangeFlag(Country flag)
-        //{
-        //    if (flag is not null)
-        //        FlagSelecionada = flag;
-        //}
-
-        [RelayCommand]
-        private void ChangeFlagName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                Flags = allFlags.Take(30).ToList();
-            else
-                Flags = allFlags.Where(x => x.CountryName.ToLower().Contains(name.ToLower())).Take(30).ToList();
-        }
-
-        #region ValidateVessel
-        private async Task<bool> ValidateVessel()
-        {
-            if (string.IsNullOrEmpty(VesselModel.VesselName))
-            {
-                await Shell.Current.DisplayAlert("Alerta", "Insira o Vessel Name", "OK");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(VesselModel.Imo))
-            {
-                await Shell.Current.DisplayAlert("Alerta", "Insira o IMO", "OK");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(VesselModel.PortRegistry))
-            {
-                await Shell.Current.DisplayAlert("Alerta", "Insira o Port Registry", "OK");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(VesselModel.Owner))
-            {
-                await Shell.Current.DisplayAlert("Alerta", "Insira o Owner", "OK");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(VesselModel.VesselOperator))
-            {
-                await Shell.Current.DisplayAlert("Alerta", "Insira o Operator", "OK");
-                return false;
-            }
-
-            return true;
-        }
-        #endregion
-
-        [RelayCommand]
-        private async Task BtnSalvarClick()
-        {
-            await SaveOrUpdateVessel(true);
-        }
-
-        public async Task SaveOrUpdateVessel(bool mostraMensagem = true)
-        {
-            Aquasys.Core.Entities.Vessel vesselEntity = new Aquasys.Core.Entities.Vessel();
-
-            if (VesselModel?.IDVessel != null && VesselModel?.IDVessel != -1)
-                vesselEntity = await _vesselRepository.GetByIdAsync(VesselModel?.IDVessel ?? -1);
-
-            vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
-            vesselEntity.IDUserRegistration = ContextUtils.ContextUser.IDUser;
-
-            await _vesselRepository.UpsertAsync(vesselEntity);
-                
-            if (mostraMensagem)
-            {
-                await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
-                await Shell.Current.GoToAsync("..", true);
-            }
-
-            VesselModel = mapper.Map<VesselModel>(vesselEntity);
         }
 
         [RelayCommand]
-        private async Task AddVesselImage()
+        private async Task AddVesselImageAsync()
         {
+            if (IsProcessRunning)
+                return;
+
             try
             {
-                if (IsProcessRunning)
-                    return;
-
-                await SaveOrUpdateVessel(false);
-
                 IsProcessRunning = true;
 
-                var anexo = (await DCFileSelector.GetImagens(1)).FirstOrDefault();
-                if (anexo != null && anexo is DCImagem _anexo && (!_anexo.ImageSource?.IsEmpty ?? false))
+                var arquivo = (await DCFileSelector.GetImagens(1)).FirstOrDefault();
+                if (arquivo is not DCImagem imagem || (imagem.ImageSource?.IsEmpty ?? true))
+                    return;
+
+                if (VesselModel?.IDVessel is null or 0)
                 {
-                    VesselImage vesselImage = new VesselImage();
-                    vesselImage.Image = anexo.Content;
-                    vesselImage.IDVessel = VesselModel.IDVessel;
-
-                    await _vesselImageRepository.InsertAsync(vesselImage);
-
-                    MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"{nameof(VesselImagePage)}?{nameof(Id)}={vesselImage.IDVesselImage}"));
+                    await Shell.Current.DisplayAlert("Aviso", "Salve o Vessel antes de adicionar imagens.", "OK");
+                    return;
                 }
+
+                var vesselImage = new VesselImage
+                {
+                    Image = arquivo.Content,
+                    IDVessel = VesselModel.IDVessel
+                };
+
+                await _vesselImageRepository.UpsertAsync(vesselImage);
+
+                Images.Add(mapper.Map<VesselImageModel>(vesselImage));
+                HasImages = Images.Any();
+
+                await MainThread.InvokeOnMainThreadAsync(
+                    () => Shell.Current.GoToAsync($"{nameof(VesselImagePage)}?{nameof(Id)}={vesselImage.IDVesselImage}")
+                );
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                IsProcessRunning = false;
-            }
-        }
-        [RelayCommand]
-        private async Task EditVesselImage(VesselImageModel vesselImageModel)
-        {
-            try
-            {
-                if (IsProcessRunning || vesselImageModel is null)
-                    return;
-
-                await SaveOrUpdateVessel(false);
-
-                IsProcessRunning = true;
-
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync($"{nameof(VesselImagePage)}?{nameof(Id)}={vesselImageModel.IDVesselImage}"));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+                await Shell.Current.DisplayAlert("Erro", $"Erro ao adicionar imagem: {ex.Message}", "OK");
             }
             finally
             {
@@ -232,28 +166,54 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         }
 
         [RelayCommand]
-        private async Task DeleteVesselImage(VesselImageModel vesselImageModel)
+        private async Task EditVesselImage(VesselImageModel? vesselImageModel)
         {
+            if (IsProcessRunning || vesselImageModel is null)
+                return;
+
             try
             {
-                if (IsProcessRunning || vesselImageModel is null)
-                    return;
-
-                await SaveOrUpdateVessel(false);
-
                 IsProcessRunning = true;
+
+                await MainThread.InvokeOnMainThreadAsync(
+                    () => Shell.Current.GoToAsync($"{nameof(VesselImagePage)}?{nameof(Id)}={vesselImageModel.IDVesselImage}")
+                );
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Erro", $"Erro ao abrir imagem: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsProcessRunning = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task DeleteVesselImage(VesselImageModel? vesselImageModel)
+        {
+            if (IsProcessRunning || vesselImageModel is null)
+                return;
+
+            try
+            {
+                IsProcessRunning = true;
+
+                var confirm = await Shell.Current.DisplayAlert(
+                    "Alerta", "Deseja realmente excluir?", "Sim", "Cancelar");
+
+                if (!confirm)
+                    return;
 
                 var vesselImage = mapper.Map<VesselImage>(vesselImageModel);
+                await _vesselImageRepository.DeleteAsync(vesselImage);
 
-                if (await Shell.Current.DisplayAlert("Alerta", "Deseja realmente excluir?", "Sim", "Cancelar"))
-                {
-                    await _vesselImageRepository.DeleteAsync(vesselImage);
-                    Images.Remove(vesselImageModel);
-                }
+                Images.Remove(vesselImageModel);
+                HasImages = Images.Any();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                await Shell.Current.DisplayAlert("Erro", $"Erro ao excluir imagem: {ex.Message}", "OK");
             }
             finally
             {
@@ -262,37 +222,33 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         }
 
         [RelayCommand]
-        private async Task ExpandImages(VesselImageModel vesselImageModel)
+        private void ToggleImagesExpanded()
         {
-            if (Expanded == true)
-                Expanded = false;
-            else
-                Expanded = true;
+            Expanded = !Expanded;
         }
 
         [RelayCommand]
-        private async Task GenerateReport()
+        private async Task GenerateReportAsync()
         {
             try
             {
                 if (VesselModel == null || VesselModel.IDVessel == 0)
                 {
-                    await Shell.Current.DisplayAlert("Aviso", "Salve o Vessel antes de gerar o relatório.", "OK");
+                    await Shell.Current.DisplayAlert(
+                        "Aviso",
+                        "Salve o Vessel antes de gerar o relatório.",
+                        "OK");
                     return;
                 }
 
-                // Mapeia o VesselModel para a Entity, se necessário
                 var vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
 
-                // Gera os bytes do relatório usando o serviço injetado via DI
                 var pdfBytes = await _reportService.GenerateAsync(ReportType.Vessel, vesselEntity);
-
-                // Salva em arquivo local (AppDataDirectory é seguro para Android/iOS/Windows)
                 var fileName = $"Relatorio_{VesselModel.VesselName}.pdf";
                 var filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
+
                 File.WriteAllBytes(filePath, pdfBytes);
 
-                // Compartilha/abre com aplicativo nativo (Google Drive, WhatsApp, etc)
                 await Share.Default.RequestAsync(new ShareFileRequest
                 {
                     Title = "Abrir/Compartilhar Relatório",

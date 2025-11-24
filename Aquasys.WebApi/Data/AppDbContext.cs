@@ -1,6 +1,7 @@
 ﻿// Na pasta Data/AppDbContext.cs
 using Aquasys.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Aquasys.WebApi.Data;
 
@@ -19,18 +20,36 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        // Configura um índice no GlobalId para todas as entidades para otimizar a busca.
-        // Isso é crucial para a performance do endpoint de Push.
-        modelBuilder.Entity<Vessel>()             // Para a entidade Vessel...
-                    .HasMany(v => v.Holds)                // ...ela tem muitos Holds...
-                    .WithOne(h => h.VesselEntity)         // ...onde cada Hold tem um VesselEntity...
-                    .HasForeignKey(h => h.IDVessel);
+
+        modelBuilder.Entity<Vessel>()
+            .HasMany(v => v.Holds)
+            .WithOne(h => h.VesselEntity)
+            .HasForeignKey(h => h.IDVessel);
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            if (typeof(SyncableEntity).IsAssignableFrom(entityType.ClrType))
+            var clr = entityType.ClrType;
+
+            if (!typeof(SyncableEntity).IsAssignableFrom(clr))
+                continue;
+
+            // índice único pro GlobalId
+            modelBuilder.Entity(clr)
+                .HasIndex(nameof(SyncableEntity.GlobalId))
+                .IsUnique();
+
+            // descobrir a PK
+            var pk = entityType.FindPrimaryKey();
+            var pkProp = pk?.Properties.FirstOrDefault();
+            if (pkProp == null)
+                continue;
+
+            // se a PK for numérica, não deixar EF gerar valor
+            if (pkProp.ClrType == typeof(long) || pkProp.ClrType == typeof(int))
             {
-                modelBuilder.Entity(entityType.ClrType).HasIndex(nameof(SyncableEntity.GlobalId)).IsUnique();
+                modelBuilder.Entity(clr)
+                    .Property(pkProp.Name)
+                    .ValueGeneratedNever();  // <- ESSA É A CHAVE
             }
         }
     }
