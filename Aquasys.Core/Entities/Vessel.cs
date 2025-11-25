@@ -83,6 +83,10 @@ namespace Aquasys.Core.Entities
         public virtual User? UserRegistrationEntity { get; set; }
 
         [NotMapped]
+        [InverseProperty(nameof(VesselImage.VesselEntity))]
+        public List<VesselImage> VesselImages = new List<VesselImage>();
+
+        [NotMapped]
         [InverseProperty(nameof(Hold.VesselEntity))]
         public List<Hold> Holds = new List<Hold>();
     }

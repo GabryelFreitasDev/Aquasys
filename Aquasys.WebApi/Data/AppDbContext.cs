@@ -26,6 +26,11 @@ public class AppDbContext : DbContext
             .WithOne(h => h.VesselEntity)
             .HasForeignKey(h => h.IDVessel);
 
+        modelBuilder.Entity<Vessel>()
+            .HasMany(v => v.VesselImages)
+            .WithOne(i => i.VesselEntity)
+            .HasForeignKey(i => i.IDVessel);
+
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             var clr = entityType.ClrType;

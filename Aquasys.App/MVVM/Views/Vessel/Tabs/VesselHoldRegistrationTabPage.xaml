@@ -56,10 +56,6 @@
                                             <Label Text="Product Weight:" FontAttributes="Bold"></Label>
                                             <Label Text="{Binding ProductWeight}"></Label>
                                         </HorizontalStackLayout>
-                                        <HorizontalStackLayout Spacing="5">
-                                            <Label Text="Status:" FontAttributes="Bold"></Label>
-                                            <Label Text="{Binding Inspectioned}"></Label>
-                                        </HorizontalStackLayout>
                                     </VerticalStackLayout>
                                     <dx:DXButton 
                                         Grid.Column="2"

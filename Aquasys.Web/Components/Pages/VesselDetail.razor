@@ -15,64 +15,72 @@ else if (vessel == null && !isLoading)
 }
 else if (vessel != null)
 {
-    <div class="vessel-detail-container p-3">
-
-        @* --- Seção Vessel Records --- *@
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Vessel Records</h4>
-            <button class="btn btn-primary" disabled>Report</button> @* Botão Report (funcionalidade futura) *@
+    <div class="container-fluid p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="mb-0">Vessel Records</h3>
+            <button class="btn btn-primary" disabled>Report</button>
         </div>
 
-        <div class="record-section card mb-4">
+        <div class="card mb-4">
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">OS:</label>
-                        <input type="text" class="form-control" value="@vessel.OS" readonly /> @* Assumindo que OS vem de Inspection *@
+                        <input class="form-control" value="@vessel.OS" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Docking location:</label>
-                        <input type="text" class="form-control" value="@vessel.DockingLocation" readonly />
+                        <input class="form-control" value="@vessel.DockingLocation" readonly />
                     </div>
+
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Vessel Name:</label>
-                        <input type="text" class="form-control" value="@vessel.VesselName" readonly />
+                        <input class="form-control" value="@vessel.VesselName" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">I.M.O:</label>
-                        <input type="text" class="form-control" value="@vessel.IMO" readonly />
+                        <input class="form-control" value="@vessel.IMO" readonly />
                     </div>
+
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Flag:</label>
-                        <input type="text" class="form-control" value="@vessel.Flag" readonly />
+                        <input class="form-control" value="@vessel.Flag" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Port Registry:</label>
-                        <input type="text" class="form-control" value="@vessel.PortRegistry" readonly />
+                        <input class="form-control" value="@vessel.PortRegistry" readonly />
                     </div>
+
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Date of Building:</label>
-                        <input type="text" class="form-control" value="@vessel.DateOfBuilding?.ToString("dd/MM/yyyy")" readonly />
+                        <input class="form-control"
+                               value="@vessel.DateOfBuilding?.ToString("dd/MM/yyyy")" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Shipping agent:</label>
-                        <input type="text" class="form-control" value="@vessel.ShippingAgent" readonly /> @* Assumindo que ShippingAgent vem de Inspection *@
+                        <input class="form-control" value="@vessel.ShippingAgent" readonly />
                     </div>
+
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Owner:</label>
-                        <input type="text" class="form-control" value="@vessel.Owner" readonly />
+                        <input class="form-control" value="@vessel.Owner" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Operator:</label>
-                        <input type="text" class="form-control" value="@vessel.VesselOperator" readonly />
+                        <input class="form-control" value="@vessel.VesselOperator" readonly />
                     </div>
                 </div>
             </div>
         </div>
 
+
         @* --- Seção Last Cargos (Expansível) --- *@
-        <details class="record-section card mb-4" open>
-            <summary class="card-header fw-bold">Last Cargos</summary>
+        <details class="card mb-4">
+            <summary class="card-header fw-bold d-flex justify-content-between align-items-center">
+                Last Cargos
+                <span class="ms-2 bi bi-chevron-down"></span>  @* ícone opcional se estiver usando Bootstrap Icons *@
+            </summary>
+
             <div class="card-body">
                 <div class="mb-2">
                     <label class="form-label">1st Last Cargo:</label>
@@ -82,31 +90,37 @@ else if (vessel != null)
                     <label class="form-label">2nd Last Cargo:</label>
                     <input type="text" class="form-control" value="@vessel.SecondLastCargo" readonly />
                 </div>
-                <div>
+                <div class="mb-2">
                     <label class="form-label">3rd Last Cargo:</label>
                     <input type="text" class="form-control" value="@vessel.ThirdLastCargo" readonly />
                 </div>
-                @* Assumindo que LastCargo vem do primeiro Hold relacionado *@
+                @* Se quiser usar o FourthLastCargo também: *@
+                @if (!string.IsNullOrWhiteSpace(vessel.FourthLastCargo))
+                {
+                    <div>
+                        <label class="form-label">4th Last Cargo:</label>
+                        <input type="text" class="form-control" value="@vessel.FourthLastCargo" readonly />
+                    </div>
+                }
             </div>
         </details>
 
+
         @* --- Seção Vessel Hold --- *@
-        <h4 class="mt-4">Vessel Hold</h4>
+        <h4 class="mt-4 mb-3 text-center">Vessel Hold</h4>
+
         @if (vessel.Holds?.Any() == true)
         {
             <div class="row">
-                @foreach (var hold in vessel.Holds)
+                @foreach (var hold in vessel.Holds.OrderBy(h => h.BasementNumber))
                 {
                     <div class="col-md-6 mb-3">
-                        <div class="card hold-card">
-                            <div class="card-header fw-bold">
-                                Basement Number: @hold.BasementNumber
-                            </div>
+                        <div class="card hold-card h-100">
                             <div class="card-body">
-                                <p class="card-text mb-1"><span class="fw-bold">Cargo:</span> @hold.Cargo</p>
-                                <p class="card-text mb-1"><span class="fw-bold">Capacity:</span> @hold.Capacity</p>
-                                <p class="card-text mb-1"><span class="fw-bold">Product Weight:</span> @hold.ProductWeight</p>
-                                <p class="card-text mb-1"><span class="fw-bold">Status:</span> @(hold.Inspectioned ? "Inspected" : "Not Inspected")</p>
+                                <p><strong>Basement number:</strong> @hold.BasementNumber</p>
+                                <p><strong>Cargo:</strong> @hold.Cargo</p>
+                                <p><strong>Capacity:</strong> @hold.Capacity @(" toneladas")</p>
+                                <p><strong>Product Weight:</strong> @hold.ProductWeight @(" toneladas")</p>
                             </div>
                         </div>
                     </div>
@@ -117,6 +131,7 @@ else if (vessel != null)
         {
             <p>Nenhum porão registrado para esta embarcação.</p>
         }
+
 
     </div>
 }
@@ -139,6 +154,7 @@ else if (vessel != null)
             // Busca os detalhes do Vessel na API, incluindo os Holds relacionados
             // Sua API precisa suportar a inclusão de Holds neste endpoint
             vessel = await httpClient.GetFromJsonAsync<Vessel>($"api/Vessels/{VesselId}?includeHolds=true");
+
         }
         catch (Exception ex)
         {
