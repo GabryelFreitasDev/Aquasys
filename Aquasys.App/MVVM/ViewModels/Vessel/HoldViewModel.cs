@@ -61,7 +61,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         private async Task SaveHold()
         {
             if (HoldModel == null ||
-                HoldModel.Capacity != 0 ||
+                HoldModel.Capacity == 0 ||
                 string.IsNullOrWhiteSpace(HoldModel.Agent) ||
                 string.IsNullOrWhiteSpace(HoldModel.BasementNumber?.ToString())) 
             {

@@ -36,9 +36,9 @@
                     Text="{Binding HoldModel.Cargo, Mode=TwoWay}"/>
 
                 <de:NumericEdit
-                    x:Name="Capacity *"
+                    x:Name="Capacity"
                     Value="{Binding HoldModel.Capacity, Mode=TwoWay}"
-                    LabelText="Capacity"/>
+                    LabelText="Capacity *"/>
 
                 <de:NumericEdit
                     x:Name="ProductWeight"
