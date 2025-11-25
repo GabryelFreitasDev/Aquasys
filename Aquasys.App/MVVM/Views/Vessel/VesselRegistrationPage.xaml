@@ -52,7 +52,7 @@
 
                 <de:TextEdit
                         x:Name="VesselName"
-                        LabelText="Vessel name *"
+                        LabelText="Vessel Name *"
                         Text="{Binding VesselModel.VesselName, Mode=TwoWay}"/>
 
                 <de:TextEdit
@@ -64,7 +64,7 @@
                         x:Name="Flag"
                         LabelText="Flag"
                         ItemsSource="{Binding Flags}"
-                        SelectedItem="{Binding FlagSelecionada, Mode=TwoWay}"
+                        SelectedItem="{Binding SelectedFlag, Mode=TwoWay}"
                         DisplayMember="CountryName"
                         DisplayItemTemplate="{StaticResource CountryItemTemplate}"
                         ItemTemplate="{StaticResource CountryItemTemplate}"
@@ -99,7 +99,7 @@
                         LabelText="Operator *"
                         Text="{Binding VesselModel.VesselOperator, Mode=TwoWay}"/>
 
-                <toolkit:Expander Command="{Binding ExpandCommand}">
+                <toolkit:Expander Command="{Binding ToggleExpandedCommand}">
                     <toolkit:Expander.Header>
                         <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
                             <Grid ColumnDefinitions="*,50">
@@ -138,13 +138,13 @@
                         Content="Add Vessel Image +"
                         Command="{Binding AddVesselImageCommand}"/>
 
-               <toolkit:Expander Command="{Binding ExpandImagesCommand}" IsVisible="{Binding HasImages}">
+                <toolkit:Expander Command="{Binding ToggleImagesExpandedCommand}" IsVisible="{Binding HasImages}">
                     <toolkit:Expander.Header>
                         <Frame CornerRadius="5" Padding="10" HasShadow="True" MinimumHeightRequest="60" >
                             <Grid ColumnDefinitions="*,50">
                                 <Label Grid.Column="0" Text="Vessel Images" VerticalOptions="Center"></Label>
-                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding Expanded, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
-                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding Expanded}" HeightRequest="20"></Image>
+                                <Image Grid.Column="1" Source="setaparacima" VerticalOptions="Center" IsVisible="{Binding ExpandedImages, Converter={StaticResource ReverseBoolValueConverter}}" HeightRequest="20"></Image>
+                                <Image Grid.Column="1" Source="setaparabaixo" VerticalOptions="Center" IsVisible="{Binding ExpandedImages}" HeightRequest="20"></Image>
                             </Grid>
                         </Frame>
                     </toolkit:Expander.Header>

@@ -29,8 +29,9 @@ namespace Aquasys.Core.Entities
         [Column("capacity", TypeName = "numeric(18,5)")]
         public decimal Capacity { get; set; }
 
-        [Column("loadplan", TypeName = "numeric(18,5)")]
-        public decimal LoadPlan { get; set; }
+        [StringLength(300)]
+        [Column("loadplan")]
+        public string? LoadPlan { get; set; }
 
         [Column("productweight", TypeName = "numeric(18,5)")]
         public decimal ProductWeight { get; set; }

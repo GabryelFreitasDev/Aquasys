@@ -37,6 +37,9 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         private bool expanded = true;
 
         [ObservableProperty]
+        private bool expandedImages = true;
+
+        [ObservableProperty]
         private bool hasImages;
 
         private List<Country> allFlags = new();
@@ -53,16 +56,15 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         public override async Task OnAppearing()
         {
-            if (IsLoadedViewModel) return;
-            IsLoadedViewModel = true;
-            await LoadDataAsync();
-        }
+            if (!IsLoadedViewModel)
+            {
+                IsLoadedViewModel = true;
 
-        private async Task LoadDataAsync()
-        {
-            await LoadVesselAsync();
+                await LoadVesselAsync();
+                LoadFlags();
+            }
+
             await LoadImagesAsync();
-            LoadFlags();
         }
 
         private async Task LoadVesselAsync()
@@ -112,6 +114,15 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
                 SelectedFlag = allFlags.FirstOrDefault(x => x.CountryName == VesselModel.Flag);
         }
 
+        [RelayCommand]
+        private void ChangeFlagName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                Flags = allFlags.Take(30).ToList();
+            else
+                Flags = allFlags.Where(x => x.CountryName.ToLower().Contains(name.ToLower())).Take(30).ToList();
+        }
+
         private async Task<bool> ValidateVesselAsync()
         {
             if (string.IsNullOrWhiteSpace(VesselModel.VesselName))
@@ -147,7 +158,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
         public async Task SaveOrUpdateVessel(bool parcial = false)
         {
             Aquasys.Core.Entities.Vessel vesselEntity = new Aquasys.Core.Entities.Vessel();
-            if (!parcial && !await ValidateVesselAsync()) return;
+            if (!await ValidateVesselAsync()) return;
 
             Aquasys.Core.Entities.Vessel entity;
 
@@ -156,11 +167,9 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
             else
                 entity = new();
 
-            if (!parcial)
-            {
-                entity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
-                entity.IDUserRegistration = ContextUtils.ContextUser.IDUser;
-            }
+            entity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
+            entity.Flag = SelectedFlag?.CountryName;
+            entity.IDUserRegistration = ContextUtils.ContextUser.IDUser;
 
             await _vesselRepository.UpsertAsync(entity);
 
@@ -183,6 +192,8 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
             try
             {
+                if (!await ValidateVesselAsync()) return;
+
                 await SaveOrUpdateVessel(true);
 
                 IsProcessRunning = true;
@@ -257,6 +268,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         [RelayCommand]
         private void ToggleImagesExpanded()
+        {
+            ExpandedImages = !ExpandedImages;
+        }
+
+        [RelayCommand]
+        private void ToggleExpanded()
         {
             Expanded = !Expanded;
         }

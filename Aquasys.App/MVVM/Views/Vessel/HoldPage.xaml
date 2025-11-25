@@ -36,19 +36,20 @@
                     Text="{Binding HoldModel.Cargo, Mode=TwoWay}"/>
 
                 <de:NumericEdit
-                    x:Name="Capacity *"
+                    x:Name="Capacity"
                     Value="{Binding HoldModel.Capacity, Mode=TwoWay}"
-                    LabelText="Capacity"/>
+                    LabelText="Capacity *"/>
 
                 <de:NumericEdit
                     x:Name="ProductWeight"
                     Value="{Binding HoldModel.ProductWeight, Mode=TwoWay}"
                     LabelText="Product Weight"/>
 
-                <de:TextEdit
+                <de:MultilineEdit
                     x:Name="LoadPlan"
                     Text="{Binding HoldModel.LoadPlan, Mode=TwoWay}"
-                    LabelText="Load Plan"/>
+                    LabelText="Load Plan"
+                    MinLineCount="5"/>
 
                 <dx:DXButton 
                     ButtonType="Accent"

@@ -19,6 +19,7 @@ using CommunityToolkit.Maui;
 using DevExpress.Maui;
 using InputKit.Handlers;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using RGPopup.Maui.Extensions;
 
 namespace Aquasys.App
@@ -44,7 +45,6 @@ namespace Aquasys.App
                 fonts.AddFont("Quicksand-Regular.ttf", "Quicksand400Font");
                 fonts.AddFont("Quicksand-Medium.ttf", "Quicksand500Font");
                 fonts.AddFont("Quicksand-SemiBold.ttf", "Quicksand600Font");
-                fonts.AddFont("Quicksand-Bold.ttf", "Quicksand700Font");
 
                 fonts.AddFont("FontAwesome6Brands.otf", "FontAwesomeBrands");
                 fonts.AddFont("FontAwesome6Regular.otf", "FontAwesomeRegular");
@@ -67,13 +67,7 @@ namespace Aquasys.App
             DevExpress.Maui.Editors.Initializer.Init();
             DevExpress.Maui.Scheduler.Initializer.Init();
 
-            builder.Services.AddSingleton(new HttpClient
-            {
-                // IMPORTANTE: Use o endereço da sua API. Para testes locais, pode ser necessário um ajuste.
-                //BaseAddress = new Uri("https://localhost:7182") -- smart físico
-                BaseAddress = new Uri("http://10.0.2.2:5270")
-                //BaseAddress = new Uri("https://10.0.2.2:7182")
-            });
+            builder.Services.AddSingleton<HttpClient>();
 
             builder.Services.AddSingleton<ISyncService, SyncService>();
 

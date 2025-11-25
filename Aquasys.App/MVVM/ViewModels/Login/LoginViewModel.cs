@@ -7,6 +7,8 @@ using Aquasys.Core.Entities;
 using Aquasys.Core.Sync;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Net.Http;
+using Microsoft.Maui.Storage;
 
 namespace Aquasys.App.MVVM.ViewModels.Login
 {
@@ -25,17 +27,20 @@ namespace Aquasys.App.MVVM.ViewModels.Login
 
         private readonly ILocalRepository<User> _userRepository;
         private readonly ISyncService _syncService;
-        private readonly IAuthService _authService; 
+        private readonly IAuthService _authService;
+        private readonly HttpClient _httpClient;
 
         public LoginViewModel(
             ILocalRepository<User> userRepository,
             ISyncService syncService,
-            IAuthService authService) 
+            IAuthService authService,
+            HttpClient httpClient)
         {
             _loginModel = new();
             _userRepository = userRepository;
             _syncService = syncService;
             _authService = authService;
+            _httpClient = httpClient;
         }
 
         public override async Task OnAppearing()
@@ -43,7 +48,53 @@ namespace Aquasys.App.MVVM.ViewModels.Login
             if (IsLoadedViewModel) return;
             IsLoadedViewModel = true;
 
+            // Carrega IP/Porta salvos e já configura o HttpClient
+            await LoadApiSettingsAsync();
+
             await AutoLoginAsync();
+        }
+
+        private async Task LoadApiSettingsAsync()
+        {
+            try
+            {
+                var ip = await SecureStorage.Default.GetAsync("ApiIp");
+                var port = await SecureStorage.Default.GetAsync("ApiPort");
+
+                if (!string.IsNullOrWhiteSpace(ip) && !string.IsNullOrWhiteSpace(port))
+                {
+                    LoginModel.ApiIp = ip;
+                    LoginModel.ApiPort = port;
+                    ConfigureApiBaseAddress();
+                }
+                else
+                {
+                    // Se quiser, define um padrão na primeira execução:
+                    // LoginModel.ApiIp = "10.0.2.2";
+                    // LoginModel.ApiPort = "5270";
+                    // ConfigureApiBaseAddress();
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private bool ConfigureApiBaseAddress()
+        {
+            if (string.IsNullOrWhiteSpace(LoginModel.ApiIp) ||
+                string.IsNullOrWhiteSpace(LoginModel.ApiPort))
+                return false;
+
+            try
+            {
+                _httpClient.BaseAddress = new Uri($"http://{LoginModel.ApiIp}:{LoginModel.ApiPort}");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private async Task AutoLoginAsync()
@@ -53,10 +104,13 @@ namespace Aquasys.App.MVVM.ViewModels.Login
                 var userRememberList = await _userRepository.GetFilteredAsync(x => x.RememberMe == true);
                 var userRemember = userRememberList.FirstOrDefault();
 
-                if (userRemember != null)
+                if (userRemember != null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
                     await AuthenticateAndSync(userRemember);
+                else if (userRemember != null)
+                    Application.Current!.MainPage = new AppShell();
             }
-            catch {
+            catch
+            {
                 return;
             }
         }
@@ -64,8 +118,22 @@ namespace Aquasys.App.MVVM.ViewModels.Login
         [RelayCommand(CanExecute = nameof(CanExecuteCommands))]
         private async Task ValidateLogin()
         {
-            //LoginModel.UserName = "inspector.joao";
-            //LoginModel.Password = "Password123!";
+            if (string.IsNullOrWhiteSpace(LoginModel.ApiIp) ||
+                string.IsNullOrWhiteSpace(LoginModel.ApiPort))
+            {
+                await Application.Current!.MainPage!.DisplayAlert("Erro", "Informe IP e Porta da API.", "OK");
+                return;
+            }
+
+            try
+            {
+                _httpClient.BaseAddress = new Uri($"http://{LoginModel.ApiIp}:{LoginModel.ApiPort}");
+            }
+            catch
+            {
+                await Application.Current!.MainPage!.DisplayAlert("Erro", "IP ou porta inválidos.", "OK");
+                return;
+            }
 
             if (string.IsNullOrEmpty(LoginModel.userName) || string.IsNullOrEmpty(LoginModel.Password))
             {
@@ -89,6 +157,10 @@ namespace Aquasys.App.MVVM.ViewModels.Login
                     {
                         authenticatedUser.RememberMe = LoginModel.RememberMe;
                         await _userRepository.UpsertAsync(authenticatedUser);
+
+                        // (Opcional) salvar IP/Porta
+                        await SecureStorage.Default.SetAsync("ApiIp", LoginModel.ApiIp);
+                        await SecureStorage.Default.SetAsync("ApiPort", LoginModel.ApiPort);
                     }
                 }
 
@@ -104,6 +176,7 @@ namespace Aquasys.App.MVVM.ViewModels.Login
                 StatusMessage = string.Empty;
             }
         }
+
 
         private async Task AuthenticateAndSync(User? user)
         {

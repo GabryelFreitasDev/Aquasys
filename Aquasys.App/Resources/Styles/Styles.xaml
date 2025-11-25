@@ -570,16 +570,13 @@
         <Setter Property="PressedBorderColor" Value="{StaticResource ColorGray300}" />
     </Style>
 
-    <Style TargetType="dcc:DCTimeEdit"
-       BasedOn="{StaticResource DefaultFormStyle}">
-        <Setter Property="ClearIcon" Value="icon_fechar.png" />
-        <Setter Property="ClearIconColor" Value="{StaticResource ColorGray400}" />
-        <Setter Property="TimeIconColor" Value="{StaticResource ColorGray400}" />
-        <Setter Property="TimeFormatMode" Value="HourFormat24" />
-        <Setter Property="FocusedBorderThickness" Value="1" />
-        <Setter Property="BoxHeight" Value="54" />
-        <Setter Property="FocusedLabelColor" Value="{StaticResource ColorGray500}" />
-        <Setter Property="FocusedBorderColor" Value="{StaticResource ColorGray500}" />
+    <Style TargetType="dcc:DCTimeEdit">
+        <Setter Property="CursorColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+        <Setter Property="FocusedBorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}"/>
+        <Setter Property="FocusedLabelColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}"/>
+        <Setter Property="ClearIconVisibility" Value="Never"/>
+        <Setter Property="IsLabelFloating" Value="True"/>
     </Style>
 
     <Style TargetType="dcc:DCDateEdit">
@@ -640,7 +637,7 @@
         <Setter Property="BackgroundColor" Value="{StaticResource ColorWhite}" />
         <Setter Property="BorderColor" Value="{StaticResource ColorGray100}" />
         <Setter Property="BorderWidth" Value="1" />
-        <Setter Property="FontFamily" Value="Quicksand700Font" />
+        <Setter Property="FontFamily" Value="Quicksand500Font" />
         <Setter Property="HorizontalOptions" Value="FillAndExpand" />
         <Setter Property="Margin" Value="-1" />
         <Setter Property="TextColor" Value="{StaticResource Primary500}" />

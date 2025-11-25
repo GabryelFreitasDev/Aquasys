@@ -7,6 +7,7 @@ namespace Aquasys.App.Controls
 {
     public class DCTimeEdit : TimeEdit
     {
+
         public static readonly BindableProperty PropertyNameProperty = BindableProperty.Create(nameof(PropertyName), typeof(string), typeof(DCTimeEdit), defaultBindingMode: BindingMode.TwoWay);
 
         public string PropertyName

@@ -1,15 +1,15 @@
-﻿using Aquasys.App.Core.Intefaces;
-using Aquasys.Core.Entities;
+﻿using Aquasys.App.Controls.Editors;
+using Aquasys.App.Core.Data;
+using Aquasys.App.Core.Intefaces;
 using Aquasys.App.Core.Utils;
 using Aquasys.App.MVVM.Models.Vessel;
 using Aquasys.App.MVVM.Views.Vessel;
+using Aquasys.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Aquasys.App.Core.Data;
-using Aquasys.App.Controls.Editors;
 
 namespace Aquasys.App.MVVM.ViewModels.Vessel
 {
@@ -68,29 +68,27 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel
 
         private async Task SaveHoldInspection(bool mostraMensagem = true)
         {
-            if (HoldInspectionModel.IDHoldInspection != 0)
-            {
-                var holdInspection = await _holdInspectionRepository.GetByIdAsync(HoldInspectionModel.IDHoldInspection);
-                if (holdInspection != null)
-                {
-                    holdInspection = mapper.Map<HoldInspection>(HoldInspectionModel);
-                    holdInspection.InspectionDateTime = GetInspectionDateTime();
-                    await _holdInspectionRepository.UpdateAsync(holdInspection);
-                }
-            }
+            HoldInspection holdInspectionEntity = new HoldInspection();
+
+            if (HoldInspectionModel?.IDHoldInspection is long id && id > 0)
+                holdInspectionEntity = await _holdInspectionRepository.GetByIdAsync(id) ?? new();
             else
-            {
-                var holdInspection = mapper.Map<HoldInspection>(HoldInspectionModel);
-                holdInspection.IDHold = IDHold;
-                holdInspection.InspectionDateTime = GetInspectionDateTime();
-                await _holdInspectionRepository.InsertAsync(holdInspection);
-                HoldInspectionModel.IDHoldInspection = holdInspection.IDHoldInspection;
-            }
+                holdInspectionEntity = new();
+
+            holdInspectionEntity = mapper.Map<HoldInspection>(HoldInspectionModel);
+            holdInspectionEntity.InspectionDateTime = GetInspectionDateTime();
+
+            await _holdInspectionRepository.UpsertAsync(holdInspectionEntity);
 
             if (mostraMensagem)
             {
-                await Shell.Current.DisplayAlert("Alerta", "Salvo com sucesso", "OK");
+                await Shell.Current.DisplayAlert("Sucesso", "Vessel salvo!", "OK");
                 await Shell.Current.GoToAsync("..", true);
+            }
+            else
+            {
+                var updated = await _holdInspectionRepository.GetByIdAsync(holdInspectionEntity.IDHoldInspection);
+                HoldInspectionModel = mapper.Map<HoldInspectionModel>(updated);
             }
         }
 

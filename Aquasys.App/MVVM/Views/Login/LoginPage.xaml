@@ -17,43 +17,52 @@
                                StatusBarStyle="LightContent" />
     </local:BasePages.Behaviors>
 
-    <VerticalStackLayout Padding="5" Spacing="5" VerticalOptions="Center">
-        <Image 
+    <Grid RowDefinitions="50*, 50*" Padding="5">
+        <Image
+            Grid.Row="0"
             Aspect="Fill" 
             Source="aquasyslogo.png"/>
 
-        <VerticalStackLayout Padding="10" Spacing="10">
-            <de:TextEdit
-                x:Name="User" 
-                Text="{Binding LoginModel.UserName, Mode=TwoWay}" 
-                PlaceholderText="User"/>
+        <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto, Auto" RowSpacing="15" Padding="10">
 
-            <de:PasswordEdit 
-                x:Name="Password" 
-                PlaceholderText="Password"
-                Text="{Binding LoginModel.Password, Mode=TwoWay}"/>
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto" >
+                <de:TextEdit
+                    Grid.Row="0"
+                    x:Name="User" 
+                    LabelText="User"
+                    Text="{Binding LoginModel.UserName, Mode=TwoWay}" />
+
+                <de:PasswordEdit 
+                    Grid.Row="1"
+                    x:Name="Password" 
+                    LabelText="Password"
+                    Text="{Binding LoginModel.Password, Mode=TwoWay}"/>
+            </Grid>
+            
+
+            <Grid Grid.Row="2" ColumnDefinitions="70*, 30*" ColumnSpacing="10">
+                <de:TextEdit
+                    Grid.Column="0"
+                    x:Name="IP" 
+                    LabelText="IP"
+                    Text="{Binding LoginModel.ApiIp, Mode=TwoWay}" />
+
+                <de:TextEdit
+                    Grid.Column="1"
+                    x:Name="Port" 
+                    LabelText="Port"
+                    Text="{Binding LoginModel.ApiPort, Mode=TwoWay}" />
+            </Grid>
 
             <dx:DXButton
+                Grid.Row="3"
                 x:Name="BtnLogin"
                 Content="LOGIN"
                 FontSize="15"
                 CornerRadius="20"
                 WidthRequest="300"
                 Command="{Binding ValidateLoginCommand}"/>
+        </Grid>
 
-            <input:CheckBox
-                x:Name="ChkRememberMe"
-                HorizontalOptions="Center"
-                Text="Remember Me"
-                TextColor="Black"
-                IsChecked="{Binding LoginModel.RememberMe, Mode=TwoWay}"/>
-
-            <dx:DXButton 
-                x:Name="BtnCreateAccount"
-                BackgroundColor="Transparent"
-                Content="Create Account"
-                Command="{Binding CreateNewAccountCommand}"/>
-        </VerticalStackLayout>
-                
-    </VerticalStackLayout>
+    </Grid>
 </local:BasePages>

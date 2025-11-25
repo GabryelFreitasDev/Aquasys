@@ -39,12 +39,15 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
         private bool expanded = true;
 
         [ObservableProperty]
+        private bool expandedImages = true;
+
+        [ObservableProperty]
         private bool hasImages;
 
         [ObservableProperty]
         private bool isEnabled; // se for usar depois para habilitar/desabilitar campos
 
-        private List<Country> AllFlags = new();
+        private List<Country> allFlags = new();
 
         public VesselRegistrationTabViewModel(
             ILocalRepository<Aquasys.Core.Entities.Vessel> vesselRepository,
@@ -103,7 +106,7 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 
         private void LoadFlags()
         {
-            AllFlags = _countryHelper.GetCountryData()
+            allFlags = _countryHelper.GetCountryData()
                 .Select(x => new Country
                 {
                     CountryName = x.CountryName,
@@ -111,13 +114,22 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
                 })
                 .ToList();
 
-            Flags = AllFlags.Take(30).ToList();
+            Flags = allFlags.Take(30).ToList();
 
             if (!string.IsNullOrWhiteSpace(VesselModel.Flag))
             {
-                SelectedFlag = AllFlags
+                SelectedFlag = allFlags
                     .FirstOrDefault(x => x.CountryName == VesselModel.Flag);
             }
+        }
+
+        [RelayCommand]
+        private void ChangeFlagName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                Flags = allFlags.Take(30).ToList();
+            else
+                Flags = allFlags.Where(x => x.CountryName.ToLower().Contains(name.ToLower())).Take(30).ToList();
         }
 
         [RelayCommand]
@@ -223,6 +235,12 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 
         [RelayCommand]
         private void ToggleImagesExpanded()
+        {
+            ExpandedImages = !ExpandedImages;
+        }
+
+        [RelayCommand]
+        private void ToggleExpanded()
         {
             Expanded = !Expanded;
         }

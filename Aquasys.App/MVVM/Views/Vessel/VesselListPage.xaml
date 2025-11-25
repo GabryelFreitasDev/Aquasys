@@ -67,8 +67,8 @@
                                     <Image Source="{Binding FirstImage, Converter={toolkit:ByteArrayToImageSourceConverter}}"
                                            Grid.Column="0"
                                            Aspect="AspectFill"
-                                           HeightRequest="120"
-                                           WidthRequest="160"/>
+                                           HeightRequest="130"
+                                           WidthRequest="155"/>
 
                                     <dx:DXSeparator Grid.Column="1"
                                                     FlowDirection="MatchParent"
@@ -83,7 +83,7 @@
                                                    FontSize="Medium"/>
                                             <Label Text="{Binding VesselName}"
                                                    FontAttributes="Bold"
-                                                   FontSize="Medium"
+                                                   FontSize="16"
                                                    Margin="5,0,0,0"
                                                    TextColor="{StaticResource Primary}"/>
                                         </FlexLayout>
@@ -97,9 +97,9 @@
                                                 <Label Text="Port Registry:" FontAttributes="Bold"/>
                                                 <Label Text="{Binding PortRegistry}" Grid.Column="1"/>
                                             </Grid>
-                                            <Grid ColumnDefinitions="Auto,*" Grid.Row="2" Margin="0,1" ColumnSpacing="3">
+                                            <Grid RowDefinitions="Auto,*" Grid.Row="2" Margin="0,1" ColumnSpacing="3">
                                                 <Label Text="Owner:" FontAttributes="Bold"/>
-                                                <Label Text="{Binding Owner}" Grid.Column="1"/>
+                                                <Label Text="{Binding Owner}" Grid.Row="1"/>
                                             </Grid>
                                         </Grid>
                                     </Grid>

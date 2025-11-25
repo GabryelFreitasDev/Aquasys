@@ -24,6 +24,11 @@
                     FontAttributes="Bold" 
                     FontSize="20"/>
 
+                <dx:DXButton
+                    ButtonType="Accent"
+                    Content="Generete Report"
+                    Command="{Binding GenerateReportCommand}"/>
+
                 <dxcv:DXCollectionView ItemsSource="{Binding Holds}" SelectionMode="None" IsScrollBarVisible="False" ItemSpacing="2" ReduceSizeToContent="True">
                     <dxcv:DXCollectionView.ItemTemplate>
                         <DataTemplate>
@@ -69,10 +74,6 @@
                         </DataTemplate>
                     </dxcv:DXCollectionView.ItemTemplate>
                 </dxcv:DXCollectionView>
-                <dx:DXButton
-                    ButtonType="Accent"
-                    Content="Generete Report"
-                    Command="{Binding GenerateReportCommand}"/>
             </VerticalStackLayout>
             
             <edit:DCFloatingMenu Grid.Row="1"
@@ -80,7 +81,7 @@
                    WidthRequest="50"
                    HorizontalOptions="End"
                    VerticalOptions="End"
-                   Margin="0,0,0,40"
+                   Margin="0,0,0,30"
                    MainButtonBackgroundColor="{StaticResource Primary}"
                    MainButtonIcon="icon_plus.png"
                    Command="{Binding AddHoldCommand}"/>
