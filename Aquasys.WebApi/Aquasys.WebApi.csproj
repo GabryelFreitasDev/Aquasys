@@ -16,11 +16,13 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="Scrutor" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
   </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Aquasys.Core\Aquasys.Core.csproj" />
+		<ProjectReference Include="..\Aquasys.Reports\Aquasys.Reports.csproj" />
 	</ItemGroup>
 
 </Project>

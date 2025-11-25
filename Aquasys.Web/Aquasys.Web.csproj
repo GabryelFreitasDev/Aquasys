@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Blazor" Version="25.1.6" />
+    <PackageReference Include="Syncfusion.Licensing" Version="31.1.23" />
   </ItemGroup>
 
   <ItemGroup>

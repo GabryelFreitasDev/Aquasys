@@ -1,6 +1,11 @@
 using Aquasys.WebApi.Data;
 using Aquasys.WebApi.Services;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Licensing;
+
+// Adicione estes using para os relatórios:
+using Aquasys.Reports.Services;
+using Aquasys.Reports.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +30,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddSingleton<SyncTypeRegistry>();
+SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF5cX2BCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH5cdXVQRGBZUUNwWUpWYEg=");
+
+// === REGISTRO DOS SERVIÇOS DO RELATÓRIO ===
+builder.Services.AddScoped<ReportGeneratorService>();
+
+// Registrar todos os templates de relatório implementando IReportTemplate
+builder.Services.Scan(scan => scan
+    .FromAssemblyOf<ReportGeneratorService>()
+    .AddClasses(classes => classes.AssignableTo<IReportTemplate>())
+    .AsImplementedInterfaces()
+    .WithScopedLifetime());
+// ==========================================
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -34,7 +51,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // --- ADICIONE ESTAS DUAS LINHAS ---
     app.UseSwagger();
     app.UseSwaggerUI();
 }

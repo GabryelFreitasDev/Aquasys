@@ -89,16 +89,6 @@ namespace Aquasys.Reports.Templates
                 return null;
             }
 
-            decimal? GetDecimal(object? obj, params string[] candidates)
-            {
-                var v = GetProp(obj ?? new { }, candidates);
-                if (v is decimal d) return d;
-                if (v is double db) return (decimal)db;
-                if (v is float f) return (decimal)f;
-                if (decimal.TryParse(v?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed)) return parsed;
-                return null;
-            }
-
             int? GetInt(object? obj, params string[] candidates)
             {
                 var v = GetProp(obj ?? new { }, candidates);
@@ -172,11 +162,13 @@ namespace Aquasys.Reports.Templates
                     DrawLine("Hold Number", GetString(hold, "BasementNumber", "Basement", "basementNumber", "BasementNumber"));
                     DrawLine("Agent", GetString(hold, "Agent", "agent"));
                     DrawLine("Cargo", GetString(hold, "Cargo", "cargo"));
-                    var cap = GetDecimal(hold, "Capacity", "capacity");
-                    DrawLine("Capacity", cap.HasValue ? cap.Value.ToString("N2", CultureInfo.InvariantCulture) : string.Empty);
-                    var pw = GetDecimal(hold, "ProductWeight", "productWeight", "Product_Weight");
-                    DrawLine("Product Weight", pw.HasValue ? pw.Value.ToString("N2", CultureInfo.InvariantCulture) : string.Empty);
-                    DrawLine("Load Plan", GetString(hold, "LoadPlan", "loadPlan"));
+                    // --- CAMPOS REMOVIDOS PARA EVITAR ERRO ---
+                    // var cap = GetDecimal(hold, "Capacity", "capacity");
+                    // DrawLine("Capacity", cap.HasValue ? cap.Value.ToString("N2", CultureInfo.InvariantCulture) : string.Empty);
+                    // var pw = GetDecimal(hold, "ProductWeight", "productWeight", "Product_Weight");
+                    // DrawLine("Product Weight", pw.HasValue ? pw.Value.ToString("N2", CultureInfo.InvariantCulture) : string.Empty);
+                    // DrawLine("Load Plan", GetString(hold, "LoadPlan", "loadPlan"));
+                    // ------------------------------------------
                     var holdReg = GetDate(hold, "RegistrationDateTime", "RegistrationDate", "RegisteredAt");
                     if (holdReg.HasValue) DrawLine("Hold Registration Date", holdReg.Value.ToString("MM/dd/yyyy"));
 

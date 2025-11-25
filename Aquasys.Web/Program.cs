@@ -3,6 +3,7 @@ using Aquasys.Web.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Authentication.Cookies; // <-- Adicione este using
+using Syncfusion.Licensing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddDevExpressBlazor();
+SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF5cX2BCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH5cdXVQRGBZUUNwWUpWYEg=");
 
 builder.Services.AddHttpClient("WebApi", client =>
 {

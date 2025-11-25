@@ -20,6 +20,7 @@ using DevExpress.Maui;
 using InputKit.Handlers;
 using Microsoft.Extensions.Logging;
 using RGPopup.Maui.Extensions;
+using Syncfusion.Licensing;
 
 namespace Aquasys.App
 {
@@ -88,6 +89,7 @@ namespace Aquasys.App
             builder.Services.AddSingleton<ReportGeneratorService>();
 
             // Report
+            SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF5cX2BCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH5cdXVQRGBZUUNwWUpWYEg=");
             var assemblies = new[] { typeof(VesselReport).Assembly };
             builder.Services.Scan(scan => scan
             .FromAssemblies(assemblies)

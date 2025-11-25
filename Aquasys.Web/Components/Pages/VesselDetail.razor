@@ -20,7 +20,17 @@ else if (vessel != null)
         @* --- Seção Vessel Records --- *@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4>Vessel Records</h4>
-            <button class="btn btn-primary" disabled>Report</button> @* Botão Report (funcionalidade futura) *@
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Vessel Records</h4>
+                <a class="btn btn-primary"
+                   href="@($"/api/reports/vessel/{vessel?.GlobalId}")"
+                   target="_blank"
+                   role="button"
+                   rel="noopener"
+                   download>
+                    Report
+                </a>
+            </div>
         </div>
 
         <div class="record-section card mb-4">

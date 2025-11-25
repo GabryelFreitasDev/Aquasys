@@ -115,22 +115,17 @@ namespace Aquasys.App.MVVM.ViewModels.Vessel.Tabs
 
             try
             {
-                // Mapeie os Holds para Entity
                 var mappedEntityHolds = VesselModel.Holds.Select(hm => mapper.Map<Aquasys.Core.Entities.Hold>(hm)).ToList();
 
-                // Preencha a lista Inspections de cada Hold entity — ESSENCIAL!
                 foreach (var entityHold in mappedEntityHolds)
                 {
                     var inspections = inspectionsData.Where(i => i.IDHold == entityHold.IDHold).ToList();
-                    // Pode ser 0, 1 ou mais inspeções — normalmente será só 1!
                     entityHold.Inspections = inspections;
                 }
 
-                // Prepare a entidade principal para o relatório
                 var vesselEntity = mapper.Map<Aquasys.Core.Entities.Vessel>(VesselModel);
                 vesselEntity.Holds = mappedEntityHolds;
 
-                // Gere o PDF
                 var pdfBytes = await _reportService.GenerateAsync(ReportType.Vessel, vesselEntity);
 
                 var fileName = $"Report_{VesselModel.VesselName}.pdf";
